@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class ClientesControlador {
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String index(Model model){
-        model.addAttribute("saludo", "Hola mundo");
+        model.addAttribute("saludo", "Hola mundo Barrueto Weco");
         return "index";
     }
     @RequestMapping(value = "/index", method = RequestMethod.GET)
