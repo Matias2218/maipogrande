@@ -1,6 +1,5 @@
 package com.duoc.maipogrande.modelos;
 
-import javax.annotation.Generated;
 import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Null;
@@ -22,4 +21,38 @@ public class OfertaProducto {
     @JoinTable(name = "DETALLES_OFERTAS_PRODUCTOS", joinColumns = {@JoinColumn(name = "ID_OFERP")}, inverseJoinColumns = {@JoinColumn(name = "ID_PRODU")})
     private List<Producto> productos;
 
+    public OfertaProducto() {
+    }
+
+    public Long getIdOferp() {
+        return idOferp;
+    }
+
+    public void setIdOferp(Long idOferp) {
+        this.idOferp = idOferp;
+    }
+
+    public String getPaisOrigen() {
+        return paisOrigen;
+    }
+
+    public void setPaisOrigen(String paisOrigen) {
+        this.paisOrigen = paisOrigen;
+    }
+
+    public Integer getPrecioOferta() {
+        return precioOferta;
+    }
+
+    public void setPrecioOferta(Integer precioOferta) {
+        this.precioOferta = precioOferta;
+    }
+
+    public List<Producto> getProductos() {
+        return productos;
+    }
+
+    public void setProductos(List<Producto> productos) {
+        this.productos = productos;
+    }
 }

@@ -25,7 +25,7 @@ public class Transportista {
     @Column(length = 60, nullable = false)
     private String contrasñaTran;
     @NotNull
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "DATE")
     private LocalDateTime fechaCreacion;
     @NotNull
     @Column(length = 12, nullable = false)
