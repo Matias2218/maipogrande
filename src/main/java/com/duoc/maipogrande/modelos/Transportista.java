@@ -6,6 +6,26 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "Transportistas")
+@NamedStoredProcedureQueries({
+        @NamedStoredProcedureQuery(
+                name = "buscarTranPorEmail",
+                procedureName = "BUSCARTRANSPORTISTAPOREMAIL",
+                resultClasses = {Transportista.class},
+                parameters = {
+                        @StoredProcedureParameter(
+                                mode = ParameterMode.IN,
+                                name = "email",
+                                type = String.class
+                        ),
+                        @StoredProcedureParameter(
+                                mode = ParameterMode.REF_CURSOR,
+                                name = "q",
+                                type = void.class
+                        ),
+                }
+        )
+}
+)
 public class Transportista {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,7 +39,7 @@ public class Transportista {
     @Column(length = 11, nullable = false)
     private String rutTran;
     @NotNull
-    @Column(length = 80, nullable = false)
+    @Column(length = 80, nullable = false,  unique = true)
     private String emailTran;
     @NotNull
     @Column(length = 60, nullable = false)

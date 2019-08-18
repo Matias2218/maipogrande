@@ -20,7 +20,7 @@ public class Administrador {
     @Column(length = 11, nullable = false)
     private String rutAdm;
     @NotNull
-    @Column(length = 100, nullable = false)
+    @Column(length = 100, nullable = false,  unique = true)
     private String emailAdm;
     @NotNull
     @Column(length = 50, nullable = false)

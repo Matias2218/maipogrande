@@ -7,6 +7,26 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "Productores")
+@NamedStoredProcedureQueries({
+        @NamedStoredProcedureQuery(
+                name = "buscarProdPorEmail",
+                procedureName = "BUSCARPRODUCTORPOREMAIL",
+                resultClasses = {Productor.class},
+                parameters = {
+                        @StoredProcedureParameter(
+                                mode = ParameterMode.IN,
+                                name = "email",
+                                type = String.class
+                        ),
+                        @StoredProcedureParameter(
+                                mode = ParameterMode.REF_CURSOR,
+                                name = "q",
+                                type = void.class
+                        ),
+                }
+        )
+}
+)
 public class Productor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,7 +40,7 @@ public class Productor {
     @Column(length = 50)
     private String apellidoProd;
     @NotNull
-    @Column(length = 80, nullable = false)
+    @Column(length = 80, nullable = false,  unique = true)
     private String emailProd;
     @NotNull
     @Column(length = 50, nullable = false)

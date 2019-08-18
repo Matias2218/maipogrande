@@ -20,7 +20,7 @@ public class Consultor {
     @Column(length = 11, nullable = false)
     private String rutCon;
     @NotNull
-    @Column(length = 100, nullable = false)
+    @Column(length = 100, nullable = false,  unique = true)
     private String emailCon;
     @NotNull
     @Column(length = 50, nullable = false)

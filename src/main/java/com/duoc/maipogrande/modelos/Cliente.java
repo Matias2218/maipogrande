@@ -6,6 +6,26 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "Clientes")
+@NamedStoredProcedureQueries({
+        @NamedStoredProcedureQuery(
+                name = "buscarCliPorEmail",
+                procedureName = "BUSCARCLIENTEPOREMAIL",
+                resultClasses = {Cliente.class},
+                parameters = {
+                        @StoredProcedureParameter(
+                                mode = ParameterMode.IN,
+                                name = "email",
+                                type = String.class
+                        ),
+                        @StoredProcedureParameter(
+                                mode = ParameterMode.REF_CURSOR,
+                                name = "q",
+                                type = void.class
+                        ),
+                }
+        )
+}
+)
 public class Cliente {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,7 +40,7 @@ public class Cliente {
     @Column(length = 11, nullable = false)
     private String rutCli;
     @NotNull
-    @Column(length = 100, nullable = false)
+    @Column(length = 100, nullable = false, unique = true)
     private String emailCli;
     @NotNull
     @Column(length = 50, nullable = false)

@@ -14,9 +14,8 @@ public class Contrato {
     private LocalDate fechaInicioContra;
     @Column(nullable = false)
     private LocalDate fechaTerminoContra;
-    @NotNull
     @Lob
-    @Column(nullable = false, columnDefinition = "BLOB")
+    @Column(columnDefinition = "BLOB")
     private byte[] pdfContra;
     @NotNull
     @Column(nullable = false, length = 1)
