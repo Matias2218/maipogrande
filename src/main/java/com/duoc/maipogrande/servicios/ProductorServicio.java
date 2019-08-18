@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
+import javax.persistence.StoredProcedureQuery;
 
 @Service
 public class ProductorServicio {
@@ -14,8 +14,15 @@ public class ProductorServicio {
     EntityManager entityManager;
 
     public Productor buscarProductorPorEmail(String email) {
-        Query query  = entityManager.createNamedStoredProcedureQuery("buscarProdPorEmail");
+        try {
+        StoredProcedureQuery query  = entityManager.createNamedStoredProcedureQuery("buscarProdPorEmail");
         query.setParameter("email", email);
+        query.execute();
         return (Productor) query.getSingleResult();
+        }
+        catch (Exception e)
+        {
+            return null;
+        }
     }
 }

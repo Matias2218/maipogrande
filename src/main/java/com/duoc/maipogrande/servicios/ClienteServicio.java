@@ -2,20 +2,28 @@ package com.duoc.maipogrande.servicios;
 
 import com.duoc.maipogrande.modelos.Cliente;
 import org.springframework.stereotype.Service;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
+import javax.persistence.StoredProcedureQuery;
 
 @Service
 public class ClienteServicio{
-
 
     @PersistenceContext
     EntityManager entityManager;
 
     public Cliente buscarClientePorEmail(String email) {
-        Query query  = entityManager.createNamedStoredProcedureQuery("buscarCliPorEmail");
-        query.setParameter("email", email);
-        return (Cliente) query.getSingleResult();
+        try {
+            StoredProcedureQuery query  = entityManager.createNamedStoredProcedureQuery("buscarCliPorEmail");
+            query.setParameter("email", email);
+            query.execute();
+            return (Cliente) query.getSingleResult();
+        }
+        catch (Exception e)
+        {
+            return null;
+        }
+
     }
 }

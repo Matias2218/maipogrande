@@ -23,13 +23,13 @@ public class ClientesControlador {
     TransportistaServicio transportistaServicio;
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public String index(Model model){
-        Cliente cliente = clienteServicio.buscarClientePorEmail("maldo1514@gmail.com");
+    public String index(Model model) {
+        Cliente cliente = clienteServicio.buscarClientePorEmail("maldo1514@gmail.co");
         Productor productor = productorServicio.buscarProductorPorEmail("panchito@gmail.com");
-     Transportista transportista = transportistaServicio.buscarTransportistaPorEmail("reload_13@live.cl");
+        Transportista transportista = transportistaServicio.buscarTransportistaPorEmail("reload_13@live.cl");
         model.addAttribute("cliente", cliente);
         model.addAttribute("productor", productor);
-   model.addAttribute("transportista",transportista);
+        model.addAttribute("transportista", transportista);
         return "index";
     }
 }
