@@ -1,16 +1,16 @@
 <%--
   Created by IntelliJ IDEA.
   User: Leonardo
-  Date: 15-08-2019
-  Time: 17:07
+  Date: 18-08-2019
+  Time: 20:44
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-     <link rel="stylesheet" href="css/bootstrap.min.css">
-     <script src="js/bootstrap.min.js"></script>
-    <title>Title</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <script src="js/bootstrap.min.js"></script>
+    <title>Productor</title>
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -42,12 +42,9 @@
                 <a class="nav-link disabled" href="#">Disabled</a>
             </li>
         </ul>
-        <form class="form-inline my-2 my-lg-0" action="/" method="post">
-            <input class="form-control mr-sm-2" name="username" type="email" placeholder="Email">
-            <input class="form-control mr-sm-2" name="password" type="password" placeholder="Contraseña">
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Ingresar</button>
-        </form>
+        <a href="/logout">Salir</a>
     </div>
 </nav>
+<h2>Productor</h2>
 </body>
 </html>

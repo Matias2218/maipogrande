@@ -24,6 +24,24 @@ import java.time.LocalDateTime;
                         ),
                 }
         )
+        ,
+        @NamedStoredProcedureQuery(
+                name = "buscarCliPorId",
+                procedureName = "BUSCARCLIENTEPORID",
+                resultClasses = {Cliente.class},
+                parameters = {
+                        @StoredProcedureParameter(
+                                mode = ParameterMode.IN,
+                                name = "id",
+                                type = Long.class
+                        ),
+                        @StoredProcedureParameter(
+                                mode = ParameterMode.REF_CURSOR,
+                                name = "q",
+                                type = void.class
+                        ),
+                }
+        )
 }
 )
 public class Cliente {

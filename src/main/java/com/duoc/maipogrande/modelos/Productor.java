@@ -24,6 +24,23 @@ import java.time.LocalDateTime;
                                 type = void.class
                         ),
                 }
+        ),
+        @NamedStoredProcedureQuery(
+                name = "buscarProdPorId",
+                procedureName = "BUSCARPRODUCTORPORID",
+                resultClasses = {Productor.class},
+                parameters = {
+                        @StoredProcedureParameter(
+                                mode = ParameterMode.IN,
+                                name = "id",
+                                type = String.class
+                        ),
+                        @StoredProcedureParameter(
+                                mode = ParameterMode.REF_CURSOR,
+                                name = "q",
+                                type = void.class
+                        ),
+                }
         )
 }
 )

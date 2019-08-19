@@ -23,6 +23,23 @@ import java.time.LocalDateTime;
                                 type = void.class
                         ),
                 }
+        ),
+        @NamedStoredProcedureQuery(
+                name = "buscarTranPorId",
+                procedureName = "BUSCARTRANSPORTISTAPORID",
+                resultClasses = {Transportista.class},
+                parameters = {
+                        @StoredProcedureParameter(
+                                mode = ParameterMode.IN,
+                                name = "id",
+                                type = String.class
+                        ),
+                        @StoredProcedureParameter(
+                                mode = ParameterMode.REF_CURSOR,
+                                name = "q",
+                                type = void.class
+                        ),
+                }
         )
 }
 )

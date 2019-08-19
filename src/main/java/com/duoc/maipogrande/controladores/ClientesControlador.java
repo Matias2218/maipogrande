@@ -7,10 +7,18 @@ import com.duoc.maipogrande.servicios.ClienteServicio;
 import com.duoc.maipogrande.servicios.ProductorServicio;
 import com.duoc.maipogrande.servicios.TransportistaServicio;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+
+import javax.servlet.http.HttpSession;
+import java.security.Principal;
+import java.util.stream.Collectors;
 
 @Controller
 public class ClientesControlador {
@@ -23,13 +31,50 @@ public class ClientesControlador {
     TransportistaServicio transportistaServicio;
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public String index(Model model) {
-        Cliente cliente = clienteServicio.buscarClientePorEmail("maldo1514@gmail.co");
-        Productor productor = productorServicio.buscarProductorPorEmail("panchito@gmail.com");
-        Transportista transportista = transportistaServicio.buscarTransportistaPorEmail("reload_13@live.cl");
-        model.addAttribute("cliente", cliente);
-        model.addAttribute("productor", productor);
-        model.addAttribute("transportista", transportista);
+    public String index(Model model,
+                        Principal principal,
+                        HttpSession session) {
+        if(principal != null)
+        {
+            String rol;
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            rol = authentication.getAuthorities().stream().map(o -> ((GrantedAuthority) o).getAuthority()).collect(Collectors.joining());
+
+            switch (rol) {
+                case "ROLE_CLIENTE":
+                    Cliente cliente = clienteServicio.buscarClientePorId(Long.parseLong(principal.getName()));
+                    session.setAttribute("cliente",cliente);
+                    return "redirect:cliente";
+                case "ROLE_PRODUCTOR":
+                    Productor productor = productorServicio.buscarProdPorId(Long.parseLong(principal.getName()));
+                    session.setAttribute("productor", productor);
+                    return "redirect:productor";
+                case "ROLE_TRANSPORTISTA":
+                    Transportista transportista = transportistaServicio.buscarTranPorId(Long.parseLong(principal.getName()));
+                    session.setAttribute("transportista", transportista);
+                    return "redirect:transportista";
+            }
+
+        }
         return "index";
+    }
+
+    @Secured("ROLE_CLIENTE")
+    @RequestMapping(value = "/cliente", method = RequestMethod.GET)
+    public String paginaPrincipalCliente()
+    {
+        return "cliente";
+    }
+    @Secured("ROLE_PRODUCTOR")
+    @RequestMapping(value = "/productor", method = RequestMethod.GET)
+    public String paginaPrincipalProductor()
+    {
+        return "productor";
+    }
+    @Secured("ROLE_TRANSPORTISTA")
+    @RequestMapping(value = "/transportista", method = RequestMethod.GET)
+    public String paginaPrincipalTransportista()
+    {
+        return "transportista";
     }
 }
