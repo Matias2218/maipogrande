@@ -41,10 +41,14 @@ public class ClientesControlador {
             rol = authentication.getAuthorities().stream().map(o -> ((GrantedAuthority) o).getAuthority()).collect(Collectors.joining());
 
             switch (rol) {
-                case "ROLE_CLIENTE":
-                    Cliente cliente = clienteServicio.buscarClientePorId(Long.parseLong(principal.getName()));
-                    session.setAttribute("cliente",cliente);
-                    return "redirect:cliente";
+                case "ROLE_CLIENTE_EXTERNO":
+                    Cliente clienteExterno = clienteServicio.buscarClientePorId(Long.parseLong(principal.getName()));
+                    session.setAttribute("clienteExterno",clienteExterno);
+                    return "redirect:clienteExterno";
+                case "ROLE_CLIENTE_INTERNO":
+                    Cliente clienteInterno = clienteServicio.buscarClientePorId(Long.parseLong(principal.getName()));
+                    session.setAttribute("clienteInterno",clienteInterno);
+                    return "redirect:clienteInterno";
                 case "ROLE_PRODUCTOR":
                     Productor productor = productorServicio.buscarProdPorId(Long.parseLong(principal.getName()));
                     session.setAttribute("productor", productor);
@@ -59,11 +63,17 @@ public class ClientesControlador {
         return "index";
     }
 
-    @Secured("ROLE_CLIENTE")
-    @RequestMapping(value = "/cliente", method = RequestMethod.GET)
-    public String paginaPrincipalCliente()
+    @Secured("ROLE_CLIENTE_INTERNO")
+    @RequestMapping(value = "/clienteInterno", method = RequestMethod.GET)
+    public String paginaPrincipalClienteInterno()
     {
-        return "cliente";
+        return "clienteInterno";
+    }
+    @Secured("ROLE_CLIENTE_EXTERNO")
+    @RequestMapping(value = "/clienteExterno", method = RequestMethod.GET)
+    public String paginaPrincipalClienteExterno()
+    {
+        return "clienteExterno";
     }
     @Secured("ROLE_PRODUCTOR")
     @RequestMapping(value = "/productor", method = RequestMethod.GET)

@@ -34,7 +34,11 @@ public class JpaUsuarioLoginServicio implements UserDetailsService {
         Productor productor = productorServicio.buscarProductorPorEmail(s);
         Transportista transportista = transportistaServicio.buscarTransportistaPorEmail(s);
         if (cliente != null && productor == null && transportista == null) {
-            authorities.add(new SimpleGrantedAuthority("ROLE_CLIENTE"));
+            if (cliente.getTipoCli() == 'E') {
+                authorities.add(new SimpleGrantedAuthority("ROLE_CLIENTE_EXTERNO"));
+            } else if (cliente.getTipoCli() == 'I') {
+                authorities.add(new SimpleGrantedAuthority("ROLE_CLIENTE_INTERNO"));
+            }
             return new User(cliente.getIdCli().toString(), cliente.getContraseñaCli(), true, true, true, true, authorities);
         } else if (cliente == null && productor != null && transportista == null) {
             authorities.add(new SimpleGrantedAuthority("ROLE_PRODUCTOR"));

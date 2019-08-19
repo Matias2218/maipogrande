@@ -45,6 +45,6 @@
         <a href="/logout">Salir</a>
     </div>
 </nav>
-<h2>Cliente</h2>
+<h2>Cliente Externo</h2>
 </body>
 </html>
