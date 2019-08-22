@@ -60,7 +60,7 @@ public class Transportista {
     private String emailTran;
     @NotNull
     @Column(length = 60, nullable = false)
-    private String contrasñaTran;
+    private String contraseñaTran;
     @NotNull
     @Column(nullable = false, columnDefinition = "DATE")
     private LocalDateTime fechaCreacion;
@@ -126,12 +126,12 @@ public class Transportista {
         this.emailTran = emailTran;
     }
 
-    public String getContrasñaTran() {
-        return contrasñaTran;
+    public String getContraseñaTran() {
+        return contraseñaTran;
     }
 
-    public void setContrasñaTran(String contrasñaTran) {
-        this.contrasñaTran = contrasñaTran;
+    public void setContraseñaTran(String contrasekloiñaTran) {
+        this.contraseñaTran = contraseñaTran;
     }
 
     public LocalDateTime getFechaCreacion() {

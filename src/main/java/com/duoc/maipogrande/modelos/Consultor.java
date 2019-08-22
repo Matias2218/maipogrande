@@ -23,7 +23,7 @@ public class Consultor {
     @Column(length = 100, nullable = false,  unique = true)
     private String emailCon;
     @NotNull
-    @Column(length = 50, nullable = false)
+    @Column(length = 60, nullable = false)
     private String contraseñaCon;
     @Column(nullable = false, columnDefinition = "DATE")
     private LocalDateTime fechaCreacionCon;

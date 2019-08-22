@@ -60,7 +60,7 @@ public class Productor {
     @Column(length = 80, nullable = false,  unique = true)
     private String emailProd;
     @NotNull
-    @Column(length = 50, nullable = false)
+    @Column(length = 60, nullable = false)
     private String contraseñaProd;
     @Column(nullable = false, columnDefinition = "DATE")
     private LocalDateTime fechaCreacionProd;

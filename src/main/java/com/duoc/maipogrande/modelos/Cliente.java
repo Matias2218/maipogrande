@@ -61,7 +61,7 @@ public class Cliente {
     @Column(length = 100, nullable = false, unique = true)
     private String emailCli;
     @NotNull
-    @Column(length = 50, nullable = false)
+    @Column(length = 60, nullable = false)
     private String contraseñaCli;
     @Column(nullable = false, columnDefinition = "DATE")
     private LocalDateTime fechaCreacionCli;

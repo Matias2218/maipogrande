@@ -23,7 +23,7 @@ public class Administrador {
     @Column(length = 100, nullable = false,  unique = true)
     private String emailAdm;
     @NotNull
-    @Column(length = 50, nullable = false)
+    @Column(length = 60, nullable = false)
     private String contraseñaAdm;
     @Column(nullable = false, columnDefinition = "DATE")
     private LocalDateTime fechaCreacionAdm;

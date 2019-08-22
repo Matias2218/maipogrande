@@ -1,7 +1,6 @@
 package com.duoc.maipogrande.servicios;
 
 import com.duoc.maipogrande.modelos.Cliente;
-import com.duoc.maipogrande.modelos.Producto;
 import com.duoc.maipogrande.modelos.Productor;
 import com.duoc.maipogrande.modelos.Transportista;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,7 +44,7 @@ public class JpaUsuarioLoginServicio implements UserDetailsService {
             return new User(productor.getIdProd().toString(), productor.getContraseñaProd(), true, true, true, true, authorities);
         } else {
             authorities.add(new SimpleGrantedAuthority("ROLE_TRANSPORTISTA"));
-            return new User(transportista.getIdTran().toString(), transportista.getContrasñaTran(), true, true, true, true, authorities);
+            return new User(transportista.getIdTran().toString(), transportista.getContraseñaTran(), true, true, true, true, authorities);
         }
 
     }
