@@ -7,6 +7,25 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "Productos")
+@NamedStoredProcedureQueries({
+        @NamedStoredProcedureQuery(
+                name = "buscarProductosPorIdProd",
+                procedureName = "BUSCARPRODUCTOSPORIDPROD",
+                resultClasses = {Productor.class},
+                parameters = {
+                        @StoredProcedureParameter(
+                                mode = ParameterMode.IN,
+                                name = "id",
+                                type = Long.class
+                        ),
+                        @StoredProcedureParameter(
+                                mode = ParameterMode.REF_CURSOR,
+                                name = "q",
+                                type = void.class
+                        ),
+                }
+        ),
+})
 public class Producto {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,6 +41,9 @@ public class Producto {
     @Min(1)
     @Column(nullable = false)
     private Integer precioProdu;
+    @Lob
+    @Column(columnDefinition = "BLOB")
+    private byte[] imagenProdu;
     @NotNull
     @Column(length = 1, nullable = false)
     private Character tipoComercializacionProdu;
@@ -53,6 +75,14 @@ public class Producto {
 
     public LocalDateTime getFechaIngresoProdu() {
         return fechaIngresoProdu;
+    }
+
+    public byte[] getImagenProdu() {
+        return imagenProdu;
+    }
+
+    public void setImagenProdu(byte[] imagenProdu) {
+        this.imagenProdu = imagenProdu;
     }
 
     public void setFechaIngresoProdu(LocalDateTime fechaIngresoProdu) {

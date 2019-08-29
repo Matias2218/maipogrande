@@ -17,6 +17,9 @@ public class Venta {
     @Min(1)
     @Column(nullable = false)
     private Integer precioTotal;
+    @NotNull
+    @Column(nullable = false, length = 1)
+    private Character tipoVenta;
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "DETALLES_VENTAS_PRODUCTOS", joinColumns = {@JoinColumn(name = "ID_VENTA")}, inverseJoinColumns = {@JoinColumn(name = "ID_OFERP")})
     private List<OfertaProducto> ofertaProductos;
@@ -52,6 +55,14 @@ public class Venta {
 
     public void setPrecioTotal(Integer precioTotal) {
         this.precioTotal = precioTotal;
+    }
+
+    public Character getTipoVenta() {
+        return tipoVenta;
+    }
+
+    public void setTipoVenta(Character tipoVenta) {
+        this.tipoVenta = tipoVenta;
     }
 
     public List<OfertaProducto> getOfertaProductos() {

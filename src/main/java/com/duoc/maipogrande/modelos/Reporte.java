@@ -15,6 +15,9 @@ public class Reporte {
     @NotNull
     @Column(length = 500, nullable = false)
     private String descripcionRep;
+    @NotNull
+    @Column(nullable = false, length = 1)
+    private Character tipoRep;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "ID_VEN")
     private Venta venta;
@@ -44,6 +47,14 @@ public class Reporte {
 
     public void setDescripcionRep(String descripcionRep) {
         this.descripcionRep = descripcionRep;
+    }
+
+    public Character getTipoRep() {
+        return tipoRep;
+    }
+
+    public void setTipoRep(Character tipoRep) {
+        this.tipoRep = tipoRep;
     }
 
     public Venta getVenta() {

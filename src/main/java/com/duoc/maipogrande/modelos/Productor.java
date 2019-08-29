@@ -33,7 +33,7 @@ import java.time.LocalDateTime;
                         @StoredProcedureParameter(
                                 mode = ParameterMode.IN,
                                 name = "id",
-                                type = String.class
+                                type = Long.class
                         ),
                         @StoredProcedureParameter(
                                 mode = ParameterMode.REF_CURSOR,

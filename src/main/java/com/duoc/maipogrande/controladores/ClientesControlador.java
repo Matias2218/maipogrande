@@ -13,6 +13,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -34,8 +35,7 @@ public class ClientesControlador {
     public String index(Model model,
                         Principal principal,
                         HttpSession session) {
-        if(principal != null)
-        {
+        if (principal != null) {
             String rol;
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             rol = authentication.getAuthorities().stream().map(o -> ((GrantedAuthority) o).getAuthority()).collect(Collectors.joining());
@@ -43,11 +43,11 @@ public class ClientesControlador {
             switch (rol) {
                 case "ROLE_CLIENTE_EXTERNO":
                     Cliente clienteExterno = clienteServicio.buscarClientePorId(Long.parseLong(principal.getName()));
-                    session.setAttribute("clienteExterno",clienteExterno);
+                    session.setAttribute("clienteExterno", clienteExterno);
                     return "redirect:clienteExterno";
                 case "ROLE_CLIENTE_INTERNO":
                     Cliente clienteInterno = clienteServicio.buscarClientePorId(Long.parseLong(principal.getName()));
-                    session.setAttribute("clienteInterno",clienteInterno);
+                    session.setAttribute("clienteInterno", clienteInterno);
                     return "redirect:clienteInterno";
                 case "ROLE_PRODUCTOR":
                     Productor productor = productorServicio.buscarProdPorId(Long.parseLong(principal.getName()));
@@ -65,26 +65,19 @@ public class ClientesControlador {
 
     @Secured("ROLE_CLIENTE_INTERNO")
     @RequestMapping(value = "/clienteInterno", method = RequestMethod.GET)
-    public String paginaPrincipalClienteInterno()
-    {
+    public String paginaPrincipalClienteInterno() {
         return "clienteInterno";
     }
+
     @Secured("ROLE_CLIENTE_EXTERNO")
     @RequestMapping(value = "/clienteExterno", method = RequestMethod.GET)
-    public String paginaPrincipalClienteExterno()
-    {
+    public String paginaPrincipalClienteExterno() {
         return "clienteExterno";
     }
-    @Secured("ROLE_PRODUCTOR")
-    @RequestMapping(value = "/productor", method = RequestMethod.GET)
-    public String paginaPrincipalProductor()
-    {
-        return "productor";
-    }
+
     @Secured("ROLE_TRANSPORTISTA")
     @RequestMapping(value = "/transportista", method = RequestMethod.GET)
-    public String paginaPrincipalTransportista()
-    {
+    public String paginaPrincipalTransportista() {
         return "transportista";
     }
 }
