@@ -1,9 +1,12 @@
 package com.duoc.maipogrande.modelos;
+import org.apache.tomcat.util.codec.binary.Base64;
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import java.sql.Blob;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 @Entity
 @Table(name = "Productos")
@@ -25,6 +28,54 @@ import java.time.LocalDateTime;
                         ),
                 }
         ),
+        @NamedStoredProcedureQuery(
+                name = "crearProducto",
+                procedureName = "CREARPRODUCTO",
+                resultClasses = void.class,
+                parameters = {
+                        @StoredProcedureParameter(
+                                mode = ParameterMode.IN,
+                                name = "nombre",
+                                type = String.class
+                        ),
+                        @StoredProcedureParameter(
+                                mode = ParameterMode.IN,
+                                name = "precio",
+                                type = Integer.class
+                        ),
+                        @StoredProcedureParameter(
+                                mode = ParameterMode.IN,
+                                name = "imagen",
+                                type = Blob.class
+                        ),
+                        @StoredProcedureParameter(
+                                mode = ParameterMode.IN,
+                                name = "stock",
+                                type = Integer.class
+                        ),
+                        @StoredProcedureParameter(
+                                mode = ParameterMode.IN,
+                                name = "tipo",
+                                type = Character.class
+                        ),
+                        @StoredProcedureParameter(
+                                mode = ParameterMode.IN,
+                                name = "calidad",
+                                type = Byte.class
+                        ),
+                        @StoredProcedureParameter(
+                                mode = ParameterMode.IN,
+                                name = "fechaIngreso",
+                                type = LocalDateTime.class
+                        ),
+                        @StoredProcedureParameter(
+                                mode = ParameterMode.IN,
+                                name = "idProd",
+                                type = Long.class
+                        ),
+                }
+        ),
+
 })
 public class Producto {
     @Id
@@ -127,5 +178,10 @@ public class Producto {
 
     public void setProductor(Productor productor) {
         this.productor = productor;
+    }
+
+    public static String convertirImagen(byte[] blob )
+    {
+        return  "data:image/png;base64," + Base64.encodeBase64String(blob);
     }
 }

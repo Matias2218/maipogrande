@@ -1,5 +1,7 @@
 package com.duoc.maipogrande.modelos;
 
+import org.apache.tomcat.util.codec.binary.Base64;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
@@ -145,4 +147,7 @@ public class Productor {
     public void setContrato(Contrato contrato) {
         this.contrato = contrato;
     }
+
+
+
 }
