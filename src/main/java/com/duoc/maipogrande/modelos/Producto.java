@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
         @NamedStoredProcedureQuery(
                 name = "buscarProductosPorIdProd",
                 procedureName = "BUSCARPRODUCTOSPORIDPROD",
-                resultClasses = {Productor.class},
+                resultClasses = {Producto.class},
                 parameters = {
                         @StoredProcedureParameter(
                                 mode = ParameterMode.IN,

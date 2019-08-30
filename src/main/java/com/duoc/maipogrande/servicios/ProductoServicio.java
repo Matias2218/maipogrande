@@ -1,7 +1,6 @@
 package com.duoc.maipogrande.servicios;
 
 import com.duoc.maipogrande.modelos.Producto;
-import com.duoc.maipogrande.modelos.Productor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
