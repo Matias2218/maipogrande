@@ -44,6 +44,17 @@ public class ProductoServicio {
         }
     }
     @Transactional(noRollbackFor = RuntimeException.class)
+    public boolean eliminarProducto(Long id){
+        try{
+            StoredProcedureQuery query = entityManager.createNamedStoredProcedureQuery("eliminarProductoPorId");
+            query.setParameter("id", id);
+            query.execute();
+            return true;
+        }catch(Exception e){
+            return false;
+        }
+    }
+    @Transactional(noRollbackFor = RuntimeException.class)
     public boolean crearProducto(String nombre, Integer precio, Blob imagen, Integer stock, Character tipo, Byte calidad, LocalDateTime fechaIngreso,Long idProd)
     {
         try {

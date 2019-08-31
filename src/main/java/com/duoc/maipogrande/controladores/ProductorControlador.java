@@ -63,6 +63,12 @@ public class ProductorControlador {
         return "editarProducto";
     }
     @Secured("ROLE_PRODUCTOR")
+    @PostMapping(value = "/eliminarProducto")
+    public String eliminarProducto(@RequestParam(name = "idProdu") Long id){
+        productoServicio.eliminarProducto(id);
+        return "redirect:productos";
+    }
+    @Secured("ROLE_PRODUCTOR")
     @PostMapping(value = "/productos")
     public String añadirProducto(@RequestParam(name = "txtNombre",required = false) String nombre,
                                  @RequestParam(name = "txtPrecio",required = false) Integer precio,

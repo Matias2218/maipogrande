@@ -131,6 +131,17 @@ import java.time.LocalDateTime;
                         ),
                 }
         ),
+        @NamedStoredProcedureQuery(
+                name = "eliminarProductoPorId",
+                procedureName = "BORRARPRODUCTO",
+                parameters = {
+                        @StoredProcedureParameter(
+                                mode = ParameterMode.IN,
+                                name = "id",
+                                type = Long.class
+                        ),
+                }
+        ),
 })
 public class Producto {
     @Id
