@@ -2,7 +2,6 @@ package com.duoc.maipogrande.controladores;
 import com.duoc.maipogrande.modelos.Producto;
 import com.duoc.maipogrande.modelos.Productor;
 import com.duoc.maipogrande.servicios.ProductoServicio;
-import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
@@ -61,7 +60,6 @@ public class ProductorControlador {
         String imagen = Producto.convertirImagen(producto.getImagenProdu());
         model.addAttribute("imagen",imagen);
         session.setAttribute("producto",producto);
-
         return "editarProducto";
     }
     @Secured("ROLE_PRODUCTOR")
@@ -88,12 +86,9 @@ public class ProductorControlador {
                                  @RequestParam(name = "fileImagen",required = false) MultipartFile imagen,
                                  @RequestParam(name = "tipo",required = false) Character tipo,
                                  HttpSession session) throws IOException, SQLException {
-        if(imagen != null)
-        {
-            byte[] bytes = imagen.getBytes();
+            byte[] bytes = (!imagen.isEmpty())?imagen.getBytes():((Producto)session.getAttribute("producto")).getImagenProdu();
             Blob blob = new SerialBlob(bytes);
-            productoServicio.crearProducto(nombre,precio,blob,stock,tipo,calidad.byteValue(), LocalDateTime.now(),((Productor)session.getAttribute("productor")).getIdProd());
-        }
+            productoServicio.actualizarProducto(((Producto)session.getAttribute("producto")).getIdProdu(),nombre,precio,blob,stock,tipo,calidad.byteValue());
         return "redirect:productos";
     }
 

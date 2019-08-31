@@ -6,7 +6,6 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.sql.Blob;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @Entity
 @Table(name = "Productos")
@@ -112,6 +111,11 @@ import java.util.Date;
                         ),
                         @StoredProcedureParameter(
                                 mode = ParameterMode.IN,
+                                name = "stock",
+                                type = Integer.class
+                        ),
+                        @StoredProcedureParameter(
+                                mode = ParameterMode.IN,
                                 name = "imagen",
                                 type = Blob.class
                         ),
@@ -124,11 +128,6 @@ import java.util.Date;
                                 mode = ParameterMode.IN,
                                 name = "calidad",
                                 type = Byte.class
-                        ),
-                        @StoredProcedureParameter(
-                                mode = ParameterMode.IN,
-                                name = "fechaIngreso",
-                                type = LocalDateTime.class
                         ),
                 }
         ),

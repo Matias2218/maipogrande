@@ -65,7 +65,7 @@ public class ProductoServicio {
         }
     }
     @Transactional(noRollbackFor = RuntimeException.class)
-    public boolean actualizarProducto(Long idProdu,String nombre,Integer precio,Blob imagen,Integer stock,Character tipo,Byte calidad, LocalDateTime fechaIngreso)
+    public boolean actualizarProducto(Long idProdu,String nombre,Integer precio,Blob imagen,Integer stock,Character tipo,Byte calidad)
     {
         try {
             StoredProcedureQuery query  = entityManager.createNamedStoredProcedureQuery("actualizarProducto");
@@ -75,7 +75,6 @@ public class ProductoServicio {
             query.setParameter("stock",stock);
             query.setParameter("tipo",tipo);
             query.setParameter("calidad",calidad);
-            query.setParameter("fechaIngreso",fechaIngreso);
             query.setParameter("idProdu",idProdu);
             query.execute();
             return true;
