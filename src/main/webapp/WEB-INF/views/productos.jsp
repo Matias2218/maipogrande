@@ -42,19 +42,18 @@
         <td>Editar</td>
         <td>Eliminar</td>
     </tr>
-    <tr>
-        <c:forEach begin="0" end="${fn:length(productos)-1}" var="i">
+    <c:forEach begin="0" end="${fn:length(productos)-1}" var="i">
+        <tr>
             <td>${productos.get(i).idProdu}</td>
             <td><img style="width: 100px; height: 100px;" src="${imagenes.get(i)}" alt=""></td>
             <td>${productos.get(i).nombreProdu}</td>
             <td>${productos.get(i).fechaIngresoProdu}</td>
             <td>${productos.get(i).stockProdu}</td>
             <td>${productos.get(i).precioProdu}</td>
-            <td><a href="/editarProducto">Editar</a></td>
+            <td><a href="/productos/${productos.get(i).idProdu}">Editar</a></td>
             <td><a href="">Eliminar</a></td>
-        </c:forEach>
-
-    </tr>
+        </tr>
+    </c:forEach>
 </table>
 </body>
 </html>

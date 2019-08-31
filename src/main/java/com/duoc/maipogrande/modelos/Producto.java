@@ -31,7 +31,6 @@ import java.util.Date;
         @NamedStoredProcedureQuery(
                 name = "crearProducto",
                 procedureName = "CREARPRODUCTO",
-                resultClasses = void.class,
                 parameters = {
                         @StoredProcedureParameter(
                                 mode = ParameterMode.IN,
@@ -75,7 +74,64 @@ import java.util.Date;
                         ),
                 }
         ),
-
+        @NamedStoredProcedureQuery(
+                name = "buscarProductosPorId",
+                procedureName = "BUSCARPRODUCTOSPORID",
+                resultClasses = {Producto.class},
+                parameters = {
+                        @StoredProcedureParameter(
+                                mode = ParameterMode.IN,
+                                name = "id",
+                                type = Long.class
+                        ),
+                        @StoredProcedureParameter(
+                                mode = ParameterMode.REF_CURSOR,
+                                name = "q",
+                                type = void.class
+                        ),
+                }
+        ),
+        @NamedStoredProcedureQuery(
+                name = "actualizarProducto",
+                procedureName = "ACTUALIZARPRODUCTO",
+                parameters = {
+                        @StoredProcedureParameter(
+                                mode = ParameterMode.IN,
+                                name = "idProdu",
+                                type = Long.class
+                        ),
+                        @StoredProcedureParameter(
+                                mode = ParameterMode.IN,
+                                name = "nombre",
+                                type = String.class
+                        ),
+                        @StoredProcedureParameter(
+                                mode = ParameterMode.IN,
+                                name = "precio",
+                                type = Integer.class
+                        ),
+                        @StoredProcedureParameter(
+                                mode = ParameterMode.IN,
+                                name = "imagen",
+                                type = Blob.class
+                        ),
+                        @StoredProcedureParameter(
+                                mode = ParameterMode.IN,
+                                name = "tipo",
+                                type = Character.class
+                        ),
+                        @StoredProcedureParameter(
+                                mode = ParameterMode.IN,
+                                name = "calidad",
+                                type = Byte.class
+                        ),
+                        @StoredProcedureParameter(
+                                mode = ParameterMode.IN,
+                                name = "fechaIngreso",
+                                type = LocalDateTime.class
+                        ),
+                }
+        ),
 })
 public class Producto {
     @Id

@@ -30,7 +30,20 @@ public class ProductoServicio {
             return null;
         }
     }
-    @Transactional()
+    @Transactional(readOnly = true, noRollbackFor = RuntimeException.class)
+    public Producto buscarProductosPorIdProducto(Long id) {
+        try {
+            StoredProcedureQuery query  = entityManager.createNamedStoredProcedureQuery("buscarProductosPorId");
+            query.setParameter("id",id);
+            query.execute();
+            return (Producto) query.getSingleResult();
+        }
+        catch (Exception e)
+        {
+            return null;
+        }
+    }
+    @Transactional(noRollbackFor = RuntimeException.class)
     public boolean crearProducto(String nombre, Integer precio, Blob imagen, Integer stock, Character tipo, Byte calidad, LocalDateTime fechaIngreso,Long idProd)
     {
         try {
@@ -43,6 +56,27 @@ public class ProductoServicio {
             query.setParameter("calidad",calidad);
             query.setParameter("fechaIngreso",fechaIngreso);
             query.setParameter("idProd",idProd);
+            query.execute();
+            return true;
+        }
+        catch (Exception e)
+        {
+            return false;
+        }
+    }
+    @Transactional(noRollbackFor = RuntimeException.class)
+    public boolean actualizarProducto(Long idProdu,String nombre,Integer precio,Blob imagen,Integer stock,Character tipo,Byte calidad, LocalDateTime fechaIngreso)
+    {
+        try {
+            StoredProcedureQuery query  = entityManager.createNamedStoredProcedureQuery("actualizarProducto");
+            query.setParameter("nombre",nombre);
+            query.setParameter("precio",precio);
+            query.setParameter("imagen",imagen);
+            query.setParameter("stock",stock);
+            query.setParameter("tipo",tipo);
+            query.setParameter("calidad",calidad);
+            query.setParameter("fechaIngreso",fechaIngreso);
+            query.setParameter("idProdu",idProdu);
             query.execute();
             return true;
         }

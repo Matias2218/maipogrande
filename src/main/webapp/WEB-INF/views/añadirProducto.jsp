@@ -29,7 +29,7 @@
         </div>
     </nav>
 <h1>Producto</h1>
-    <form method="POST">
+    <form method="POST" action="/productos" enctype="multipart/form-data">
         <table>
             <tr>
                 <td>Nombre</td>
@@ -67,6 +67,5 @@
             </tr>
         </table>
     </form>
-
 </body>
 </html>
