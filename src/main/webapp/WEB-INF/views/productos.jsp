@@ -59,7 +59,7 @@
         <tr>
             <td><img style="width: 100px; height: 100px;" src="${imagenes.get(i)}" alt=""></td>
             <td>${productos.get(i).nombreProdu}</td>
-            <td>${productos.get(i).fechaIngresoProdu}</td>
+            <td>${fechas.get(i)}</td>
             <td>${productos.get(i).stockProdu}</td>
             <td>${productos.get(i).precioProdu}</td>
             <td>

@@ -1,4 +1,5 @@
 package com.duoc.maipogrande.controladores;
+
 import com.duoc.maipogrande.modelos.Producto;
 import com.duoc.maipogrande.modelos.Productor;
 import com.duoc.maipogrande.servicios.ProductoServicio;
@@ -17,7 +18,9 @@ import javax.sql.rowset.serial.SerialBlob;
 import java.io.IOException;
 import java.sql.Blob;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,11 +45,17 @@ public class ProductorControlador {
     @Secured("ROLE_PRODUCTOR")
     @GetMapping(value = "/productos")
     public String paginaDeProductos(Model model, HttpSession session) {
-        Long id = ((Productor)session.getAttribute("productor")).getIdProd();
         ArrayList<String> imagenes= new ArrayList<>();
+        List<LocalDate> fechas= new ArrayList<>();
+        Long id = ((Productor)session.getAttribute("productor")).getIdProd();
+        DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         List<Producto> productos = productoServicio.buscarProductosPorId(id);
-        productos.stream().forEach(produ -> imagenes.add(Producto.convertirImagen(produ.getImagenProdu())));
+        productos.stream().forEach(produ -> {
+            imagenes.add(Producto.convertirImagen(produ.getImagenProdu()));
+            fechas.add(produ.getFechaIngresoProdu().toLocalDate());
+        });
         model.addAttribute("productos" , productos);
+        model.addAttribute("fechas",fechas);
         model.addAttribute("imagenes",imagenes);
         return "productos";
     }
