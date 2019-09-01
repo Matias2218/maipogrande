@@ -22,8 +22,12 @@
     border-color: #218838 !important;
     background-color: #218838;
 }
-
-
+.custom-file-input ~ .custom-file-label::after {
+    content: "Subir";
+}
+.custom-file-label {
+    overflow: hidden;
+}
 .container{
     max-width: 960px;
 }

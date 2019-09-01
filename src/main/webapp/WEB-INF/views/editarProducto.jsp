@@ -11,70 +11,160 @@
 <head>
     <link rel="stylesheet" href="/css/bootstrap.min.css">
     <script src="/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="\css\styles.css">
+    <script src='https://kit.fontawesome.com/a076d05399.js'></script>
+    <script src="/js/jquery-3.3.1.slim.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("input[type=file]").change(function () {
+                var fieldVal = $(this).val();
+
+                // Change the node's value by removing the fake path (Chrome)
+                fieldVal = fieldVal.replace("C:\\fakepath\\", "");
+
+                if (fieldVal != undefined || fieldVal != "") {
+                    $(this).next(".custom-file-label").attr('data-content', fieldVal);
+                    $(this).next(".custom-file-label").text(fieldVal);
+                }
+            });
+            $('#txtNombre').keypress(function (e) {
+                var regex = new RegExp("^[a-zA-ZÁ-ÿ \s]+$");
+                var str = String.fromCharCode(!e.charCode ? e.which : e.charCode);
+                if (regex.test(str)) {
+                    return true;
+                }
+                else
+                {
+                    e.preventDefault();
+                    return false;
+                }
+            });
+        })
+    </script>
+    <script>
+        (function() {
+            'use strict';
+            window.addEventListener('load', function() {
+// Fetch all the forms we want to apply custom Bootstrap validation styles to
+                var forms = document.getElementsByClassName('needs-validation');
+// Loop over them and prevent submission
+                var validation = Array.prototype.filter.call(forms, function(form) {
+                    form.addEventListener('submit', function(event) {
+                        if (form.checkValidity() === false) {
+                            event.preventDefault();
+                            event.stopPropagation();
+                        }
+                        form.classList.add('was-validated');
+                    }, false);
+                });
+            }, false);
+        })();
+
+    </script>
     <title>Editar Productos</title>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="#">Navbar</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+<nav class="navbar navbar-expand-lg navbar-light bg-lg sticky-top navbar-verde">
+    <a class="navbar-brand" href="#">
+        <img src="/img/logo-maipo.png" height="50" class="d-inline-block align-top" alt="">
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
 
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="/añadirProducto">Añadir Producto</a>
-                </li>
-                <a href="/logout">Salir</a>
-            </ul>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+        </ul>
+        <button class="btn btn-success my-2 my-sm-0 mr-1 ml-1 letras" onclick="location.href='/logout';" type="button">
+            Cerrar Sesion
+        </button>
+    </div>
+</nav>
+<div class="container mt-2">
+    <div class="row">
+        <div class="col-md-4 offset-md-4">
+            <div class="card card-body">
+                <form method="POST" class="needs-validation" novalidate action="/editarProducto"
+                      enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label for="txtNombre">Nombre</label>
+                        <input name="txtNombre" required class="form-control" id="txtNombre" type="text"
+                               value="${producto.nombreProdu}">
+                        <div class="invalid-feedback">Nombre obligatorio</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="txtPrecio">Precio</label>
+                        <input name="txtPrecio" required
+                               onkeypress="return event.charCode >= 48 && event.charCode <= 57"
+                               value="${producto.precioProdu}" class="form-control" id="txtPrecio" type="text">
+                        <div class="invalid-feedback">Precio obligatorio</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="txtStock">Stock</label>
+                        <input name="txtStock" required onkeypress="return event.charCode >= 48 && event.charCode <= 57"
+                               value="${producto.stockProdu}" class="form-control" id="txtStock" type="text">
+                        <div class="invalid-feedback">Stock obligatorio</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="txtCalidad">Calidad</label>
+                        <input name="txtCalidad" maxlength="1" max="5" min="1" value="${producto.calidadProdu}"
+                               pattern="[1-5]" required onkeypress="return event.charCode >= 48 && event.charCode <= 57"
+                               class="form-control" id="txtCalidad" type="text">
+                        <div class="invalid-feedback">Calidad obligatoria</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="fileImagen">Subir Imagen</label>
+                        <div class="custom-file">
+                            <input type="file" class="custom-file-input" id="fileImagen" name="fileImagen"
+                                   lang="es">
+                            <label class="custom-file-label" for="fileImagen">Seleccionar Archivo</label>
+                            <div class="invalid-feedback">Imagen obligatoria</div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <img style="width: 100px; height: 100px;" src="${imagen}" alt="">
+                    </div>
+                    <c:choose>
+                        <c:when test="${producto.tipoComercializacionProdu eq 'I'.charAt(0)}">
+                            <div class="form-group">
+                                <label>Tipo de venta</label><br>
+                                <div class="custom-control custom-radio custom-control-inline">
+                                    <input type="radio" class="custom-control-input" required id="Local" checked
+                                           value="I" name="tipo">
+                                    <label class="custom-control-label" for="Local">Interno</label>
+                                </div>
+                                <div class="custom-control custom-radio custom-control-inline">
+                                    <input type="radio" class="custom-control-input" required id="Externo" value="E"
+                                           name="tipo">
+                                    <label class="custom-control-label" for="Externo">Externo</label>
+                                </div>
+                            </div>
+                        </c:when>
+                        <c:otherwise>
+                            <div class="form-group">
+                                <label>Tipo de venta</label><br>
+                                <div class="custom-control custom-radio custom-control-inline">
+                                    <input type="radio" class="custom-control-input" required id="Local" value="I"
+                                           name="tipo">
+                                    <label class="custom-control-label" for="Local">Interno</label>
+                                </div>
+                                <div class="custom-control custom-radio custom-control-inline">
+                                    <input type="radio" class="custom-control-input" required id="Externo" value="E"
+                                           checked name="tipo">
+                                    <label class="custom-control-label" for="Externo">Externo</label>
+                                </div>
+                            </div>
+                        </c:otherwise>
+                    </c:choose>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-success">Actualizar</button>
+                        <a href="/productor" class="btn btn-danger">Cancelar</a>
+                    </div>
+                </form>
+            </div>
         </div>
-    </nav>
-<form method="POST" action="/editarProducto" enctype="multipart/form-data">
-    <table>
-        <tr>
-            <td>Nombre</td>
-            <td><input name="txtNombre" type="text" value="${producto.nombreProdu}"></td>
-        </tr>
-        <tr>
-            <td>Precio</td>
-            <td><input name="txtPrecio" type="number" value="${producto.precioProdu}"></td>
-        </tr>
-        <tr>
-            <td>Stock</td>
-            <td><input name="txtStock" type="number" value="${producto.stockProdu}"></td>
-        </tr>
-        <tr>
-            <td>Calidad</td>
-            <td><input name="txtCalidad" type="text" value="${producto.calidadProdu}"></td>
-        </tr>
-        <tr>
-            <td>Imagen</td>
-            <td><input name="fileImagen" type="file"> <img style="width: 100px; height: 100px;" src="${imagen}" alt="">
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <c:choose>
-                    <c:when test="${producto.tipoComercializacionProdu eq 'I'.charAt(0)}">
-                        <input type="radio" name="tipo" checked value="I" >Interna
-                        <input type="radio" name="tipo" value="E">Externa
-                    </c:when>
-                    <c:otherwise>
-                        <input type="radio" name="tipo" value="I">Interna
-                        <input type="radio" name="tipo" value="E" checked>Externa
-                    </c:otherwise>
-                </c:choose>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <button type="submit">Actualizar</button>
-            </td>
-            <td>
-                <a href="#">Cancelar</a>
-            </td>
-        </tr>
-    </table>
-</form>
+    </div>
+</div>
 </body>
 </html>

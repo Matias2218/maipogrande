@@ -97,5 +97,4 @@ public class ProductorControlador {
             productoServicio.actualizarProducto(((Producto)session.getAttribute("producto")).getIdProdu(),nombre,precio,blob,stock,tipo,calidad.byteValue());
         return "redirect:productos";
     }
-
 }
