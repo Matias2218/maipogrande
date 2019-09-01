@@ -66,3 +66,18 @@
 .text-light{
     font-size: 25px;
 }
+#error-container {
+    margin-top:10px;
+    position: fixed;
+}
+/*
+html, body {
+    height:100%;
+}
+body {
+    background:#e2e2e2;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+}*/

@@ -6,6 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
     <meta charset="UTF-8">
@@ -15,7 +16,21 @@
     <link rel="stylesheet" href="\css\bootstrap.min.css">
     <link rel="stylesheet" href="\css\styles.css">
     <script src='https://kit.fontawesome.com/a076d05399.js'></script>
+    <script src="js/jquery-3.3.1.slim.min.js"></script>
     <link rel="shortcut icon" type="image/png" href="img\icono-maipo.png"/>
+    <script>
+        // A $( document ).ready() block.
+        $( document ).ready(function() {
+            $("#myToast").toast('show');
+
+        });
+
+        /*$(document).ready(function () {
+            setTimeout(function () {
+                $('.alert').alert('close');
+            }, 5000)
+        });*/
+    </script>
 </head>
 <body>
 <!-- HEADER -->
@@ -47,14 +62,32 @@
         </form>
     </div>
 </nav>
-
 <header class="sc-main">
     <!-- TEXTO O IMAGENES -->
     <div class="sc-header-content">
     </div>
 </header>
 <!-- FIN HEADER -->
-
+<c:if test="${logout != null}">
+    <div class="toast" id="myToast" data-autohide="true" data-delay="5000" style="position: relative; float: right">
+        <div class="toast-header" style="background-color: #28a445; color: white;">
+            <h5><strong class="mr-auto">${logout}</strong></h5>
+            <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" style="width: 50px">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    </div>
+</c:if>
+<c:if test="${error != null}">
+    <div class="toast" id="myToast" data-autohide="true" data-delay="5000" style="position: relative; float: right">
+        <div class="toast-header" style="background-color: red; color: white;">
+            <h5><strong class="mr-auto">${error}</strong></h5>
+            <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" style="width: 50px">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    </div>
+</c:if>
 <!-- LOGO/PRESENTACION -->
 <div class="container">
     <div class="py-5 text-center">
@@ -104,7 +137,7 @@
 </footer>
 <!-- FIN FOOTER -->
 
-<script src="js/jquery-3.3.1.slim.min.js"></script>
+
 <script src="js/popper.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
 </body>

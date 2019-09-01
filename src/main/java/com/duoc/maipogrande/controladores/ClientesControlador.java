@@ -16,6 +16,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
 import java.security.Principal;
@@ -34,7 +36,11 @@ public class ClientesControlador {
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String index(Model model,
                         Principal principal,
-                        HttpSession session) {
+                        HttpSession session,
+                        @RequestParam(value = "logout", required = false) String logout,
+                        @RequestParam(value = "error", required = false) String error,
+                        RedirectAttributes attributes) {
+        String mensaje;
         if (principal != null) {
             String rol;
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -58,7 +64,15 @@ public class ClientesControlador {
                     session.setAttribute("transportista", transportista);
                     return "redirect:transportista";
             }
-
+        }
+        if (logout != null){
+            mensaje = "Sesion cerrada correctamente";
+            model.addAttribute("logout", mensaje);
+        }
+        if(error !=null)
+        {
+            mensaje = "Error en las credenciales";
+            model.addAttribute("error", mensaje);
         }
         return "index";
     }

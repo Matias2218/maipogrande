@@ -10,40 +10,34 @@
 <%@ taglib prefix = "fn" uri = "http://java.sun.com/jsp/jstl/functions" %>
 <html>
 <head>
-    <link rel="stylesheet" href="css/bootstrap.min.css">
-    <script src="js/bootstrap.min.js"></script>
-    <script src="js/jquery-3.3.1.slim.min.js"></script>
-    <link rel="stylesheet" href="\css\styles.css">
-    <script src='https://kit.fontawesome.com/a076d05399.js'></script>
+    <jsp:include page="layout/cabecera.jsp" />
     <script>
         $(document).ready(function(){
+            $("#myToast").toast('show');
             $('[name="btnEliminar"]').click(function(){
-                $('#idProdu').val($(this).val());
+                var array = $(this).val().split(".");
+                var id = array[0];
+                var nombre = array[1];
+                $('#lblNombre').text(nombre);
+                $('#idProdu').val(id);
             });
         });
     </script>
 <title>Productos</title>
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-light bg-lg sticky-top navbar-verde">
-    <a class="navbar-brand" href="#">
-        <img src="img/logo-maipo.png" height="50" class="d-inline-block align-top" alt="">
-    </a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item">
-                <a class="nav-link" href="/añadirProducto">Añadir Producto</a>
-            </li>
-        </ul>
-        <button class="btn btn-success my-2 my-sm-0 mr-1 ml-1 letras" onclick="location.href='/logout';" type="button">Cerrar Sesion</button>
+<c:if test="${alerta != null}">
+    <div class="toast" id="myToast" data-autohide="true" data-delay="5000" style="position: relative; float: right">
+        <div class="toast-header" style="background-color: #28a445; color: white;">
+            <h5><strong class="mr-auto">${alerta}</strong></h5>
+            <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" style="width: 50px">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
     </div>
-</nav>
+</c:if>
 <h1>Agregar Productos</h1>
+    <a href="/añadirProducto">Agregar producto</a>
 <table>
     <tr>
         <td>Imagen</td>
@@ -72,9 +66,9 @@
                     </c:otherwise>
                 </c:choose>
             </td>
-            <td><a href="/productos/${productos.get(i).idProdu}">Editar</a></td>
+            <td><a href="/productos/${productos.get(i).idProdu}" class="btn btn-primary">Editar</a></td>
             <td>
-                <button type="button" name="btnEliminar" value="${productos.get(i).idProdu}" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                <button type="button" name="btnEliminar" value="${productos.get(i).idProdu}.${productos.get(i).nombreProdu}" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
                     Eliminar
                 </button>
             </td>
@@ -93,7 +87,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                ¿Esta seguro que desea eliminar este producto?
+                ¿Esta seguro que desea eliminar el producto <label id="lblNombre"></label>?
             </div>
             <div class="modal-footer">
                 <h1 id="test"></h1>
