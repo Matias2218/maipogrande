@@ -13,7 +13,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -50,18 +49,22 @@ public class ClientesControlador {
                 case "ROLE_CLIENTE_EXTERNO":
                     Cliente clienteExterno = clienteServicio.buscarClientePorId(Long.parseLong(principal.getName()));
                     session.setAttribute("clienteExterno", clienteExterno);
+                    session.setAttribute("nombre",clienteExterno.getNombreCli());
                     return "redirect:clienteExterno";
                 case "ROLE_CLIENTE_INTERNO":
                     Cliente clienteInterno = clienteServicio.buscarClientePorId(Long.parseLong(principal.getName()));
                     session.setAttribute("clienteInterno", clienteInterno);
+                    session.setAttribute("nombre",clienteInterno.getNombreCli());
                     return "redirect:clienteInterno";
                 case "ROLE_PRODUCTOR":
                     Productor productor = productorServicio.buscarProdPorId(Long.parseLong(principal.getName()));
                     session.setAttribute("productor", productor);
+                    session.setAttribute("nombre",productor.getNombreProd());
                     return "redirect:productor";
                 case "ROLE_TRANSPORTISTA":
                     Transportista transportista = transportistaServicio.buscarTranPorId(Long.parseLong(principal.getName()));
                     session.setAttribute("transportista", transportista);
+                    session.setAttribute("nombre",transportista.getNombreTran());
                     return "redirect:transportista";
             }
         }

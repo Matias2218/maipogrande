@@ -47,11 +47,11 @@
 	min-height: 50vh;
 }
 
-.btn{
+.btnes{
     border-color: white !important;
 }
 
-.btn:hover{
+.btnes:hover{
     border-color: transparent !important;
 }
 
@@ -70,14 +70,25 @@
     margin-top:10px;
     position: fixed;
 }
-/*
-html, body {
-    height:100%;
+/* MENU DE PERFILES */
+.div-menu{
+    border-radius: 0 0;
+    height: 80px;
+    background-color: rgb(108, 117, 125);
+    color: rgb(242, 242, 242);
 }
-body {
-    background:#e2e2e2;
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-    text-align: center;
-}*/
+
+.div-menu:hover{
+    background-color: rgb(153, 153, 153);
+    cursor: pointer;
+    color: white;
+}
+
+.div-menu-sin-hover{
+    background-color: rgb(108, 117, 125);
+    color: rgb(242, 242, 242);
+}
+
+.menu{
+    background-color: rgb(108, 117, 125);
+}

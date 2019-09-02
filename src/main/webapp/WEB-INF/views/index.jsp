@@ -58,7 +58,7 @@
         <form class="form-inline my-2 my-lg-0" action="/" method="post">
             <input class="form-control my-2 my-sm-0 mr-1 ml-1" type="text" placeholder="Usuario" name="username">
             <input class="form-control my-2 my-sm-0 mr-1 ml-1" type="password" placeholder="Contraseña" name="password">
-            <button class="btn btn-success my-2 my-sm-0 mr-1 ml-1 letras" type="submit">Ingresar</button>
+            <button class="btn btnes btn-success my-2 my-sm-0 mr-1 ml-1 letras" type="submit">Ingresar</button>
         </form>
     </div>
 </nav>
@@ -70,7 +70,7 @@
 <!-- FIN HEADER -->
 <c:if test="${logout != null}">
     <div class="toast" id="myToast" data-autohide="true" data-delay="5000" style="position: relative; float: right">
-        <div class="toast-header" style="background-color: #28a445; color: white;">
+        <div class="toast-header" style="background-color:orange; color: white;">
             <h5><strong class="mr-auto">${logout}</strong></h5>
             <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" style="width: 50px">
                 <span aria-hidden="true">&times;</span>

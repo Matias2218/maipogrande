@@ -57,12 +57,13 @@
         })();
 
     </script>
-    <title>Editar Productos</title>
+    <title>Editar Producto</title>
 </head>
 <body>
-<div class="container mt-2">
+<div class="container-fluid">
     <div class="row">
-        <div class="col-md-4 offset-md-4">
+        <div class="col-lg mt-4 mb-4">
+            <h3 class="letras text-center mb-4">Editar producto</h3>
             <div class="card card-body">
                 <form method="POST" class="needs-validation" novalidate action="/editarProducto"
                       enctype="multipart/form-data">
@@ -136,13 +137,37 @@
                             </div>
                         </c:otherwise>
                     </c:choose>
-                    <div class="form-group">
-                        <button type="submit" class="btn btn-success">Actualizar</button>
-                        <a href="/productos" class="btn btn-danger">Cancelar</a>
+                    <div class="btn-group btn-block" role="group" aria-label="Basic example">
+                        <button type="submit" class="btn btn-success">Agregar</button>
+                        <button type="button" class="btn btn-danger" onclick="location.href='/productos';">Cancelar</button>
                     </div>
                 </form>
             </div>
         </div>
+        <div class="col-sm-12 col-lg-3 pr-0 pl-0 pt-0 text-center menu">
+            <div class="w-100 div-menu-sin-hover">
+                <h1 class="text-light carrito mt-4"><i class="fas fa-shopping-cart"></i></h1>
+                <p class="letras mt-3">3 Ventas en proceso</p>
+            </div>
+            <a style="text-decoration: none" href="/">
+                <div class="w-100 div-menu border-top border-white">
+                    <p class="letras mt-4">Mi Perfil</p>
+                </div>
+            </a>
+            <a style="text-decoration: none" href="/productos">
+                <div class="w-100 div-menu border-top border-bottom border-white">
+                    <p class="letras mt-4">Mis Productos</p>
+                </div>
+            </a>
+            <div class="w-100 div-menu border-top border-bottom border-white">
+                <p class="letras mt-4">Mis Ventas</p>
+            </div>
+            <!-- FOOTER -->
+            <footer class="py-2 text-white-50">
+                <div class="footer-copyright text-center py-3">© 2019 Copyright:
+                    <a href="#" class="text-success"> Quality Solution Team</a>
+                </div>
+            </footer>
     </div>
 </div>
 </body>

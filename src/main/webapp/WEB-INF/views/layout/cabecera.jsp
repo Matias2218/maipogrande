@@ -13,7 +13,7 @@
     <link rel="stylesheet" href="\css\styles.css">
     <script src='https://kit.fontawesome.com/a076d05399.js'></script>
     <script src="/js/jquery-3.3.1.slim.min.js"></script>
-    <title>Title</title>
+    <link rel="shortcut icon" type="image/png" href="/img/icono-maipo.png"/>
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-light bg-lg sticky-top navbar-verde">
@@ -28,7 +28,8 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
         </ul>
-        <button class="btn btn-success my-2 my-sm-0 mr-1 ml-1 letras" onclick="location.href='/logout';" type="button">Cerrar Sesion</button>
+         <label class="letras my-2 my-sm-0 mr-3 ml-1">${nombre}</label>
+        <button class="btn btnes btn-success my-2 my-sm-0 mr-1 ml-1 letras" onclick="location.href='/logout';" type="button">Cerrar Sesion</button>
     </div>
 </nav>
 </body>
