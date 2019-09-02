@@ -138,7 +138,7 @@
                         </c:otherwise>
                     </c:choose>
                     <div class="btn-group btn-block" role="group" aria-label="Basic example">
-                        <button type="submit" class="btn btn-success">Agregar</button>
+                        <button type="submit" class="btn btn-success">Editar</button>
                         <button type="button" class="btn btn-danger" onclick="location.href='/productos';">Cancelar</button>
                     </div>
                 </form>

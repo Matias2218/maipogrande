@@ -26,20 +26,22 @@
     <title>Productos</title>
 </head>
 <body>
-<c:if test="${alerta != null}">
-    <div class="toast" id="myToast" data-autohide="true" data-delay="5000" style="position: relative; float: right">
-        <div class="toast-header" style="background-color: orange; color: white;">
-            <h5><strong class="mr-auto">${alerta}</strong></h5>
-            <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" style="width: 50px">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-    </div>
-</c:if>
+
 <div class="container-fluid">
     <div class="row">
         <div class="col-lg">
-        <h1>Agregar Productos</h1>
+            <c:if test="${alerta != null}">
+                <div class="toast" id="myToast" data-autohide="true" data-delay="5000" style="position: relative;">
+                    <div class="toast-header" style="background-color: orange; color: white;">
+                        <h5><strong class="mr-auto">${alerta}</strong></h5>
+                        <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" style="width: 50px">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                </div>
+                <br>
+            </c:if>
+            <h3 class="letras text-center mb-4 mt-4">Productos</h3>
         <a href="/añadirProducto">Agregar producto</a>
         <table class="table table-hover">
             <thead>
