@@ -18,18 +18,7 @@
     <script src='https://kit.fontawesome.com/a076d05399.js'></script>
     <script src="js/jquery-3.3.1.slim.min.js"></script>
     <link rel="shortcut icon" type="image/png" href="img\icono-maipo.png"/>
-    <script>
-        // A $( document ).ready() block.
-        $( document ).ready(function() {
-            $("#myToast").toast('show');
-
-        });
-
-        /*$(document).ready(function () {
-            setTimeout(function () {
-                $('.alert').alert('close');
-            }, 5000)
-        });*/
+    <script src="js/utilidades/index.js">
     </script>
 </head>
 <body>

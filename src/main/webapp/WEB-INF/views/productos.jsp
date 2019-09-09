@@ -11,18 +11,8 @@
 <html>
 <head>
     <jsp:include page="layout/cabecera.jsp"/>
-    <script>
-        $(document).ready(function () {
-            $("#myToast").toast('show');
-            $('[name="btnEliminar"]').click(function () {
-                var array = $(this).val().split(".");
-                var id = array[0];
-                var nombre = array[1];
-                $('#lblNombre').text(nombre);
-                $('#idProdu').val(id);
-            });
-        });
-    </script>
+    <script src="/js/utilidades/mantenedorProducto.js"></script>
+    <script src="/js/utilidades/index.js"></script>
     <title>Productos</title>
 </head>
 <body>
