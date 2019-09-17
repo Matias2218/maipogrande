@@ -7,6 +7,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
     <jsp:include page="layout/cabecera.jsp"/>
@@ -42,39 +43,44 @@
                         <div class="invalid-feedback">Stock obligatorio</div>
                     </div>
                     <div class="form-group">
-                    <label>Calidad del producto</label>
-                    <div class="rate">
-                        <input type="radio" id="star5" name="rate" value="5"/>
-                        <label for="star5" title="5 estrellas">5 stars</label>
-                        <input type="radio" id="star4" name="rate" value="4"/>
-                        <label for="star4" title="4 estrellas">4 stars</label>
-                        <input type="radio" id="star3" name="rate" value="3"/>
-                        <label for="star3" title="3 estrellas">3 stars</label>
-                        <input type="radio" id="star2" name="rate" value="2"/>
-                        <label for="star2" title="2 estrellas">2 stars</label>
-                        <input type="radio" id="star1" name="rate" value="1"/>
-                        <label for="star1" title="1 estrella">1 star</label>
+                        <div class="form-check-label">
+                            <form:label path="calidadProdu">Calidad del producto</form:label>
+                        </div>
+                        <div class="rate pl-0">
+                            <c:forEach begin="1" end="5" step="1"  var="i">
+                                <form:radiobutton checked="${i == 5 ? 'checked' : ''}" path="calidadProdu" required="true" value="${6-i}"
+                                                  label="${6-i} Estrellas"></form:radiobutton>
+                            </c:forEach>
+                        </div>
+                            <div class="invalid-feedback">Calidad obligatoria</div>
                     </div>
-                    <div class="invalid-feedback">Calidad obligatoria</div>
-                    </div>
+                    <br>
                     <div class="form-group">
-                        <label for="fileImagen">Subir Imagen</label>
+                        <label for="fileImagen" style="padding-right: 80%">Subir Imagen</label>
                         <div class="custom-file">
                             <input type="file" required class="custom-file-input" id="fileImagen" name="fileImagen"
-                                   lang="es">
+                                   onchange="readURL(this)"
+                                   lang="es" accept=".png, .jpg, .jpeg">
                             <label class="custom-file-label" for="fileImagen">Seleccionar Archivo</label>
                             <div class="invalid-feedback">Imagen obligatoria</div>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label>Tipo de venta</label><br>
+                        <img id="imagenSalida" name="imagenSalida" src="">
+                    </div>
+                    <div class="form-group">
+                        <form:label path="tipoComercializacionProdu">Calidad del producto</form:label>
+                        <br>
                         <div class="custom-control custom-radio custom-control-inline">
-                            <input type="radio" class="custom-control-input" required id="Local" value="I" name="tipo">
-                            <label class="custom-control-label" for="Local">Interno</label>
+                            <form:radiobutton path="tipoComercializacionProdu" id="Interno"
+                                              cssClass="custom-control-input" required="true"
+                                              value="I"></form:radiobutton>
+                            <label class="custom-control-label" for="Interno">Interno</label>
                         </div>
                         <div class="custom-control custom-radio custom-control-inline">
-                            <input type="radio" class="custom-control-input" required id="Externo" value="E"
-                                   name="tipo">
+                            <form:radiobutton path="tipoComercializacionProdu" id="Externo"
+                                              cssClass="custom-control-input" required="true"
+                                              value="E"></form:radiobutton>
                             <label class="custom-control-label" for="Externo">Externo</label>
                         </div>
                     </div>

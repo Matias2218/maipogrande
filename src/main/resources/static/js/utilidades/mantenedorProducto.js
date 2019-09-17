@@ -33,6 +33,25 @@ $(document).ready(function () {
         }
     });
 });
+function readURL(input) {
+    const inputFile = input.files[0];
+    const fileType = inputFile["type"];
+    const validImageTypes = ['image/jpg', 'image/jpeg', 'image/png'];
+    if (input.files && input.files[0] && $.inArray(fileType,validImageTypes) > 0) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            $('#imagenSalida').attr('src', this.result);
+            $('#imagenSalida').addClass("img-thumbnail h-25 w-25");
+        }
+
+        reader.readAsDataURL(input.files[0]);
+    }
+    else
+    {
+        $('#imagenSalida').attr('src', "");
+        $('#imagenSalida').removeClass("img-thumbnail h-25 w-25");
+    }
+}
 
 (function() {
     'use strict';

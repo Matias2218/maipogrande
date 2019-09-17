@@ -1,5 +1,4 @@
 package com.duoc.maipogrande.controladores;
-
 import com.duoc.maipogrande.modelos.Producto;
 import com.duoc.maipogrande.modelos.Productor;
 import com.duoc.maipogrande.servicios.ProductoServicio;
@@ -7,22 +6,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
 import javax.sql.rowset.serial.SerialBlob;
+import javax.validation.Valid;
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.sql.Blob;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -31,6 +30,9 @@ public class ProductorControlador {
 
     @Autowired
     ProductoServicio productoServicio;
+
+    private static final List<String> EXTENSIONES = Arrays.asList("image/png", "image/jpeg", "image/jpg");
+    private static final Long MAXIMO_PESO_IMAGEN = 83886080L;
 
     @Secured("ROLE_PRODUCTOR")
     @GetMapping(value = "/productor")
@@ -89,18 +91,19 @@ public class ProductorControlador {
     }
     @Secured("ROLE_PRODUCTOR")
     @PostMapping(value = "/productos")
-    public String añadirProducto(@RequestParam(name = "txtNombre",required = false) String nombre,
-                                 @RequestParam(name = "txtPrecio",required = false) Integer precio,
-                                 @RequestParam(name = "txtStock",required = false) Integer stock,
-                                 @RequestParam(name = "txtCalidad",required = false) Integer calidad,
+    public String añadirProducto(@Valid @ModelAttribute("producto") Producto producto,
+                                 BindingResult bindingResult,
                                  @RequestParam(name = "fileImagen",required = false) MultipartFile imagen,
-                                 @RequestParam(name = "tipo",required = false) Character tipo,
                                  HttpSession session,
                                  RedirectAttributes attributes) throws IOException, SQLException {
-
+        if(!EXTENSIONES.contains(imagen.getContentType()) || imagen.getSize() > MAXIMO_PESO_IMAGEN || bindingResult.hasErrors())
+        {
+            String url = URLEncoder.encode("añadirProducto","UTF-8");
+            return "redirect:"+url;
+        }
         byte[] bytes = imagen.getBytes();
         Blob blob = new SerialBlob(bytes);
-        productoServicio.crearProducto(nombre,precio,blob,stock,tipo,calidad.byteValue(), LocalDateTime.now(),((Productor)session.getAttribute("productor")).getIdProd());
+        productoServicio.crearProducto(producto,blob,((Productor)session.getAttribute("productor")).getIdProd());
         attributes.addFlashAttribute("alerta","Producto creado correctamente");
         return "redirect:productos";
     }

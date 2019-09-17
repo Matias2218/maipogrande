@@ -2,6 +2,7 @@ package com.duoc.maipogrande.modelos;
 import org.apache.tomcat.util.codec.binary.Base64;
 
 import javax.persistence.*;
+import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.sql.Blob;
@@ -153,6 +154,7 @@ public class Producto {
     @Column(nullable = false, columnDefinition = "DATE")
     private LocalDateTime fechaIngresoProdu;
     @Min(1)
+    @Max(5)
     @Column(nullable = false)
     private Byte calidadProdu;
     @Min(1)

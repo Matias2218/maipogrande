@@ -55,17 +55,17 @@ public class ProductoServicio {
         }
     }
     @Transactional(noRollbackFor = RuntimeException.class)
-    public boolean crearProducto(String nombre, Integer precio, Blob imagen, Integer stock, Character tipo, Byte calidad, LocalDateTime fechaIngreso,Long idProd)
+    public boolean crearProducto(Producto producto, Blob imagen, Long idProd)
     {
         try {
             StoredProcedureQuery query  = entityManager.createNamedStoredProcedureQuery("crearProducto");
-            query.setParameter("nombre",nombre);
-            query.setParameter("precio",precio);
+            query.setParameter("nombre",producto.getNombreProdu());
+            query.setParameter("precio",producto.getPrecioProdu());
             query.setParameter("imagen",imagen);
-            query.setParameter("stock",stock);
-            query.setParameter("tipo",tipo);
-            query.setParameter("calidad",calidad);
-            query.setParameter("fechaIngreso",fechaIngreso);
+            query.setParameter("stock",producto.getStockProdu());
+            query.setParameter("tipo",producto.getTipoComercializacionProdu());
+            query.setParameter("calidad",producto.getCalidadProdu());
+            query.setParameter("fechaIngreso",LocalDateTime.now());
             query.setParameter("idProd",idProd);
             query.execute();
             return true;
