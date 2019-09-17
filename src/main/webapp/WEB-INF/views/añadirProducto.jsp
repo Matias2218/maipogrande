@@ -6,10 +6,10 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <html>
 <head>
-    <jsp:include page="layout/cabecera.jsp" />
+    <jsp:include page="layout/cabecera.jsp"/>
     <script src="/js/utilidades/mantenedorProducto.js"></script>
     <title>Agregar Producto</title>
 </head>
@@ -19,31 +19,49 @@
         <div class="col-lg mt-4 mb-4">
             <h3 class="letras text-center mb-4">Agregar productos</h3>
             <div class="card card-body">
-                <form:form novalidate="novalidate" method="POST" class="needs-validation" action="/productos" enctype="multipart/form-data" modelAttribute="producto" >
+                <form:form novalidate="novalidate" method="POST" class="needs-validation" action="/productos"
+                           enctype="multipart/form-data" modelAttribute="producto">
                     <div class="form-group">
                         <form:label path="nombreProdu">Nombre</form:label>
-                        <form:input required="true" cssClass="form-control" id="txtNombre"  path="nombreProdu"></form:input>
+                        <form:input required="true" cssClass="form-control" id="txtNombre"
+                                    path="nombreProdu"></form:input>
                         <div class="invalid-feedback">Nombre obligatorio</div>
                     </div>
                     <div class="form-group">
-                        <form:label path="precioProdu"/>
-                        <form:input path="precioProdu" required="true" onkeypress="return event.charCode >= 48 && event.charCode <= 57" cssClass="form-control" id="txtPrecio"></form:input>
+                        <form:label path="precioProdu">Precio</form:label>
+                        <form:input path="precioProdu" required="true"
+                                    onkeypress="return event.charCode >= 48 && event.charCode <= 57"
+                                    cssClass="form-control" id="txtPrecio"></form:input>
                         <div class="invalid-feedback">Precio obligatorio</div>
                     </div>
                     <div class="form-group">
                         <form:label path="stockProdu">Stock</form:label>
-                        <form:input path="stockProdu" required="true" onkeypress="return event.charCode >= 48 && event.charCode <= 57" cssClass="form-control" id="txtStock"></form:input>
+                        <form:input path="stockProdu" required="true"
+                                    onkeypress="return event.charCode >= 48 && event.charCode <= 57"
+                                    cssClass="form-control" id="txtStock"></form:input>
                         <div class="invalid-feedback">Stock obligatorio</div>
                     </div>
                     <div class="form-group">
-                        <label for="txtCalidad">Calidad</label>
-                        <input name="txtCalidad" maxlength="1" max="5" min="1" pattern="[1-5]" required onkeypress="return event.charCode >= 48 && event.charCode <= 57" class="form-control" id="txtCalidad" type="text">
-                        <div class="invalid-feedback">Calidad obligatoria</div>
+                    <label>Calidad del producto</label>
+                    <div class="rate">
+                        <input type="radio" id="star5" name="rate" value="5"/>
+                        <label for="star5" title="5 estrellas">5 stars</label>
+                        <input type="radio" id="star4" name="rate" value="4"/>
+                        <label for="star4" title="4 estrellas">4 stars</label>
+                        <input type="radio" id="star3" name="rate" value="3"/>
+                        <label for="star3" title="3 estrellas">3 stars</label>
+                        <input type="radio" id="star2" name="rate" value="2"/>
+                        <label for="star2" title="2 estrellas">2 stars</label>
+                        <input type="radio" id="star1" name="rate" value="1"/>
+                        <label for="star1" title="1 estrella">1 star</label>
+                    </div>
+                    <div class="invalid-feedback">Calidad obligatoria</div>
                     </div>
                     <div class="form-group">
                         <label for="fileImagen">Subir Imagen</label>
                         <div class="custom-file">
-                            <input type="file" required class="custom-file-input" id="fileImagen" name="fileImagen" lang="es">
+                            <input type="file" required class="custom-file-input" id="fileImagen" name="fileImagen"
+                                   lang="es">
                             <label class="custom-file-label" for="fileImagen">Seleccionar Archivo</label>
                             <div class="invalid-feedback">Imagen obligatoria</div>
                         </div>
@@ -51,17 +69,19 @@
                     <div class="form-group">
                         <label>Tipo de venta</label><br>
                         <div class="custom-control custom-radio custom-control-inline">
-                            <input type="radio" class="custom-control-input" required id="Local" value="I"  name="tipo">
+                            <input type="radio" class="custom-control-input" required id="Local" value="I" name="tipo">
                             <label class="custom-control-label" for="Local">Interno</label>
                         </div>
                         <div class="custom-control custom-radio custom-control-inline">
-                            <input type="radio" class="custom-control-input" required id="Externo" value="E"  name="tipo">
+                            <input type="radio" class="custom-control-input" required id="Externo" value="E"
+                                   name="tipo">
                             <label class="custom-control-label" for="Externo">Externo</label>
                         </div>
                     </div>
                     <div class="btn-group btn-block" role="group" aria-label="Basic example">
                         <button type="submit" class="btn btn-success">Agregar</button>
-                        <button type="button" class="btn btn-danger" onclick="location.href='/productos';">Cancelar</button>
+                        <button type="button" class="btn btn-danger" onclick="location.href='/productos';">Cancelar
+                        </button>
                     </div>
                 </form:form>
             </div>
@@ -72,9 +92,9 @@
                 <p class="letras mt-3">3 Ventas en proceso</p>
             </div>
             <a style="text-decoration: none" href="/">
-            <div class="w-100 div-menu border-top border-white">
-                <p class="letras mt-4">Mi Perfil</p>
-            </div>
+                <div class="w-100 div-menu border-top border-white">
+                    <p class="letras mt-4">Mi Perfil</p>
+                </div>
             </a>
             <a style="text-decoration: none" href="/productos">
                 <div class="w-100 div-menu border-top border-bottom border-white">
