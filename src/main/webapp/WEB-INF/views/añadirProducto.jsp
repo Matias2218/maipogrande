@@ -6,6 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <html>
 <head>
     <jsp:include page="layout/cabecera.jsp" />
@@ -18,20 +19,20 @@
         <div class="col-lg mt-4 mb-4">
             <h3 class="letras text-center mb-4">Agregar productos</h3>
             <div class="card card-body">
-                <form method="POST" class="needs-validation" novalidate action="/productos" enctype="multipart/form-data">
+                <form:form novalidate="novalidate" method="POST" class="needs-validation" action="/productos" enctype="multipart/form-data" modelAttribute="producto" >
                     <div class="form-group">
-                        <label for="txtNombre">Nombre</label>
-                        <input name="txtNombre" required class="form-control" id="txtNombre" type="text">
+                        <form:label path="nombreProdu">Nombre</form:label>
+                        <form:input required="true" cssClass="form-control" id="txtNombre"  path="nombreProdu"></form:input>
                         <div class="invalid-feedback">Nombre obligatorio</div>
                     </div>
                     <div class="form-group">
-                        <label for="txtPrecio">Precio</label>
-                        <input name="txtPrecio" required onkeypress="return event.charCode >= 48 && event.charCode <= 57" class="form-control" id="txtPrecio" type="text">
+                        <form:label path="precioProdu"/>
+                        <form:input path="precioProdu" required="true" onkeypress="return event.charCode >= 48 && event.charCode <= 57" cssClass="form-control" id="txtPrecio"></form:input>
                         <div class="invalid-feedback">Precio obligatorio</div>
                     </div>
                     <div class="form-group">
-                        <label for="txtStock">Stock</label>
-                        <input name="txtStock" required onkeypress="return event.charCode >= 48 && event.charCode <= 57" class="form-control" id="txtStock" type="text">
+                        <form:label path="stockProdu">Stock</form:label>
+                        <form:input path="stockProdu" required="true" onkeypress="return event.charCode >= 48 && event.charCode <= 57" cssClass="form-control" id="txtStock"></form:input>
                         <div class="invalid-feedback">Stock obligatorio</div>
                     </div>
                     <div class="form-group">
@@ -62,7 +63,7 @@
                         <button type="submit" class="btn btn-success">Agregar</button>
                         <button type="button" class="btn btn-danger" onclick="location.href='/productos';">Cancelar</button>
                     </div>
-                </form>
+                </form:form>
             </div>
         </div>
         <div class="col-sm-12 col-lg-3 pr-0 pl-0 pt-0 text-center menu">

@@ -40,7 +40,9 @@ public class ProductorControlador {
 
     @Secured("ROLE_PRODUCTOR")
     @GetMapping(value = "/añadirProducto")
-    public String paginaAñadirProducto(){
+    public String paginaAñadirProducto(Model model){
+        Producto producto = new Producto();
+        model.addAttribute("producto",producto);
         return "añadirProducto";
     }
 
