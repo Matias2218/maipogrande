@@ -22,6 +22,11 @@ import java.time.LocalDateTime;
                                 type = Long.class
                         ),
                         @StoredProcedureParameter(
+                                mode = ParameterMode.IN,
+                                name = "i",
+                                type = Short.class
+                        ),
+                        @StoredProcedureParameter(
                                 mode = ParameterMode.REF_CURSOR,
                                 name = "q",
                                 type = void.class

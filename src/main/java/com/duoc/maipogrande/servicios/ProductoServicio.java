@@ -18,10 +18,11 @@ public class ProductoServicio {
     EntityManager entityManager;
 
     @Transactional(readOnly = true, noRollbackFor = RuntimeException.class)
-    public List<Producto> buscarProductosPorId(Long id) {
+    public List<Producto> buscarProductosPorId(Long id, short i) {
         try {
             StoredProcedureQuery query  = entityManager.createNamedStoredProcedureQuery("buscarProductosPorIdProd");
             query.setParameter("id",id);
+            query.setParameter("i",i);
             query.execute();
             return query.getResultList();
         }
@@ -55,16 +56,16 @@ public class ProductoServicio {
         }
     }
     @Transactional(noRollbackFor = RuntimeException.class)
-    public boolean crearProducto(Producto producto, Blob imagen, Long idProd)
+    public boolean crearProducto(Producto productoActualizado, Blob imagen, Long idProd)
     {
         try {
             StoredProcedureQuery query  = entityManager.createNamedStoredProcedureQuery("crearProducto");
-            query.setParameter("nombre",producto.getNombreProdu());
-            query.setParameter("precio",producto.getPrecioProdu());
+            query.setParameter("nombre",productoActualizado.getNombreProdu());
+            query.setParameter("precio",productoActualizado.getPrecioProdu());
             query.setParameter("imagen",imagen);
-            query.setParameter("stock",producto.getStockProdu());
-            query.setParameter("tipo",producto.getTipoComercializacionProdu());
-            query.setParameter("calidad",producto.getCalidadProdu());
+            query.setParameter("stock",productoActualizado.getStockProdu());
+            query.setParameter("tipo",productoActualizado.getTipoComercializacionProdu());
+            query.setParameter("calidad",productoActualizado.getCalidadProdu());
             query.setParameter("fechaIngreso",LocalDateTime.now());
             query.setParameter("idProd",idProd);
             query.execute();
@@ -76,17 +77,17 @@ public class ProductoServicio {
         }
     }
     @Transactional(noRollbackFor = RuntimeException.class)
-    public boolean actualizarProducto(Long idProdu,String nombre,Integer precio,Blob imagen,Integer stock,Character tipo,Byte calidad)
+    public boolean actualizarProducto(Producto productoActualizado,Blob imagen)
     {
         try {
             StoredProcedureQuery query  = entityManager.createNamedStoredProcedureQuery("actualizarProducto");
-            query.setParameter("nombre",nombre);
-            query.setParameter("precio",precio);
+            query.setParameter("nombre",productoActualizado.getNombreProdu());
+            query.setParameter("precio",productoActualizado.getPrecioProdu());
             query.setParameter("imagen",imagen);
-            query.setParameter("stock",stock);
-            query.setParameter("tipo",tipo);
-            query.setParameter("calidad",calidad);
-            query.setParameter("idProdu",idProdu);
+            query.setParameter("stock",productoActualizado.getStockProdu());
+            query.setParameter("tipo",productoActualizado.getTipoComercializacionProdu());
+            query.setParameter("calidad",productoActualizado.getCalidadProdu());
+            query.setParameter("idProdu",productoActualizado.getIdProdu());
             query.execute();
             return true;
         }

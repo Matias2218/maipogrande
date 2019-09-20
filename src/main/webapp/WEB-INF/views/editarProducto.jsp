@@ -7,6 +7,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <html>
 <head>
     <jsp:include page="layout/cabecera.jsp" />
@@ -19,83 +20,80 @@
         <div class="col-lg mt-4 mb-4">
             <h3 class="letras text-center mb-4">Editar producto</h3>
             <div class="card card-body">
-                <form method="POST" class="needs-validation" novalidate action="/editarProducto"
-                      enctype="multipart/form-data">
+                <form:form method="POST" class="needs-validation" novalidate="novalidate" action="/editarProducto"
+                      enctype="multipart/form-data" modelAttribute="producto">
                     <div class="form-group">
-                        <label for="txtNombre">Nombre</label>
-                        <input name="txtNombre" required class="form-control" id="txtNombre" type="text"
-                               value="${producto.nombreProdu}">
+                        <form:label path="nombreProdu">Nombre</form:label>
+                        <form:input required="true" cssClass="form-control" id="txtNombre"
+                                    path="nombreProdu"></form:input>
                         <div class="invalid-feedback">Nombre obligatorio</div>
                     </div>
                     <div class="form-group">
-                        <label for="txtPrecio">Precio</label>
-                        <input name="txtPrecio" required
-                               onkeypress="return event.charCode >= 48 && event.charCode <= 57"
-                               value="${producto.precioProdu}" class="form-control" id="txtPrecio" type="text">
+                        <form:label path="precioProdu">Precio</form:label>
+                        <form:input path="precioProdu" required="true"
+                                    onkeypress="return event.charCode >= 48 && event.charCode <= 57"
+                                    cssClass="form-control" id="txtPrecio"></form:input>
                         <div class="invalid-feedback">Precio obligatorio</div>
                     </div>
                     <div class="form-group">
-                        <label for="txtStock">Stock</label>
-                        <input name="txtStock" required onkeypress="return event.charCode >= 48 && event.charCode <= 57"
-                               value="${producto.stockProdu}" class="form-control" id="txtStock" type="text">
+                        <form:label path="stockProdu">Stock</form:label>
+                        <div class="input-group">
+                            <form:input path="stockProdu" required="true"
+                                        onkeypress="return event.charCode >= 48 && event.charCode <= 57"
+                                        cssClass="form-control" id="txtStock"></form:input>
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Kg</span>
+                            </div>
+                        </div>
                         <div class="invalid-feedback">Stock obligatorio</div>
                     </div>
                     <div class="form-group">
-                        <label for="txtCalidad">Calidad</label>
-                        <input name="txtCalidad" maxlength="1" max="5" min="1" value="${producto.calidadProdu}"
-                               pattern="[1-5]" required onkeypress="return event.charCode >= 48 && event.charCode <= 57"
-                               class="form-control" id="txtCalidad" type="text">
+                        <div class="form-check-label">
+                            <form:label path="calidadProdu">Calidad del producto</form:label>
+                        </div>
+                        <div class="rate pl-0">
+                            <c:forEach begin="1" end="5" step="1"  var="i">
+                                <form:radiobutton checked="${6-i == producto.calidadProdu ? 'checked' : ''}" path="calidadProdu" required="true" value="${6-i}"
+                                                  label="${6-i} Estrellas"></form:radiobutton>
+                            </c:forEach>
+                        </div>
                         <div class="invalid-feedback">Calidad obligatoria</div>
                     </div>
+                    <br>
                     <div class="form-group">
-                        <label for="fileImagen">Subir Imagen</label>
+                        <label for="fileImagen" style="padding-right: 80%">Subir Imagen</label>
                         <div class="custom-file">
                             <input type="file" class="custom-file-input" id="fileImagen" name="fileImagen"
-                                   lang="es">
-                            <label class="custom-file-label" for="fileImagen">Seleccionar Archivo</label>
-                            <div class="invalid-feedback">Imagen obligatoria</div>
+                                   lang="es" accept=".png, .jpg, .jpeg">
+                            <label class="custom-file-label"  id="lblFile" for="fileImagen">Seleccionar Archivo</label>
+                            <div class="invalid-feedback" id="imagenFeedBack">Imagen obligatoria</div>
                         </div>
                     </div>
                     <div class="form-group">
-                        <img style="width: 100px; height: 100px;" src="${imagen}" alt="">
+                        <img id="imagenSalida" name="imagenSalida" class="img-thumbnail h-25 w-25" src="${imagen}" alt="">
                     </div>
-                    <c:choose>
-                        <c:when test="${producto.tipoComercializacionProdu eq 'I'.charAt(0)}">
                             <div class="form-group">
-                                <label>Tipo de venta</label><br>
+                                <form:label path="tipoComercializacionProdu">Tipo Comercialización</form:label>
+                                <br>
                                 <div class="custom-control custom-radio custom-control-inline">
-                                    <input type="radio" class="custom-control-input" required id="Local" checked
-                                           value="I" name="tipo">
-                                    <label class="custom-control-label" for="Local">Interno</label>
+                                    <form:radiobutton path="tipoComercializacionProdu" checked="${producto.tipoComercializacionProdu eq 'I'.charAt(0) ? 'checked':''}" id="Interno"
+                                                      cssClass="custom-control-input" required="true"
+                                                      value="I"></form:radiobutton>
+                                    <label class="custom-control-label" for="Interno">Interno</label>
                                 </div>
                                 <div class="custom-control custom-radio custom-control-inline">
-                                    <input type="radio" class="custom-control-input" required id="Externo" value="E"
-                                           name="tipo">
+                                    <form:radiobutton path="tipoComercializacionProdu" checked="${producto.tipoComercializacionProdu eq 'E'.charAt(0) ? 'checked':''}"
+                                                      id="Externo"
+                                                      cssClass="custom-control-input" required="true"
+                                                      value="E"></form:radiobutton>
                                     <label class="custom-control-label" for="Externo">Externo</label>
                                 </div>
                             </div>
-                        </c:when>
-                        <c:otherwise>
-                            <div class="form-group">
-                                <label>Tipo de venta</label><br>
-                                <div class="custom-control custom-radio custom-control-inline">
-                                    <input type="radio" class="custom-control-input" required id="Local" value="I"
-                                           name="tipo">
-                                    <label class="custom-control-label" for="Local">Interno</label>
-                                </div>
-                                <div class="custom-control custom-radio custom-control-inline">
-                                    <input type="radio" class="custom-control-input" required id="Externo" value="E"
-                                           checked name="tipo">
-                                    <label class="custom-control-label" for="Externo">Externo</label>
-                                </div>
-                            </div>
-                        </c:otherwise>
-                    </c:choose>
                     <div class="btn-group btn-block" role="group" aria-label="Basic example">
                         <button type="submit" class="btn btn-success">Editar</button>
                         <button type="button" class="btn btn-danger" onclick="location.href='/productos';">Cancelar</button>
                     </div>
-                </form>
+                </form:form>
             </div>
         </div>
         <div class="col-sm-12 col-lg-3 pr-0 pl-0 pt-0 text-center menu">

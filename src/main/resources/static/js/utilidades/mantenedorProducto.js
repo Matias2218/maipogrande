@@ -1,4 +1,7 @@
 $(document).ready(function () {
+    const imagenGuardada = $('#imagenSalida').attr('src');
+    const dataContent= $('input[type=file]').next(".custom-file-label").attr('data-content');
+    const field= $('input[type=file]').next(".custom-file-label").text();
     //Eliminar con modal con datos de producto
     $('[name="btnEliminar"]').click(function () {
         var array = $(this).val().split(".");
@@ -9,15 +12,47 @@ $(document).ready(function () {
     });
     //Estilos para en input file con cambio de texto
     $("input[type=file]").change(function () {
-        var fieldVal = $(this).val();
 
-        // Change the node's value by removing the fake path (Chrome)
-        fieldVal = fieldVal.replace("C:\\fakepath\\", "");
-
-        if (fieldVal != undefined || fieldVal != "") {
-            $(this).next(".custom-file-label").attr('data-content', fieldVal);
-            $(this).next(".custom-file-label").text(fieldVal);
+        const urlActual = window.location.pathname;
+        const inputFile = this.files[0];
+        const fileType = inputFile["type"];
+        const validImageTypes = ['image/jpg', 'image/jpeg', 'image/png'];
+        if (this.files && this.files[0] && $.inArray(fileType,validImageTypes) > 0) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                $('#imagenSalida').attr('src', this.result);
+                $('#imagenSalida').addClass("img-thumbnail h-25 w-25");
+            }
+            let fieldVal = $(this).val();
+            // Change the node's value by removing the fake path (Chrome)
+            fieldVal = fieldVal.replace("C:\\fakepath\\", "");
+            if (fieldVal != undefined || fieldVal != "") {
+                $(this).next(".custom-file-label").attr('data-content', fieldVal);
+                $(this).next(".custom-file-label").text(fieldVal);
+            }
+            reader.readAsDataURL(this.files[0]);
         }
+        else
+        {
+            if(!urlActual.includes('productos'))
+            {
+                $('#imagenSalida').attr('src','');
+                $('#imagenSalida').removeClass("img-thumbnail h-25 w-25");
+                let $el = $('#fileImagen');
+                $el.wrap('<form>').closest(
+                    'form').get(0).reset();
+                $el.unwrap();
+                $(this).next(".custom-file-label").attr('data-content', '');
+                $(this).next(".custom-file-label").text('Seleccione Archivo');
+            }
+            else
+            {
+                $('#imagenSalida').attr('src',imagenGuardada);
+                $(this).next(".custom-file-label").attr('data-content', dataContent);
+                $(this).next(".custom-file-label").text('Seleccione Archivo',field);
+            }
+        }
+
     });
     //Validacion de nombre con REGEXP
     $('#txtNombre').keypress(function (e) {
@@ -33,25 +68,7 @@ $(document).ready(function () {
         }
     });
 });
-function readURL(input) {
-    const inputFile = input.files[0];
-    const fileType = inputFile["type"];
-    const validImageTypes = ['image/jpg', 'image/jpeg', 'image/png'];
-    if (input.files && input.files[0] && $.inArray(fileType,validImageTypes) > 0) {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            $('#imagenSalida').attr('src', this.result);
-            $('#imagenSalida').addClass("img-thumbnail h-25 w-25");
-        }
 
-        reader.readAsDataURL(input.files[0]);
-    }
-    else
-    {
-        $('#imagenSalida').attr('src', "");
-        $('#imagenSalida').removeClass("img-thumbnail h-25 w-25");
-    }
-}
 
 (function() {
     'use strict';

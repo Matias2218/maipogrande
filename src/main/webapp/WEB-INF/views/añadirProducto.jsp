@@ -37,9 +37,14 @@
                     </div>
                     <div class="form-group">
                         <form:label path="stockProdu">Stock</form:label>
+                        <div class="input-group">
                         <form:input path="stockProdu" required="true"
                                     onkeypress="return event.charCode >= 48 && event.charCode <= 57"
                                     cssClass="form-control" id="txtStock"></form:input>
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Kg</span>
+                            </div>
+                        </div>
                         <div class="invalid-feedback">Stock obligatorio</div>
                     </div>
                     <div class="form-group">
@@ -59,9 +64,8 @@
                         <label for="fileImagen" style="padding-right: 80%">Subir Imagen</label>
                         <div class="custom-file">
                             <input type="file" required class="custom-file-input" id="fileImagen" name="fileImagen"
-                                   onchange="readURL(this)"
                                    lang="es" accept=".png, .jpg, .jpeg">
-                            <label class="custom-file-label" for="fileImagen">Seleccionar Archivo</label>
+                            <label class="custom-file-label" id="lblFile" for="fileImagen">Seleccionar Archivo</label>
                             <div class="invalid-feedback">Imagen obligatoria</div>
                         </div>
                     </div>
@@ -69,7 +73,7 @@
                         <img id="imagenSalida" name="imagenSalida" src="">
                     </div>
                     <div class="form-group">
-                        <form:label path="tipoComercializacionProdu">Calidad del producto</form:label>
+                        <form:label path="tipoComercializacionProdu">Tipo Comercialización</form:label>
                         <br>
                         <div class="custom-control custom-radio custom-control-inline">
                             <form:radiobutton path="tipoComercializacionProdu" id="Interno"
