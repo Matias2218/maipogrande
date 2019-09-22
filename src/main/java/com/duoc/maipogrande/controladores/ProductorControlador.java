@@ -55,8 +55,17 @@ public class ProductorControlador {
     @GetMapping(value = "/productos")
     public String paginaDeProductos(Model model,
                                     HttpSession session,
-                                    @RequestParam(name = "pagina", required = false) short i) {
-        
+                                    @RequestParam(name = "pagina", required = false) String i) {
+        short pagina = 0;
+        if (i != null) {
+            try {
+                pagina = Short.parseShort(i);
+                pagina--;
+                pagina = (short) (pagina * 4);
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        }
         ArrayList<String> imagenes = new ArrayList<>();
         List<LocalDate> fechas = new ArrayList<>();
         if (session.getAttribute("productor") == null) {
@@ -64,7 +73,7 @@ public class ProductorControlador {
         }
         Long id = ((Productor) session.getAttribute("productor")).getIdProd();
         DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        List<Producto> productos = productoServicio.buscarProductosPorId(id,i);
+        List<Producto> productos = productoServicio.buscarProductosPorId(id,pagina);
         productos.stream().forEach(produ -> {
             imagenes.add(Producto.convertirImagen(produ.getImagenProdu()));
             fechas.add(produ.getFechaIngresoProdu().toLocalDate());
@@ -129,11 +138,11 @@ public class ProductorControlador {
                                  RedirectAttributes attributes) throws IOException, SQLException {
 
         if ((!EXTENSIONES.contains(imagen.getContentType()) && !imagen.isEmpty()) || imagen.getSize() > MAXIMO_PESO_IMAGEN || bindingResult.hasErrors()) {
-            return "redirect:/productos/"+ session.getAttribute("idProducto");
+            return "redirect:/productos/" + session.getAttribute("idProducto");
         }
         byte[] bytes = (!imagen.isEmpty()) ? imagen.getBytes() : (byte[]) session.getAttribute("imagenAnterior");
         Blob blob = new SerialBlob(bytes);
-        producto.setIdProdu((Long)session.getAttribute("idProducto"));
+        producto.setIdProdu((Long) session.getAttribute("idProducto"));
         productoServicio.actualizarProducto(producto, blob);
         attributes.addFlashAttribute("alerta", "Producto editado correctamente");
         return "redirect:productos";
