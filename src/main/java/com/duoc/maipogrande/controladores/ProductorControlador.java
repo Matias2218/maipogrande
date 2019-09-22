@@ -55,7 +55,8 @@ public class ProductorControlador {
     @GetMapping(value = "/productos")
     public String paginaDeProductos(Model model,
                                     HttpSession session,
-                                    @RequestParam(name = "pagina", required = false) String i) {
+                                    @RequestParam(name = "pagina", required = false) String i,
+                                    @RequestParam(name = "txtBuscar", required = false) String txtBuscar) {
         short pagina = 0;
         if (i != null) {
             try {
@@ -73,7 +74,8 @@ public class ProductorControlador {
         }
         Long id = ((Productor) session.getAttribute("productor")).getIdProd();
         DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        List<Producto> productos = productoServicio.buscarProductosPorId(id,pagina);
+        List<Producto> productos = (txtBuscar == null)?productoServicio.buscarProductosPorId(id,pagina) : productoServicio.buscarProductosPorNombre(txtBuscar.toLowerCase(), id, pagina);
+
         productos.stream().forEach(produ -> {
             imagenes.add(Producto.convertirImagen(produ.getImagenProdu()));
             fechas.add(produ.getFechaIngresoProdu().toLocalDate());
@@ -81,8 +83,9 @@ public class ProductorControlador {
         model.addAttribute("productos", productos);
         model.addAttribute("fechas", fechas);
         model.addAttribute("imagenes", imagenes);
-        return "productos";
-    }
+
+        return"productos";
+}
 
     //Editar Producto GET
     @Secured("ROLE_PRODUCTOR")

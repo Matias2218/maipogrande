@@ -44,6 +44,21 @@ public class ProductoServicio {
             return null;
         }
     }
+    @Transactional(readOnly = true, noRollbackFor = RuntimeException.class)
+    public List<Producto> buscarProductosPorNombre(String nombre,Long id, short i) {
+        try {
+            StoredProcedureQuery query  = entityManager.createNamedStoredProcedureQuery("buscarProductosPorNombre");
+            query.setParameter("nombre",nombre);
+            query.setParameter("id",id);
+            query.setParameter("i",i);
+            query.execute();
+            return query.getResultList();
+        }
+        catch (Exception e)
+        {
+            return null;
+        }
+    }
     @Transactional(noRollbackFor = RuntimeException.class)
     public boolean eliminarProducto(Long id){
         try{

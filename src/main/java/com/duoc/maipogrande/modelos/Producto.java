@@ -148,6 +148,33 @@ import java.time.LocalDateTime;
                         ),
                 }
         ),
+        @NamedStoredProcedureQuery(
+                name = "buscarProductosPorNombre",
+                procedureName = "BUSCARPRODUCTOSPORNOMBRE",
+                resultClasses = {Producto.class},
+                parameters = {
+                        @StoredProcedureParameter(
+                                mode = ParameterMode.IN,
+                                name = "nombre",
+                                type = String.class
+                        ),
+                        @StoredProcedureParameter(
+                                mode = ParameterMode.IN,
+                                name = "id",
+                                type = Long.class
+                        ),
+                        @StoredProcedureParameter(
+                                mode = ParameterMode.IN,
+                                name = "i",
+                                type = Short.class
+                        ),
+                        @StoredProcedureParameter(
+                                mode = ParameterMode.REF_CURSOR,
+                                name = "q",
+                                type = void.class
+                        ),
+                }
+        ),
 })
 public class Producto {
     @Id

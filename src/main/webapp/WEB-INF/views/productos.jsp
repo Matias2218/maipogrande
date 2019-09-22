@@ -16,7 +16,6 @@
     <title>Productos</title>
 </head>
 <body>
-
 <div class="container-fluid">
     <div class="row">
         <div class="col-lg">
@@ -32,50 +31,62 @@
                 <br>
             </c:if>
             <h3 class="letras text-center mb-4 mt-4">Productos</h3>
+            <form action="/productos" method="get">
+                <input type="text" name="txtBuscar" placeholder="Ingrese producto a buscar">
+                <button type="submit">Buscar</button>
+            </form>
         <a href="/añadirProducto">Agregar producto</a>
-        <table class="table table-hover">
-            <thead>
-            <tr>
-                <th scope="col"></th>
-                <th scope="col">Nombre</th>
-                <th scope="col">Fecha ingreso</th>
-                <th scope="col">Stock</th>
-                <th scope="col">Precio</th>
-                <th scope="col">Tipo de venta</th>
-                <th scope="col">Editar</th>
-                <th scope="col">Eliminar</th>
-            </tr>
-            </thead>
-            <tbody>
-            <c:forEach begin="0" end="${fn:length(productos)-1}" var="i">
-                <tr>
-                    <td><img style="width: 100px; height: 100px;" src="${imagenes.get(i)}" alt=""></td>
-                    <td>${productos.get(i).nombreProdu}</td>
-                    <td>${fechas.get(i)}</td>
-                    <td>${productos.get(i).stockProdu}</td>
-                    <td>${productos.get(i).precioProdu}</td>
-                    <td>
-                        <c:choose>
-                            <c:when test="${productos.get(i).tipoComercializacionProdu eq 'I'.charAt(0)}">
-                                Venta Interna
-                            </c:when>
-                            <c:otherwise>
-                                Venta Externa
-                            </c:otherwise>
-                        </c:choose>
-                    </td>
-                    <td><button type="button" class="btn btn-link pt-0 pl-1" onclick="location.href='/productos/${productos.get(i).idProdu}';">Editar</button> </td>
-                    <td>
-                        <button type="button" name="btnEliminar"
-                                value="${productos.get(i).idProdu}.${productos.get(i).nombreProdu}"
-                                class="btn btn-link pt-0 pl-1" data-toggle="modal" data-target="#exampleModal">
-                            Eliminar
-                        </button>
-                    </td>
-                </tr>
-            </c:forEach>
-            </tbody>
-        </table>
+        <c:choose>
+            <c:when test="${fn:length(productos) < 1 }">
+                <h1>No hay productos</h1>
+            </c:when>
+            <c:otherwise>
+                <table class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th scope="col"></th>
+                        <th scope="col">Nombre</th>
+                        <th scope="col">Fecha ingreso</th>
+                        <th scope="col">Stock</th>
+                        <th scope="col">Precio</th>
+                        <th scope="col">Tipo de venta</th>
+                        <th scope="col">Editar</th>
+                        <th scope="col">Eliminar</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <c:forEach begin="0" end="${fn:length(productos)-1}" var="i">
+                        <tr>
+                            <td><img style="width: 100px; height: 100px;" src="${imagenes.get(i)}" alt=""></td>
+                            <td>${productos.get(i).nombreProdu}</td>
+                            <td>${fechas.get(i)}</td>
+                            <td>${productos.get(i).stockProdu}</td>
+                            <td>${productos.get(i).precioProdu}</td>
+                            <td>
+                                <c:choose>
+                                    <c:when test="${productos.get(i).tipoComercializacionProdu eq 'I'.charAt(0)}">
+                                        Venta Interna
+                                    </c:when>
+                                    <c:otherwise>
+                                        Venta Externa
+                                    </c:otherwise>
+                                </c:choose>
+                            </td>
+                            <td><button type="button" class="btn btn-link pt-0 pl-1" onclick="location.href='/productos/${productos.get(i).idProdu}';">Editar</button> </td>
+                            <td>
+                                <button type="button" name="btnEliminar"
+                                        value="${productos.get(i).idProdu}.${productos.get(i).nombreProdu}"
+                                        class="btn btn-link pt-0 pl-1" data-toggle="modal" data-target="#exampleModal">
+                                    Eliminar
+                                </button>
+                            </td>
+                        </tr>
+                    </c:forEach>
+                    </tbody>
+                </table>
+            </c:otherwise>
+        </c:choose>
+
         </div>
         <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
              aria-hidden="true">
