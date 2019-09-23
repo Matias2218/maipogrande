@@ -54,7 +54,6 @@ public class ClientesControlador {
                 case "ROLE_CLIENTE_INTERNO":
                     Cliente clienteInterno = clienteServicio.buscarClientePorId(Long.parseLong(principal.getName()));
                     session.setAttribute("clienteInterno", clienteInterno);
-                    session.setAttribute("nombre",clienteInterno.getNombreCli());
                     return "redirect:clienteInterno";
                 case "ROLE_PRODUCTOR":
                     Productor productor = productorServicio.buscarProdPorId(Long.parseLong(principal.getName()));

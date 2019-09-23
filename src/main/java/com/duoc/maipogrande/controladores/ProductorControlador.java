@@ -2,6 +2,7 @@ package com.duoc.maipogrande.controladores;
 
 import com.duoc.maipogrande.modelos.Producto;
 import com.duoc.maipogrande.modelos.Productor;
+import com.duoc.maipogrande.paginador.Pagina;
 import com.duoc.maipogrande.servicios.ProductoServicio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
@@ -20,7 +21,6 @@ import java.net.URLEncoder;
 import java.sql.Blob;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -57,33 +57,48 @@ public class ProductorControlador {
                                     HttpSession session,
                                     @RequestParam(name = "pagina", required = false) String i,
                                     @RequestParam(name = "txtBuscar", required = false) String txtBuscar) {
+        if (session.getAttribute("productor") == null) {
+            return "redirect:/";
+        }
         short pagina = 0;
+        short paginaActual = 0;
         if (i != null) {
             try {
                 pagina = Short.parseShort(i);
                 pagina--;
+                if(pagina < 0)
+                {
+                    pagina= 0;
+                }
+                paginaActual = pagina;
                 pagina = (short) (pagina * 4);
             } catch (Exception e) {
                 System.out.println(e.getMessage());
             }
         }
         ArrayList<String> imagenes = new ArrayList<>();
+        List<Producto> productos;
         List<LocalDate> fechas = new ArrayList<>();
-        if (session.getAttribute("productor") == null) {
-            return "redirect:/";
-        }
         Long id = ((Productor) session.getAttribute("productor")).getIdProd();
-        DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        List<Producto> productos = (txtBuscar == null)?productoServicio.buscarProductosPorId(id,pagina) : productoServicio.buscarProductosPorNombre(txtBuscar.toLowerCase(), id, pagina);
-
-        productos.stream().forEach(produ -> {
+        short totalPaginas = 0;
+        if(txtBuscar == "" || txtBuscar == null)
+        {
+            productos = productoServicio.buscarProductosPorId(id,pagina);
+            totalPaginas = (short) (productoServicio.contarProductos(id)/2);
+        }
+        else {
+            productos =  productoServicio.buscarProductosPorNombre(txtBuscar.toLowerCase(), id, pagina);
+            totalPaginas =  (short) (productoServicio.contarProductosConFiltro(id, txtBuscar, pagina)/2);
+        }
+        Pagina paginador = new Pagina(totalPaginas,paginaActual);
+        productos.forEach(produ -> {
             imagenes.add(Producto.convertirImagen(produ.getImagenProdu()));
             fechas.add(produ.getFechaIngresoProdu().toLocalDate());
         });
+        model.addAttribute("paginador",paginador);
         model.addAttribute("productos", productos);
         model.addAttribute("fechas", fechas);
         model.addAttribute("imagenes", imagenes);
-
         return"productos";
 }
 

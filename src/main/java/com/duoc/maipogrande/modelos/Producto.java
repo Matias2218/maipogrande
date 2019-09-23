@@ -1,4 +1,5 @@
 package com.duoc.maipogrande.modelos;
+
 import org.apache.tomcat.util.codec.binary.Base64;
 
 import javax.persistence.*;
@@ -88,6 +89,48 @@ import java.time.LocalDateTime;
                                 mode = ParameterMode.IN,
                                 name = "id",
                                 type = Long.class
+                        ),
+                        @StoredProcedureParameter(
+                                mode = ParameterMode.REF_CURSOR,
+                                name = "q",
+                                type = void.class
+                        ),
+                }
+        ),
+        @NamedStoredProcedureQuery(
+                name = "contarProductos",
+                procedureName = "CONTARPRODUCTOS",
+                parameters = {
+                        @StoredProcedureParameter(
+                                mode = ParameterMode.IN,
+                                name = "id",
+                                type = Long.class
+                        ),
+                        @StoredProcedureParameter(
+                                mode = ParameterMode.REF_CURSOR,
+                                name = "q",
+                                type = void.class
+                        ),
+                }
+        ),
+        @NamedStoredProcedureQuery(
+                name = "contarProductosConFiltro",
+                procedureName = "CONTARPRODUCTOSCONFILTRO",
+                parameters = {
+                        @StoredProcedureParameter(
+                                mode = ParameterMode.IN,
+                                name = "id",
+                                type = Long.class
+                        ),
+                        @StoredProcedureParameter(
+                                mode = ParameterMode.IN,
+                                name = "i",
+                                type = Short.class
+                        ),
+                        @StoredProcedureParameter(
+                                mode = ParameterMode.IN,
+                                name = "nombre",
+                                type = String.class
                         ),
                         @StoredProcedureParameter(
                                 mode = ParameterMode.REF_CURSOR,

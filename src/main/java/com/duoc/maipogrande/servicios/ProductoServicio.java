@@ -1,12 +1,11 @@
 package com.duoc.maipogrande.servicios;
-
 import com.duoc.maipogrande.modelos.Producto;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.StoredProcedureQuery;
+import java.math.BigDecimal;
 import java.sql.Blob;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -31,6 +30,38 @@ public class ProductoServicio {
             return null;
         }
     }
+    @Transactional(readOnly = true, noRollbackFor = RuntimeException.class)
+    public Integer contarProductos(long id) {
+        try {
+            StoredProcedureQuery query  = entityManager.createNamedStoredProcedureQuery("contarProductos");
+            query.setParameter("id",id);
+            query.execute();
+            Integer filas = ((BigDecimal) query.getSingleResult()).intValue();
+            return filas;
+        }
+        catch (Exception e)
+        {
+            return 0;
+        }
+    }
+
+    @Transactional(readOnly = true, noRollbackFor = RuntimeException.class)
+    public Integer contarProductosConFiltro(long id,String nombre,short i) {
+        try {
+            StoredProcedureQuery query  = entityManager.createNamedStoredProcedureQuery("contarProductosConFiltro");
+            query.setParameter("id",id);
+            query.setParameter("i",i);
+            query.setParameter("nombre",nombre);
+            query.execute();
+            Integer filas = ((BigDecimal) query.getSingleResult()).intValue();
+            return filas;
+        }
+        catch (Exception e)
+        {
+            return 0;
+        }
+    }
+
     @Transactional(readOnly = true, noRollbackFor = RuntimeException.class)
     public Producto buscarProductosPorIdProducto(Long id) {
         try {

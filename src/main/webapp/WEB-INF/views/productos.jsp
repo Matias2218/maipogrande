@@ -16,133 +16,153 @@
     <title>Productos</title>
 </head>
 <body>
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-lg">
-            <c:if test="${alerta != null}">
-                <div class="toast" id="myToast" data-autohide="true" data-delay="5000" style="position: relative;">
-                    <div class="toast-header" style="background-color: orange; color: white;">
-                        <h5><strong class="mr-auto">${alerta}</strong></h5>
-                        <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" style="width: 50px">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                </div>
-                <br>
-            </c:if>
-            <h3 class="letras text-center mb-4 mt-4">Productos</h3>
-            <form action="/productos" method="get">
-                <input type="text" name="txtBuscar" placeholder="Ingrese producto a buscar">
-                <button type="submit">Buscar</button>
-            </form>
-        <a href="/añadirProducto">Agregar producto</a>
-        <c:choose>
-            <c:when test="${fn:length(productos) < 1 }">
-                <h1>No hay productos</h1>
-            </c:when>
-            <c:otherwise>
-                <table class="table table-hover">
-                    <thead>
-                    <tr>
-                        <th scope="col"></th>
-                        <th scope="col">Nombre</th>
-                        <th scope="col">Fecha ingreso</th>
-                        <th scope="col">Stock</th>
-                        <th scope="col">Precio</th>
-                        <th scope="col">Tipo de venta</th>
-                        <th scope="col">Editar</th>
-                        <th scope="col">Eliminar</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <c:forEach begin="0" end="${fn:length(productos)-1}" var="i">
-                        <tr>
-                            <td><img style="width: 100px; height: 100px;" src="${imagenes.get(i)}" alt=""></td>
-                            <td>${productos.get(i).nombreProdu}</td>
-                            <td>${fechas.get(i)}</td>
-                            <td>${productos.get(i).stockProdu}</td>
-                            <td>${productos.get(i).precioProdu}</td>
-                            <td>
-                                <c:choose>
-                                    <c:when test="${productos.get(i).tipoComercializacionProdu eq 'I'.charAt(0)}">
-                                        Venta Interna
-                                    </c:when>
-                                    <c:otherwise>
-                                        Venta Externa
-                                    </c:otherwise>
-                                </c:choose>
-                            </td>
-                            <td><button type="button" class="btn btn-link pt-0 pl-1" onclick="location.href='/productos/${productos.get(i).idProdu}';">Editar</button> </td>
-                            <td>
-                                <button type="button" name="btnEliminar"
-                                        value="${productos.get(i).idProdu}.${productos.get(i).nombreProdu}"
-                                        class="btn btn-link pt-0 pl-1" data-toggle="modal" data-target="#exampleModal">
-                                    Eliminar
+<div class="page-wrapper chiller-theme toggled">
+    <jsp:include page="layout/sidebar.jsp"></jsp:include>
+    <main class="page-content">
+        <div class="container-fluid mt-4">
+            <div class="row  ml-4 mr-4">
+                <div class="col-lg">
+                    <c:if test="${alerta != null}">
+                        <div class="toast" id="myToast" data-autohide="true" data-delay="5000"
+                             style="position: relative;">
+                            <div class="toast-header" style="background-color: orange; color: white;">
+                                <h5><strong class="mr-auto">${alerta}</strong></h5>
+                                <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" style="width: 50px">
+                                    <span aria-hidden="true">&times;</span>
                                 </button>
-                            </td>
-                        </tr>
-                    </c:forEach>
-                    </tbody>
-                </table>
-            </c:otherwise>
-        </c:choose>
+                            </div>
+                        </div>
+                        <br>
+                    </c:if>
+                    <h3 class="letras text-center mb-4">Productos</h3>
+                    <form action="/productos" method="get">
 
-        </div>
-        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-             aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <form action="/eliminarProducto" method="POST">
-                    <input type="hidden" id="idProdu" name="idProdu">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Eliminar</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
+                        <div class="row justify-content-between">
+                            <div class="col-7 form-inline">
+                                <input type="text" name="txtBuscar" id="txtBuscar" class="form-control mr-2" placeholder="Ingrese producto a buscar">
+                                <button type="submit" id="btnBuscar" class="btn btn-success ">Buscar</button>
+                            </div>
+                            <div class="col-5 text-right">
+                                <button type="button" class="btn btn-success" onclick="window.location.href='/añadirProducto'">Agregar Producto</button>
+                            </div>
                         </div>
-                        <div class="modal-body">
-                            ¿Esta seguro que desea eliminar el producto <label id="lblNombre"></label>?
+                        <c:choose>
+                        <c:when test="${fn:length(productos) < 1 }">
+                        <div class="alert alert-warning mt-2" role="alert">
+                            No hay productos
                         </div>
-                        <div class="modal-footer">
-                            <h1 id="test"></h1>
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                            <button type="submit" class="btn btn-danger">Eliminar</button>
+                        </c:when>
+                        <c:otherwise>
+                        <div class="table-responsive mt-2">
+                            <table class="table table-hover">
+                                <thead>
+                                <tr>
+                                    <th scope="col"></th>
+                                    <th scope="col">Nombre</th>
+                                    <th scope="col">Fecha ingreso</th>
+                                    <th scope="col">Stock</th>
+                                    <th scope="col">Precio</th>
+                                    <th scope="col">Tipo de venta</th>
+                                    <th scope="col">Editar</th>
+                                    <th scope="col">Eliminar</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <c:forEach begin="0" end="${fn:length(productos)-1}" var="i">
+                                    <tr>
+                                        <td><img style="width: 100px; height: 100px;" src="${imagenes.get(i)}" alt=""></td>
+                                        <td>${productos.get(i).nombreProdu}</td>
+                                        <td>${fechas.get(i)}</td>
+                                        <td>${productos.get(i).stockProdu}</td>
+                                        <td>${productos.get(i).precioProdu}</td>
+                                        <td>
+                                            <c:choose>
+                                                <c:when test="${productos.get(i).tipoComercializacionProdu eq 'I'.charAt(0)}">
+                                                    Venta Interna
+                                                </c:when>
+                                                <c:otherwise>
+                                                    Venta Externa
+                                                </c:otherwise>
+                                            </c:choose>
+                                        </td>
+                                        <td>
+                                            <button type="button" class="btn btn-link pt-0 pl-1"
+                                                    onclick="location.href='/productos/${productos.get(i).idProdu}';">Editar
+                                            </button>
+                                        </td>
+                                        <td>
+                                            <button type="button" name="btnEliminar"
+                                                    value="${productos.get(i).idProdu}.${productos.get(i).nombreProdu}"
+                                                    class="btn btn-link pt-0 pl-1" data-toggle="modal"
+                                                    data-target="#exampleModal">
+                                                Eliminar
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </c:forEach>
+                                </tbody>
+                            </table>
                         </div>
-                    </div>
+                        </c:otherwise>
+                        </c:choose>
+                        <button type="submit" name="pagina" value="${(paginador.desde+1)+ 1}">Test</button>
+                        <%--   <div class="ui horizontal section divider">
+                               <div class="ui pagination menu margenes">
+                                   <c:if test="${paginador.paginaActual != 0}">
+                                       <a href="/productos?" class="item">Primera</a>
+                                   </c:if>
+                                   <c:if test="${paginador.paginaActual != 0}">
+                                       <a href="/intranet/inventario/${(page.pageNumber+1) - 1}" class="item">&laquo;</a>
+                                   </c:if>
+                                   <c:forEach begin="1" end="${totalPaginas}" var="i">
+                                       <c:choose>
+                                           <c:when test="${page.pageNumber+1 eq i}">
+                                               <a class="item">${i}</a>
+                                           </c:when>
+                                           <c:otherwise>
+                                               <a href="/intranet/inventario/${i}" class="item">${i}</a>
+                                           </c:otherwise>
+                                       </c:choose>
+                                   </c:forEach>
+                                   <c:if test="${page.pageNumber+1 < totalPaginas}">
+                                       <a href="/intranet/inventario/${(page.pageNumber+1) + 1}" class="item">&raquo;</a>
+                                   </c:if>
+                                   <c:if test="${page.pageNumber+1 < totalPaginas}">
+                                       <a href="/intranet/inventario/${totalPaginas}" class="item">Ultima</a>
+                                   </c:if>
+                               </div>
+                           </div>--%>
+                </div>
                 </form>
+                <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
+                     aria-labelledby="exampleModalLabel"
+                     aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <form action="/eliminarProducto" method="POST">
+                            <input type="hidden" id="idProdu" name="idProdu">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Eliminar</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    ¿Esta seguro que desea eliminar el producto <label id="lblNombre"></label>?
+                                </div>
+                                <div class="modal-footer">
+                                    <h1 id="test"></h1>
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar
+                                    </button>
+                                    <button type="submit" class="btn btn-danger">Eliminar</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
             </div>
         </div>
-        <!-- MENU -->
-        <div class="col-sm-12 col-lg-3 pr-0 pl-0 pt-0 text-center menu">
-            <div class="w-100 div-menu-sin-hover">
-                <h1 class="text-light carrito mt-4"><i class="fas fa-shopping-cart"></i></h1>
-                <p class="letras mt-3">3 Ventas en proceso</p>
-            </div>
-            <a style="text-decoration: none" href="/">
-                <div class="w-100 div-menu border-top border-white">
-                    <p class="letras mt-4">Mi Perfil</p>
-                </div>
-            </a>
-            <a style="text-decoration: none" href="/productos">
-                <div class="w-100 div-menu border-top border-bottom border-white">
-                    <p class="letras mt-4">Mis Productos</p>
-                </div>
-            </a>
-            <div class="w-100 div-menu border-top border-bottom border-white">
-                <p class="letras mt-4">Mis Ventas</p>
-            </div>
-            <!-- FOOTER -->
-            <footer class="py-2 text-white-50">
-                <div class="footer-copyright text-center py-3">© 2019 Copyright:
-                    <a href="#" class="text-success"> Quality Solution Team</a>
-                </div>
-            </footer>
-        </div>
-    </div>
-    <!-- FIN FOOTER -->
+    </main>
 </div>
-<script src="js/jquery-3.3.1.slim.min.js"></script>
-<script src="js/popper.min.js"></script>
-<script src="js/bootstrap.min.js"></script>
 </body>
 </html>

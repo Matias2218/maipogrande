@@ -10,6 +10,9 @@ $(document).ready(function () {
         $('#lblNombre').text(nombre);
         $('#idProdu').val(id);
     });
+    $("#btnBuscar").click(function () {
+       $('#txtBuscar').val('Hola');
+    });
     //Estilos para en input file con cambio de texto
     $("input[type=file]").change(function () {
 
