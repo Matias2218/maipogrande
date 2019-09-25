@@ -1,5 +1,4 @@
 $(document).ready(function () {
-    sessionStorage.clear();
     const imagenGuardada = $('#imagenSalida').attr('src');
     const dataContent= $('input[type=file]').next(".custom-file-label").attr('data-content');
     const field= $('input[type=file]').next(".custom-file-label").text();
