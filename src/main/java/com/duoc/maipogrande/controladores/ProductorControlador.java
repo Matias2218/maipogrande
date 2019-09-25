@@ -34,7 +34,6 @@ public class ProductorControlador {
 
     private static final List<String> EXTENSIONES = Arrays.asList("image/png", "image/jpeg", "image/jpg");
     private static final Long MAXIMO_PESO_IMAGEN = 83886080L;
-
     @Secured("ROLE_PRODUCTOR")
     @GetMapping(value = "/productor")
     public String paginaPrincipalProductor() {
@@ -84,17 +83,18 @@ public class ProductorControlador {
         if(txtBuscar == "" || txtBuscar == null)
         {
             productos = productoServicio.buscarProductosPorId(id,pagina);
-            totalPaginas = (short) (productoServicio.contarProductos(id)/2);
+            totalPaginas = (short) (productoServicio.contarProductos(id)/4);
         }
         else {
             productos =  productoServicio.buscarProductosPorNombre(txtBuscar.toLowerCase(), id, pagina);
-            totalPaginas =  (short) (productoServicio.contarProductosConFiltro(id, txtBuscar, pagina)/2);
+            totalPaginas =  (short) (productoServicio.contarProductosConFiltro(id, txtBuscar, pagina)/4);
         }
-        Pagina paginador = new Pagina(totalPaginas,paginaActual);
+        Pagina paginador = new Pagina(totalPaginas,(short) (paginaActual+1));
         productos.forEach(produ -> {
             imagenes.add(Producto.convertirImagen(produ.getImagenProdu()));
             fechas.add(produ.getFechaIngresoProdu().toLocalDate());
         });
+        model.addAttribute("paginaActual",(paginaActual==0)?1: paginaActual+1);
         model.addAttribute("paginador",paginador);
         model.addAttribute("productos", productos);
         model.addAttribute("fechas", fechas);

@@ -50,7 +50,6 @@ public class ProductoServicio {
         try {
             StoredProcedureQuery query  = entityManager.createNamedStoredProcedureQuery("contarProductosConFiltro");
             query.setParameter("id",id);
-            query.setParameter("i",i);
             query.setParameter("nombre",nombre);
             query.execute();
             Integer filas = ((BigDecimal) query.getSingleResult()).intValue();

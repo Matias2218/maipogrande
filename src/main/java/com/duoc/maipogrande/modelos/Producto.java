@@ -124,11 +124,6 @@ import java.time.LocalDateTime;
                         ),
                         @StoredProcedureParameter(
                                 mode = ParameterMode.IN,
-                                name = "i",
-                                type = Short.class
-                        ),
-                        @StoredProcedureParameter(
-                                mode = ParameterMode.IN,
                                 name = "nombre",
                                 type = String.class
                         ),

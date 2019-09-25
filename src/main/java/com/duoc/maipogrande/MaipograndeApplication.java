@@ -22,6 +22,7 @@ public class MaipograndeApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
+
         String[] contraseñas = new String[6];
         contraseñas[0] = passwordEncoder.encode("cliente");
         contraseñas[1] = passwordEncoder.encode("hugo");

@@ -1,4 +1,5 @@
 $(document).ready(function () {
+    sessionStorage.clear();
     const imagenGuardada = $('#imagenSalida').attr('src');
     const dataContent= $('input[type=file]').next(".custom-file-label").attr('data-content');
     const field= $('input[type=file]').next(".custom-file-label").text();
@@ -10,9 +11,30 @@ $(document).ready(function () {
         $('#lblNombre').text(nombre);
         $('#idProdu').val(id);
     });
+    $('#btnConfirmar').click(function () {
+        $('#exampleModal').modal('hide');
+        $('#modalCargando').modal('show');
+    })
     $("#btnBuscar").click(function () {
-       $('#txtBuscar').val('Hola');
+       let nombreProducto = $('#txtBuscar').val();
+       if (nombreProducto != "")
+       {
+           sessionStorage.setItem("nombreProducto",nombreProducto);
+           console.log("Guardado");
+       }
+       else
+       {
+           sessionStorage.removeItem("nombreProducto");
+           console.log("Eliminado");
+       }
     });
+
+    $(".page-item").click(function () {
+
+            $('#txtBuscar').val(sessionStorage.getItem("nombreProducto"));
+
+    });
+
     //Estilos para en input file con cambio de texto
     $("input[type=file]").change(function () {
 
@@ -84,6 +106,10 @@ $(document).ready(function () {
                 if (form.checkValidity() === false) {
                     event.preventDefault();
                     event.stopPropagation();
+                }
+                else
+                {
+                    $('#modalCargando').modal('show');
                 }
                 form.classList.add('was-validated');
             }, false);

@@ -39,11 +39,14 @@
 
                         <div class="row justify-content-between">
                             <div class="col-7 form-inline">
-                                <input type="text" name="txtBuscar" id="txtBuscar" class="form-control mr-2" placeholder="Ingrese producto a buscar">
+                                <input type="text" name="txtBuscar" id="txtBuscar" class="form-control mr-2"
+                                       placeholder="Ingrese producto a buscar">
                                 <button type="submit" id="btnBuscar" class="btn btn-success ">Buscar</button>
                             </div>
                             <div class="col-5 text-right">
-                                <button type="button" class="btn btn-success" onclick="window.location.href='/añadirProducto'">Agregar Producto</button>
+                                <button type="button" class="btn btn-success"
+                                        onclick="window.location.href='/añadirProducto'">Agregar Producto
+                                </button>
                             </div>
                         </div>
                         <c:choose>
@@ -70,7 +73,8 @@
                                 <tbody>
                                 <c:forEach begin="0" end="${fn:length(productos)-1}" var="i">
                                     <tr>
-                                        <td><img style="width: 100px; height: 100px;" src="${imagenes.get(i)}" alt=""></td>
+                                        <td><img style="width: 100px; height: 100px;" src="${imagenes.get(i)}" alt="">
+                                        </td>
                                         <td>${productos.get(i).nombreProdu}</td>
                                         <td>${fechas.get(i)}</td>
                                         <td>${productos.get(i).stockProdu}</td>
@@ -87,7 +91,8 @@
                                         </td>
                                         <td>
                                             <button type="button" class="btn btn-link pt-0 pl-1"
-                                                    onclick="location.href='/productos/${productos.get(i).idProdu}';">Editar
+                                                    onclick="location.href='/productos/${productos.get(i).idProdu}';">
+                                                Editar
                                             </button>
                                         </td>
                                         <td>
@@ -105,33 +110,28 @@
                         </div>
                         </c:otherwise>
                         </c:choose>
-                        <button type="submit" name="pagina" value="${(paginador.desde+1)+ 1}">Test</button>
-                        <%--   <div class="ui horizontal section divider">
-                               <div class="ui pagination menu margenes">
-                                   <c:if test="${paginador.paginaActual != 0}">
-                                       <a href="/productos?" class="item">Primera</a>
-                                   </c:if>
-                                   <c:if test="${paginador.paginaActual != 0}">
-                                       <a href="/intranet/inventario/${(page.pageNumber+1) - 1}" class="item">&laquo;</a>
-                                   </c:if>
-                                   <c:forEach begin="1" end="${totalPaginas}" var="i">
-                                       <c:choose>
-                                           <c:when test="${page.pageNumber+1 eq i}">
-                                               <a class="item">${i}</a>
-                                           </c:when>
-                                           <c:otherwise>
-                                               <a href="/intranet/inventario/${i}" class="item">${i}</a>
-                                           </c:otherwise>
-                                       </c:choose>
-                                   </c:forEach>
-                                   <c:if test="${page.pageNumber+1 < totalPaginas}">
-                                       <a href="/intranet/inventario/${(page.pageNumber+1) + 1}" class="item">&raquo;</a>
-                                   </c:if>
-                                   <c:if test="${page.pageNumber+1 < totalPaginas}">
-                                       <a href="/intranet/inventario/${totalPaginas}" class="item">Ultima</a>
-                                   </c:if>
-                               </div>
-                           </div>--%>
+                        <nav aria-label="Page navigation example">
+                            <ul class="pagination">
+                                <c:if test="${paginaActual != 1}">
+                                    <li class="page-item"><button type="submit" name="pagina" value="${paginaActual-1}" class="page-link">&laquo;</button></li>
+                                </c:if>
+                                <c:forEach begin="${paginador.desde-1}" end="${paginador.hasta}" var="i">
+                                    <c:choose>
+                                        <c:when test="${paginaActual-1 eq i}">
+                                            <li class="page-item active">
+                                                <a class="page-link" href="#">${i+1}<span class="sr-only">(current)</span></a>
+                                            </li>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <li class="page-item"><button type="submit" name="pagina" value="${i+1}" class="page-link">${i+1}</button></li>
+                                        </c:otherwise>
+                                    </c:choose>
+                                </c:forEach>
+                                <c:if test="${paginaActual  <= paginador.totalPaginas}">
+                                    <li class="page-item"><button type="submit" name="pagina" value="${paginaActual+1}" class="page-link">&raquo;</button></li>
+                                </c:if>
+                            </ul>
+                        </nav>
                 </div>
                 </form>
                 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
@@ -154,7 +154,7 @@
                                     <h1 id="test"></h1>
                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar
                                     </button>
-                                    <button type="submit" class="btn btn-danger">Eliminar</button>
+                                    <button type="submit" id="btnConfirmar" class="btn btn-danger">Eliminar</button>
                                 </div>
                             </div>
                         </form>
@@ -164,5 +164,6 @@
         </div>
     </main>
 </div>
+<jsp:include page="layout/modalCargando.jsp"></jsp:include>
 </body>
 </html>
