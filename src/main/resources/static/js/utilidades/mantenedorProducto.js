@@ -61,7 +61,7 @@ $(document).ready(function () {
             if(!urlActual.includes('productos'))
             {
                 $('#imagenSalida').attr('src','');
-                $('#imagenSalida').removeClass("img-thumbnail h-25 w-25");
+                $('#imagenSalida').removeClass("img-thumbnail h-10 w-10");
                 let $el = $('#fileImagen');
                 $el.wrap('<form>').closest(
                     'form').get(0).reset();

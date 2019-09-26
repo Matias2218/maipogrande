@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -21,9 +22,7 @@ import java.net.URLEncoder;
 import java.sql.Blob;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 
 @Controller
@@ -45,6 +44,11 @@ public class ProductorControlador {
     @GetMapping(value = "/añadirProducto")
     public String paginaAñadirProducto(Model model) {
         Producto producto = new Producto();
+        Map<String,String> unidadesDeMasa = new HashMap<String, String>() {{
+            put("KG", "Kilogramos");
+            put("T", "Toneladas");
+        }};
+        model.addAttribute("unidadesDeMasa",unidadesDeMasa);
         model.addAttribute("producto", producto);
         return "añadirProducto";
     }
@@ -79,17 +83,21 @@ public class ProductorControlador {
         List<Producto> productos;
         List<LocalDate> fechas = new ArrayList<>();
         Long id = ((Productor) session.getAttribute("productor")).getIdProd();
-        short totalPaginas = 0;
+        double totalPaginas = 0;
         if(txtBuscar == "" || txtBuscar == null)
         {
             productos = productoServicio.buscarProductosPorId(id,pagina);
-            totalPaginas = (short) (productoServicio.contarProductos(id)/4);
+            productos.forEach(producto -> producto.setUnidadMasaProdu(StringUtils.capitalize(producto.getUnidadMasaProdu().toLowerCase())));
+            totalPaginas = Math.ceil((double)productoServicio.contarProductos(id)/ (double)4);
+            totalPaginas = (totalPaginas == 0) ? 1 : totalPaginas;
         }
         else {
             productos =  productoServicio.buscarProductosPorNombre(txtBuscar.toLowerCase(), id, pagina);
+            productos.forEach(producto -> producto.setUnidadMasaProdu(StringUtils.capitalize(producto.getUnidadMasaProdu().toLowerCase())));
             totalPaginas =  (short) (productoServicio.contarProductosConFiltro(id, txtBuscar, pagina)/4);
+            totalPaginas = (totalPaginas == 0) ? 1 : totalPaginas;
         }
-        Pagina paginador = new Pagina(totalPaginas,(short) (paginaActual+1));
+        Pagina paginador = new Pagina((short) totalPaginas,(short) (paginaActual+1));
         productos.forEach(produ -> {
             imagenes.add(Producto.convertirImagen(produ.getImagenProdu()));
             fechas.add(produ.getFechaIngresoProdu().toLocalDate());
@@ -110,6 +118,12 @@ public class ProductorControlador {
                                        HttpSession session) {
         Producto producto = productoServicio.buscarProductosPorIdProducto(id);
         String imagen = Producto.convertirImagen(producto.getImagenProdu());
+
+        Map<String,String> unidadesDeMasa = new HashMap<String, String>() {{
+            put("KG", "Kilogramos");
+            put("T", "Toneladas");
+        }};
+        model.addAttribute("unidadesDeMasa",unidadesDeMasa);
         model.addAttribute("imagen", imagen);
         model.addAttribute("producto", producto);
         session.setAttribute("idProducto", producto.getIdProdu());

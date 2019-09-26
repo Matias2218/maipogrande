@@ -77,7 +77,7 @@
                                         </td>
                                         <td>${productos.get(i).nombreProdu}</td>
                                         <td>${fechas.get(i)}</td>
-                                        <td>${productos.get(i).stockProdu}</td>
+                                        <td>${productos.get(i).stockProdu}${productos.get(i).unidadMasaProdu}</td>
                                         <td>${productos.get(i).precioProdu}</td>
                                         <td>
                                             <c:choose>

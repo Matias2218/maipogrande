@@ -101,16 +101,17 @@ public class ProductoServicio {
         }
     }
     @Transactional(noRollbackFor = RuntimeException.class)
-    public boolean crearProducto(Producto productoActualizado, Blob imagen, Long idProd)
+    public boolean crearProducto(Producto producto, Blob imagen, Long idProd)
     {
         try {
             StoredProcedureQuery query  = entityManager.createNamedStoredProcedureQuery("crearProducto");
-            query.setParameter("nombre",productoActualizado.getNombreProdu());
-            query.setParameter("precio",productoActualizado.getPrecioProdu());
+            query.setParameter("nombre",producto.getNombreProdu());
+            query.setParameter("precio",producto.getPrecioProdu());
             query.setParameter("imagen",imagen);
-            query.setParameter("stock",productoActualizado.getStockProdu());
-            query.setParameter("tipo",productoActualizado.getTipoComercializacionProdu());
-            query.setParameter("calidad",productoActualizado.getCalidadProdu());
+            query.setParameter("unidadMasa",producto.getUnidadMasaProdu());
+            query.setParameter("stock",producto.getStockProdu());
+            query.setParameter("tipo",producto.getTipoComercializacionProdu());
+            query.setParameter("calidad",producto.getCalidadProdu());
             query.setParameter("fechaIngreso",LocalDateTime.now());
             query.setParameter("idProd",idProd);
             query.execute();
@@ -129,6 +130,7 @@ public class ProductoServicio {
             query.setParameter("nombre",productoActualizado.getNombreProdu());
             query.setParameter("precio",productoActualizado.getPrecioProdu());
             query.setParameter("imagen",imagen);
+            query.setParameter("unidadMasa",productoActualizado.getUnidadMasaProdu());
             query.setParameter("stock",productoActualizado.getStockProdu());
             query.setParameter("tipo",productoActualizado.getTipoComercializacionProdu());
             query.setParameter("calidad",productoActualizado.getCalidadProdu());

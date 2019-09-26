@@ -50,6 +50,11 @@ import java.time.LocalDateTime;
                         ),
                         @StoredProcedureParameter(
                                 mode = ParameterMode.IN,
+                                name = "unidadMasa",
+                                type = String.class
+                        ),
+                        @StoredProcedureParameter(
+                                mode = ParameterMode.IN,
                                 name = "imagen",
                                 type = Blob.class
                         ),
@@ -160,6 +165,11 @@ import java.time.LocalDateTime;
                         ),
                         @StoredProcedureParameter(
                                 mode = ParameterMode.IN,
+                                name = "unidadMasa",
+                                type = String.class
+                        ),
+                        @StoredProcedureParameter(
+                                mode = ParameterMode.IN,
                                 name = "imagen",
                                 type = Blob.class
                         ),
@@ -230,6 +240,9 @@ public class Producto {
     @Min(1)
     @Column(nullable = false)
     private Integer precioProdu;
+    @NotNull
+    @Column(length = 2, nullable = false)
+    private String unidadMasaProdu;
     @Lob
     @Column(columnDefinition = "BLOB")
     private byte[] imagenProdu;
@@ -260,6 +273,15 @@ public class Producto {
 
     public void setNombreProdu(String nombreProdu) {
         this.nombreProdu = nombreProdu;
+    }
+
+
+    public String getUnidadMasaProdu() {
+        return unidadMasaProdu;
+    }
+
+    public void setUnidadMasaProdu(String unidadMasaProdu) {
+        this.unidadMasaProdu = unidadMasaProdu;
     }
 
     public LocalDateTime getFechaIngresoProdu() {

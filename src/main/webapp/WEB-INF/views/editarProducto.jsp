@@ -51,7 +51,10 @@
                                                     onkeypress="return event.charCode >= 48 && event.charCode <= 57"
                                                     cssClass="form-control" id="txtStock"></form:input>
                                         <div class="input-group-prepend">
-                                            <span class="input-group-text">Kg</span>
+                                            <form:select path="unidadMasaProdu" required="true" class="form-control">
+                                                <form:option value="">Tipo</form:option>
+                                                <form:options items="${unidadesDeMasa}"></form:options>
+                                            </form:select>
                                         </div>
                                     </div>
                                     <div class="invalid-feedback">Stock obligatorio</div>
@@ -105,7 +108,7 @@
 
                             <div class="form-group text-center">
                                 <figure class="figure">
-                                    <img id="imagenSalida" class="img-fluid img-thumbnail h-25 w-25" name="imagenSalida"
+                                    <img id="imagenSalida" class="img-fluid img-thumbnail h-10 w-10" name="imagenSalida"
                                          src="${imagen}" alt="">
                                     <figcaption class="figure-caption">Vista previa</figcaption>
                                 </figure>
