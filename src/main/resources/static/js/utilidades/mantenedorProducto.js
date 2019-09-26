@@ -44,8 +44,8 @@ $(document).ready(function () {
         if (this.files && this.files[0] && $.inArray(fileType,validImageTypes) > 0) {
             const reader = new FileReader();
             reader.onload = function(e) {
-                $('#imagenSalida').attr('src', this.result);
-                $('#imagenSalida').addClass("img-thumbnail h-25 w-25");
+                $('#imagenSalida').attr('src', e.target.result);
+                $('#imagenSalida').addClass("img-thumbnail h-10 w-10");
             }
             let fieldVal = $(this).val();
             // Change the node's value by removing the fake path (Chrome)
