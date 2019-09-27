@@ -33,6 +33,7 @@ public class ProductorControlador {
 
     private static final List<String> EXTENSIONES = Arrays.asList("image/png", "image/jpeg", "image/jpg");
     private static final Long MAXIMO_PESO_IMAGEN = 83886080L;
+
     @Secured("ROLE_PRODUCTOR")
     @GetMapping(value = "/productor")
     public String paginaPrincipalProductor() {

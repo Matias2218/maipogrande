@@ -16,11 +16,21 @@
 <link rel="stylesheet" href="\css\bootstrap.min.css">
 <link rel="stylesheet" href="\css\styles.css">
 <script src='https://kit.fontawesome.com/a076d05399.js'></script>
-<script src="js/jquery-3.3.1.slim.min.js"></script>
+	<script
+			src="https://code.jquery.com/jquery-3.3.1.js"
+			integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+			crossorigin="anonymous"></script>
 <link rel="shortcut icon" type="image/png" href="img\icono-maipo.png" />
-<script src="js/utilidades/index.js">
-	
-</script>
+<script src="js/utilidades/index.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			setInterval(function () {
+				setTimeout(function () {
+					$("#alert").slideUp(1500);
+				});
+			},4000);
+		});
+	</script>
 </head>
 <body>
 	<!-- HEADER -->
@@ -32,13 +42,8 @@
 				href="#" class="text-light"><i class='fab fa-instagram'></i></a>
 		</div>
 	</header>
-<script type="text/javascript">
-	$(document).ready(function() {
-		$("#alert").fadeOut(5000);
-		});
-	</script>
 	<c:if test="${logout != null}">
-		<div class="alert alert-warning alert-dismissible fade show text-right mb-0 alerta" id="alert" role="alert" data-autohide="true" data-delay="5000">
+		<div class="alert alert-warning alert-dismissible fade show text-right mb-0 alerta-naranja" id="alert" role="alert" data-autohide="true" data-delay="5000">
 			<strong>${logout}</strong>
 			<button type="button" class="close" data-dismiss="alert"
 				aria-label="Close">
@@ -48,18 +53,12 @@
 	</c:if>
 
 	<c:if test="${error != null}">
-		<div class="toast" id="myToast" data-autohide="true" data-delay="5000"
-			style="position: relative; float: right">
-			<div class="toast-header"
-				style="background-color: red; color: white;">
-				<h5>
-					<strong class="mr-auto">${error}</strong>
-				</h5>
-				<button type="button" class="ml-2 mb-1 close" data-dismiss="toast"
-					style="width: 50px">
-					<span aria-hidden="true">&times;</span>
-				</button>
-			</div>
+		<div class="alert alert-danger alert-dismissible fade show text-right mb-0 alerta-roja" id="alert" role="alert" data-autohide="true" data-delay="5000">
+			<strong>${error}</strong>
+			<button type="button" class="close" data-dismiss="alert"
+					aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+			</button>
 		</div>
 	</c:if>
 

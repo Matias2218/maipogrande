@@ -13,6 +13,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -89,6 +90,13 @@ public class ClientesControlador {
     @RequestMapping(value = "/clienteExterno", method = RequestMethod.GET)
     public String paginaPrincipalClienteExterno() {
         return "clienteExterno";
+    }
+
+    @Secured("ROLE_CLIENTE_EXTERNO")
+    @GetMapping(value = "/clienteExterno/crearSolicitud")
+    public String paginaAñadirSolcitud()
+    {
+        return "añadirSolicitudClienteExterno";
     }
 
     @Secured("ROLE_TRANSPORTISTA")

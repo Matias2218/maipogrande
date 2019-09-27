@@ -27,10 +27,18 @@ body {
     background-color: #218838;
 }
 
-.alerta{
+.alerta-naranja{
 	background-color: orange; 
 	color: white; 
 	border: orange;
+    border-radius: 0px;
+}
+
+.alerta-roja{
+    background-color: #ff6666;
+    color: white;
+    border: #ff6666;
+    border-radius: 0px;
 }
 
 
