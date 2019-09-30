@@ -20,6 +20,9 @@ public class Venta {
     @NotNull
     @Column(nullable = false, length = 1)
     private Character tipoVenta;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "ID_ADM")
+    private Administrador administrador;
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "DETALLES_VENTAS_PRODUCTOS", joinColumns = {@JoinColumn(name = "ID_VENTA")}, inverseJoinColumns = {@JoinColumn(name = "ID_OFERP")})
     private List<OfertaProducto> ofertaProductos;
@@ -59,6 +62,14 @@ public class Venta {
 
     public Character getTipoVenta() {
         return tipoVenta;
+    }
+
+    public Administrador getAdministrador() {
+        return administrador;
+    }
+
+    public void setAdministrador(Administrador administrador) {
+        this.administrador = administrador;
     }
 
     public void setTipoVenta(Character tipoVenta) {

@@ -13,7 +13,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import javax.servlet.http.HttpSession;
 import javax.sql.rowset.serial.SerialBlob;
 import javax.validation.Valid;
@@ -30,6 +29,7 @@ public class ProductorControlador {
 
     @Autowired
     ProductoServicio productoServicio;
+
 
     private static final List<String> EXTENSIONES = Arrays.asList("image/png", "image/jpeg", "image/jpg");
     private static final Long MAXIMO_PESO_IMAGEN = 83886080L;
@@ -119,7 +119,6 @@ public class ProductorControlador {
                                        HttpSession session) {
         Producto producto = productoServicio.buscarProductosPorIdProducto(id);
         String imagen = Producto.convertirImagen(producto.getImagenProdu());
-
         Map<String,String> unidadesDeMasa = new HashMap<String, String>() {{
             put("KG", "Kilogramos");
             put("T", "Toneladas");

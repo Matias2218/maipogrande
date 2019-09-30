@@ -7,6 +7,29 @@ import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "Productos_Solicitados")
+@NamedStoredProcedureQueries({
+        @NamedStoredProcedureQuery(
+                name = "crearProductosSolicitados",
+                procedureName = "CREARPRODUCTOSOLICITADOS",
+                parameters = {
+                        @StoredProcedureParameter(
+                                mode = ParameterMode.IN,
+                                name = "nombreProds",
+                                type = String.class
+                        ),
+                        @StoredProcedureParameter(
+                                mode = ParameterMode.IN,
+                                name = "cantidadProds",
+                                type = Integer.class
+                        ),
+                        @StoredProcedureParameter(
+                                mode = ParameterMode.IN,
+                                name = "unidadProds",
+                                type = String.class
+                        ),
+                }
+        )
+})
 public class ProductoSolicitado {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,6 +49,12 @@ public class ProductoSolicitado {
     private Solicitud solicitud;
 
     public ProductoSolicitado() {
+    }
+
+    public ProductoSolicitado(@NotNull String nombreProdS, @NotNull @Size(max = 2) String unidadProdS, @Min(1) Integer cantidadProdS) {
+        this.nombreProdS = nombreProdS;
+        this.unidadProdS = unidadProdS;
+        this.cantidadProdS = cantidadProdS;
     }
 
     public Long getIdProdS() {

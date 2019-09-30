@@ -1,8 +1,6 @@
 package com.duoc.maipogrande.controladores;
 
-import com.duoc.maipogrande.modelos.Cliente;
-import com.duoc.maipogrande.modelos.Productor;
-import com.duoc.maipogrande.modelos.Transportista;
+import com.duoc.maipogrande.modelos.*;
 import com.duoc.maipogrande.servicios.ClienteServicio;
 import com.duoc.maipogrande.servicios.ProductorServicio;
 import com.duoc.maipogrande.servicios.TransportistaServicio;
@@ -13,15 +11,20 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 import java.security.Principal;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 @Controller
 public class ClientesControlador {
@@ -32,6 +35,7 @@ public class ClientesControlador {
     ProductorServicio productorServicio;
     @Autowired
     TransportistaServicio transportistaServicio;
+
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String index(Model model,
@@ -94,10 +98,61 @@ public class ClientesControlador {
 
     @Secured("ROLE_CLIENTE_EXTERNO")
     @GetMapping(value = "/clienteExterno/crearSolicitud")
-    public String paginaAñadirSolcitud()
+    public String paginaAñadirSolcitud(Model model)
     {
+        Solicitud solicitud = new Solicitud();
+        Map<String,String> paises = solicitud.obtenerPaises();
+        Map<String,String> tipoUnidadMasa = new HashMap<String,String>(){{
+                put("KG", "Kilogramos");
+                put("T", "Toneladas");
+            }};
+        model.addAttribute("paises",paises);
+        model.addAttribute("tipoUnidadMasa",tipoUnidadMasa);
+        model.addAttribute("solicitud",solicitud);
         return "añadirSolicitudClienteExterno";
     }
+    @Secured("ROLE_CLIENTE_EXTERNO")
+    @PostMapping(value = "/clienteExterno/crearSolicitud")
+    public String peticionPostAñadirSolicitud(@Valid @ModelAttribute("solicitud") Solicitud solicitud,
+                                              BindingResult bindingResult,
+                                              HttpSession session,
+                                              @RequestParam(name = "nombreproducto[]",required = false)String[] nombresProductos,
+                                              @RequestParam(name = "cantidadproducto[]",required = false)String[] cantidadProductosString,
+                                              @RequestParam(name = "unidadMasa[]", required = false)String[] unidadMasas)
+    {
+        if(bindingResult.hasErrors())
+        {
+            return "redirect:/clienteExterno/crearSolicitud";
+        }
+        Integer[] cantidadProductos;
+        try {
+            cantidadProductos = Stream.of(cantidadProductosString)
+                    .map(Integer::parseInt)
+                    .toArray(Integer[]::new);
+            for (int i = 0; i < unidadMasas.length ; i++) {
+                if(unidadMasas[i].trim().isEmpty() || nombresProductos[i].trim().isEmpty())
+                {
+                    return "redirect:/clienteExterno/crearSolicitud";
+                }
+            }
+        }
+        catch (NumberFormatException e)
+        {
+            return "redirect:/clienteExterno/crearSolicitud";
+        }
+        List<ProductoSolicitado> productoSolicitados = new ArrayList<>();
+        IntStream.range(0,nombresProductos.length)
+                .forEach(i -> {
+                    productoSolicitados.add(new ProductoSolicitado(nombresProductos[i],unidadMasas[i], cantidadProductos[i]));
+                });
+                solicitud.setEstadoSol('E');
+                solicitud.setCliente(new Cliente());
+                solicitud.getCliente().setIdCli(((Cliente)session.getAttribute("clienteExterno")).getIdCli());
+                clienteServicio.crearSolicitud(solicitud);
+                clienteServicio.crearProductosSolicitados(productoSolicitados);
+        return "redirect:/clienteExterno";
+    }
+
 
     @Secured("ROLE_TRANSPORTISTA")
     @RequestMapping(value = "/transportista", method = RequestMethod.GET)
