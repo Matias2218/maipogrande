@@ -45,6 +45,11 @@ public class ClienteServicio{
         }
     }
 
+    /**
+     * Metodo encargado de crear solicitud hecha por el cliente externo
+     * @param solicitud
+     * @return
+     */
     @Transactional(noRollbackFor = RuntimeException.class)
     public boolean crearSolicitud(Solicitud solicitud)
     {
