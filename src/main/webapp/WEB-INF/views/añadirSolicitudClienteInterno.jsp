@@ -1,8 +1,8 @@
 <%--
   Created by IntelliJ IDEA.
-  User: Matias
-  Date: 26/09/2019
-  Time: 23:10
+  User: Leonardo
+  Date: 30-09-2019
+  Time: 19:15
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -42,11 +42,8 @@
                                 </div>
                                 <div class="form-group col-md-6">
                                     <form:label path="paisDestinoSol">País de destino</form:label>
-                                    <form:select path="paisDestinoSol" required="true" cssClass="form-control">
-                                        <form:option value="">Seleccione</form:option>
-                                        <form:options items="${paises}"></form:options>
-                                    </form:select>
-                                    <div class="invalid-feedback">Seleccione país</div>
+                                    <form:input path="paisDestinoSol" required="true" value="Chile" disabled="true" cssClass="form-control"></form:input>
+                                    <div class="invalid-feedback">País obligatorio</div>
                                 </div>
                             </div>
 
@@ -145,7 +142,7 @@
                                  aria-label="Basic example">
                                 <button type="submit" class="btn btn-success">Solicitar</button>
                                 <button type="button" class="btn btn-danger"
-                                        onclick="location.href='/clienteExterno';">Cancelar</button>
+                                        onclick="location.href='/clienteInterno';">Cancelar</button>
                             </div>
                         </form:form>
                     </div>
