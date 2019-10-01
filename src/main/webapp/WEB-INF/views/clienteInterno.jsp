@@ -13,5 +13,6 @@
 </head>
 <body>
 <h2>Cliente Interno</h2>
+<a href="/clienteInterno/crearSolicitud">Agregar solicitud</a>
 </body>
 </html>

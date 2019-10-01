@@ -89,7 +89,62 @@ public class ClientesControlador {
     public String paginaPrincipalClienteInterno() {
         return "clienteInterno";
     }
-
+    @Secured("ROLE_CLIENTE_INTERNO")
+    @GetMapping(value = "/clienteInterno/crearSolicitud")
+    public String paginaAñadirSolcitudInterno(Model model)
+    {
+        Solicitud solicitud = new Solicitud();
+        Map<String,String> paises = solicitud.obtenerPaises();
+        Map<String,String> tipoUnidadMasa = new HashMap<String,String>(){{
+            put("KG", "Kilogramos");
+            put("T", "Toneladas");
+        }};
+        model.addAttribute("paises",paises);
+        model.addAttribute("tipoUnidadMasa",tipoUnidadMasa);
+        model.addAttribute("solicitud",solicitud);
+        return "añadirSolicitudClienteInterno";
+    }
+    @Secured("ROLE_CLIENTE_INTERNO")
+    @PostMapping(value = "/clienteInterno/crearSolicitud")
+    public String peticionPostAñadirSolicitudInterno(@Valid @ModelAttribute("solicitud") Solicitud solicitud,
+                                              BindingResult bindingResult,
+                                              HttpSession session,
+                                              @RequestParam(name = "nombreproducto[]",required = false)String[] nombresProductos,
+                                              @RequestParam(name = "cantidadproducto[]",required = false)String[] cantidadProductosString,
+                                              @RequestParam(name = "unidadMasa[]", required = false)String[] unidadMasas)
+    {
+        if(bindingResult.hasErrors())
+        {
+            return "redirect:/clienteInterno/crearSolicitud";
+        }
+        Integer[] cantidadProductos;
+        try {
+            cantidadProductos = Stream.of(cantidadProductosString)
+                    .map(Integer::parseInt)
+                    .toArray(Integer[]::new);
+            for (int i = 0; i < unidadMasas.length ; i++) {
+                if(unidadMasas[i].trim().isEmpty() || nombresProductos[i].trim().isEmpty())
+                {
+                    return "redirect:/clienteInterno/crearSolicitud";
+                }
+            }
+        }
+        catch (NumberFormatException e)
+        {
+            return "redirect:/clienteInterno/crearSolicitud";
+        }
+        List<ProductoSolicitado> productoSolicitados = new ArrayList<>();
+        IntStream.range(0,nombresProductos.length)
+                .forEach(i -> {
+                    productoSolicitados.add(new ProductoSolicitado(nombresProductos[i],unidadMasas[i], cantidadProductos[i]));
+                });
+        solicitud.setEstadoSol('E');
+        solicitud.setCliente(new Cliente());
+        solicitud.getCliente().setIdCli(((Cliente)session.getAttribute("clienteInterno")).getIdCli());
+        clienteServicio.crearSolicitud(solicitud);
+        clienteServicio.crearProductosSolicitados(productoSolicitados);
+        return "redirect:/clienteInterno";
+    }
     @Secured("ROLE_CLIENTE_EXTERNO")
     @RequestMapping(value = "/clienteExterno", method = RequestMethod.GET)
     public String paginaPrincipalClienteExterno() {
