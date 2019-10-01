@@ -42,7 +42,7 @@
                                 </div>
                                 <div class="form-group col-md-6">
                                     <form:label path="paisDestinoSol">País de destino</form:label>
-                                    <form:input path="paisDestinoSol" required="true" value="Chile" disabled="true" cssClass="form-control"></form:input>
+                                    <form:input path="paisDestinoSol" required="true" value="Chile" readonly="true" cssClass="form-control"></form:input>
                                     <div class="invalid-feedback">País obligatorio</div>
                                 </div>
                             </div>
