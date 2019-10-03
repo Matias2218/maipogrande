@@ -14,12 +14,11 @@ public class Venta {
     @NotNull
     @Column(length = 60, nullable = false)
     private String paisOrigen;
-    @Min(1)
-    @Column(nullable = false)
-    private Integer precioTotal;
     @NotNull
     @Column(nullable = false, length = 1)
     private Character tipoVenta;
+    @Column(length = 1, nullable = false)
+    private Character estadoVenta;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "ID_ADM")
     private Administrador administrador;
@@ -36,6 +35,14 @@ public class Venta {
     public Venta() {
     }
 
+    public Character getEstadoVenta() {
+        return estadoVenta;
+    }
+
+    public void setEstadoVenta(Character estadoVenta) {
+        this.estadoVenta = estadoVenta;
+    }
+
     public Long getIdVenta() {
         return idVenta;
     }
@@ -50,14 +57,6 @@ public class Venta {
 
     public void setPaisOrigen(String paisOrigen) {
         this.paisOrigen = paisOrigen;
-    }
-
-    public Integer getPrecioTotal() {
-        return precioTotal;
-    }
-
-    public void setPrecioTotal(Integer precioTotal) {
-        this.precioTotal = precioTotal;
     }
 
     public Character getTipoVenta() {

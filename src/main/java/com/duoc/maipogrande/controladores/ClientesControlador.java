@@ -36,7 +36,16 @@ public class ClientesControlador {
     @Autowired
     TransportistaServicio transportistaServicio;
 
-
+    /**
+     *
+     * @param model
+     * @param principal
+     * @param session
+     * @param logout
+     * @param error
+     * @param attributes
+     * @return
+     */
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String index(Model model,
                         Principal principal,
