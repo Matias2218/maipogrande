@@ -94,12 +94,10 @@ public class ClientesControlador {
     public String paginaAñadirSolcitudInterno(Model model)
     {
         Solicitud solicitud = new Solicitud();
-        Map<String,String> paises = solicitud.obtenerPaises();
         Map<String,String> tipoUnidadMasa = new HashMap<String,String>(){{
             put("KG", "Kilogramos");
             put("T", "Toneladas");
         }};
-        model.addAttribute("paises",paises);
         model.addAttribute("tipoUnidadMasa",tipoUnidadMasa);
         model.addAttribute("solicitud",solicitud);
         return "añadirSolicitudClienteInterno";
@@ -139,6 +137,7 @@ public class ClientesControlador {
                     productoSolicitados.add(new ProductoSolicitado(nombresProductos[i],unidadMasas[i], cantidadProductos[i]));
                 });
         solicitud.setEstadoSol('E');
+        solicitud.setPaisDestinoSol("CL");
         solicitud.setCliente(new Cliente());
         solicitud.getCliente().setIdCli(((Cliente)session.getAttribute("clienteInterno")).getIdCli());
         clienteServicio.crearSolicitud(solicitud);
