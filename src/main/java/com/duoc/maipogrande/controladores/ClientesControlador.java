@@ -13,7 +13,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -43,7 +42,6 @@ public class ClientesControlador {
      * @param session
      * @param logout
      * @param error
-     * @param attributes
      * @return
      */
     @RequestMapping(value = "/", method = RequestMethod.GET)
@@ -51,14 +49,12 @@ public class ClientesControlador {
                         Principal principal,
                         HttpSession session,
                         @RequestParam(value = "logout", required = false) String logout,
-                        @RequestParam(value = "error", required = false) String error,
-                        RedirectAttributes attributes) {
+                        @RequestParam(value = "error", required = false) String error) {
         String mensaje;
         if (principal != null) {
             String rol;
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             rol = authentication.getAuthorities().stream().map(o -> ((GrantedAuthority) o).getAuthority()).collect(Collectors.joining());
-
             switch (rol) {
                 case "ROLE_CLIENTE_EXTERNO":
                     Cliente clienteExterno = clienteServicio.buscarClientePorId(Long.parseLong(principal.getName()));
@@ -67,6 +63,7 @@ public class ClientesControlador {
                     return "redirect:clienteExterno";
                 case "ROLE_CLIENTE_INTERNO":
                     Cliente clienteInterno = clienteServicio.buscarClientePorId(Long.parseLong(principal.getName()));
+                    session.setAttribute("nombre",clienteInterno.getNombreCli());
                     session.setAttribute("clienteInterno", clienteInterno);
                     return "redirect:clienteInterno";
                 case "ROLE_PRODUCTOR":

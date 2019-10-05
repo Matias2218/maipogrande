@@ -2,8 +2,10 @@ package com.duoc.maipogrande.controladores;
 
 import com.duoc.maipogrande.modelos.Producto;
 import com.duoc.maipogrande.modelos.Productor;
+import com.duoc.maipogrande.modelos.Venta;
 import com.duoc.maipogrande.paginador.Pagina;
 import com.duoc.maipogrande.servicios.ProductoServicio;
+import com.duoc.maipogrande.servicios.ProductorServicio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
@@ -13,6 +15,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import javax.servlet.http.HttpSession;
 import javax.sql.rowset.serial.SerialBlob;
 import javax.validation.Valid;
@@ -29,6 +32,8 @@ public class ProductorControlador {
 
     @Autowired
     ProductoServicio productoServicio;
+    @Autowired
+    ProductorServicio productorServicio;
 
 
     private static final List<String> EXTENSIONES = Arrays.asList("image/png", "image/jpeg", "image/jpg");
@@ -36,9 +41,55 @@ public class ProductorControlador {
 
     @Secured("ROLE_PRODUCTOR")
     @GetMapping(value = "/productor")
-    public String paginaPrincipalProductor() {
+    public String paginaPrincipalProductor(Model model,
+                                           @RequestParam(name = "pagina", required = false, defaultValue = "0")String p) {
+        Integer pagina = 0;
+        Integer paginaActual = 0;
+        if (p != null) {
+            try {
+                pagina = Integer.parseInt(p);
+                pagina--;
+                if(pagina < 0)
+                {
+                    pagina= 0;
+                }
+                paginaActual = pagina;
+                pagina =  pagina * 4;
+            } catch (NumberFormatException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+        List<Venta> ventas = productorServicio.ventasParaSubasta(pagina);
+        int totalPaginas = productorServicio.contarVentasSubasta();
+        Pagina paginador = new Pagina((short) totalPaginas,(short)(paginaActual+1));
+        model.addAttribute("ventas",ventas);
+        model.addAttribute("paginador",paginador);
+        model.addAttribute("paginaActual",(paginaActual==0)?1: paginaActual+1);
         return "productor";
     }
+    @Secured("ROLE_PRODUCTOR")
+    @GetMapping(value = "/subasta/{id}")
+    public String paginaEditarProducto(@PathVariable(name = "id") String idString,
+                                       Model model)
+    {
+        Integer id = null;
+        try {
+            id = Integer.parseInt(idString);
+        }
+        catch (NumberFormatException e)
+        {
+            return "redirect:/productor";
+        }
+        Venta venta = productorServicio.buscarVentaPorIdParaSubasta(id);
+        if(venta == null)
+        {
+            return "redirect:/productor";
+        }
+        model.addAttribute("venta",venta);
+        return "subastaProductor";
+    }
+
+
 
     //Añadir Producto GET
     @Secured("ROLE_PRODUCTOR")
@@ -76,7 +127,7 @@ public class ProductorControlador {
                 }
                 paginaActual = pagina;
                 pagina = (short) (pagina * 4);
-            } catch (Exception e) {
+            } catch (NumberFormatException e) {
                 System.out.println(e.getMessage());
             }
         }

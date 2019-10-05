@@ -1,10 +1,11 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: Matias
-  Date: 22/09/2019
-  Time: 23:25
-  To change this template use File | Settings | File Templates.
---%>
+    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+        <%--
+          Created by IntelliJ IDEA.
+          User: Matias
+          Date: 22/09/2019
+          Time: 23:25
+          To change this template use File | Settings | File Templates.
+        --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -35,7 +36,7 @@
     </span>
     <span class="user-role">Productor</span>
     <span class="user-status">
-    <span class="badge badge-pill badge-success">3</span>
+    <span class="badge badge-pill badge-success">${ventasActivas.size()}</span>
     <span>Ventas en proceso</span>
     </span>
     </div>
@@ -62,19 +63,15 @@
     <a href="#">
     <i class="fa fa-shopping-cart"></i>
     <span>Ventas en proceso</span>
-    <span class="badge badge-pill badge-success">3</span>
+    <span class="badge badge-pill badge-success">${ventasActivas.size()}</span>
     </a>
     <div class="sidebar-submenu">
     <ul>
-    <li>
-    <a href="#">Venta Nº0561</a>
-    </li>
-    <li>
-    <a href="#">Venta Nº0157</a>
-    </li>
-    <li>
-    <a href="#">Venta Nº0261</a>
-    </li>
+        <c:forEach items="${ventasActivas}" var="v">
+            <li>
+            <a href="#">Venta Nº${v.idVenta}</a>
+            </li>
+        </c:forEach>
     </ul>
     </div>
     </li>

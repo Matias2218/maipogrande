@@ -1,12 +1,15 @@
 package com.duoc.maipogrande.servicios;
 
 import com.duoc.maipogrande.modelos.Productor;
+import com.duoc.maipogrande.modelos.Venta;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.StoredProcedureQuery;
+import java.math.BigDecimal;
+import java.util.List;
 
 @Service
 public class ProductorServicio {
@@ -38,6 +41,44 @@ public class ProductorServicio {
         catch (Exception e)
         {
             return null;
+        }
+    }
+    @Transactional(readOnly = true, noRollbackFor = RuntimeException.class)
+    public List<Venta> ventasParaSubasta(Integer pagina) {
+        try {
+            StoredProcedureQuery query  = entityManager.createNamedStoredProcedureQuery("buscarVentasParaSubasta");
+            query.setParameter("i",pagina);
+            query.execute();
+            return query.getResultList();
+        }
+        catch (Exception e)
+        {
+            return null;
+        }
+    }
+    @Transactional(readOnly = true, noRollbackFor = RuntimeException.class)
+    public Venta buscarVentaPorIdParaSubasta(Integer id) {
+        try {
+            StoredProcedureQuery query  = entityManager.createNamedStoredProcedureQuery("buscarVentaParaIdParaSubasta");
+            query.setParameter("id",id);
+            query.execute();
+            return (Venta) query.getSingleResult();
+        }
+        catch (Exception e)
+        {
+            return null;
+        }
+    }
+    @Transactional(readOnly = true, noRollbackFor = RuntimeException.class)
+    public Integer contarVentasSubasta() {
+        try {
+            Integer filas  = ((BigDecimal)entityManager.createNativeQuery("select CONTARVENTASUBASTA() from dual").
+                    getSingleResult()).intValue();
+            return filas;
+        }
+        catch (Exception e)
+        {
+            return 0;
         }
     }
 }
