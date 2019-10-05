@@ -42,7 +42,8 @@ public class ProductorControlador {
     @Secured("ROLE_PRODUCTOR")
     @GetMapping(value = "/productor")
     public String paginaPrincipalProductor(Model model,
-                                           @RequestParam(name = "pagina", required = false, defaultValue = "0")String p) {
+                                           @RequestParam(name = "pagina", required = false, defaultValue = "0")String p,
+                                           HttpSession session) {
         Integer pagina = 0;
         Integer paginaActual = 0;
         if (p != null) {
@@ -60,9 +61,11 @@ public class ProductorControlador {
             }
         }
         List<Venta> ventas = productorServicio.ventasParaSubasta(pagina);
+        List<Venta> ventasActivas = productorServicio.ventasActivasProductor(((Productor)session.getAttribute("productor")).getIdProd());
         int totalPaginas = productorServicio.contarVentasSubasta();
         Pagina paginador = new Pagina((short) totalPaginas,(short)(paginaActual+1));
         model.addAttribute("ventas",ventas);
+        session.setAttribute("ventasActivas",ventasActivas);
         model.addAttribute("paginador",paginador);
         model.addAttribute("paginaActual",(paginaActual==0)?1: paginaActual+1);
         return "productor";

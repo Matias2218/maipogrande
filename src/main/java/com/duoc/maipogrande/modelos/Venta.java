@@ -26,6 +26,23 @@ import java.util.List;
                 }
         ),
         @NamedStoredProcedureQuery(
+                name = "buscarVentasActivasProductor",
+                procedureName = "BUSCARVENTASACTIVASPRODUCTOR",
+                resultClasses = {Venta.class},
+                parameters = {
+                        @StoredProcedureParameter(
+                                mode = ParameterMode.IN,
+                                name = "id",
+                                type = Long.class
+                        ),
+                        @StoredProcedureParameter(
+                                mode = ParameterMode.REF_CURSOR,
+                                name = "q",
+                                type = void.class
+                        ),
+                }
+        ),
+        @NamedStoredProcedureQuery(
                 name = "buscarVentaParaIdParaSubasta",
                 procedureName = "BUSCARVENTAPORIDPARASUBASTA",
                 resultClasses = {Venta.class},

@@ -57,6 +57,19 @@ public class ProductorServicio {
         }
     }
     @Transactional(readOnly = true, noRollbackFor = RuntimeException.class)
+    public List<Venta> ventasActivasProductor(Long id) {
+        try {
+            StoredProcedureQuery query  = entityManager.createNamedStoredProcedureQuery("buscarVentasActivasProductor");
+            query.setParameter("id",id);
+            query.execute();
+            return query.getResultList();
+        }
+        catch (Exception e)
+        {
+            return null;
+        }
+    }
+    @Transactional(readOnly = true, noRollbackFor = RuntimeException.class)
     public Venta buscarVentaPorIdParaSubasta(Integer id) {
         try {
             StoredProcedureQuery query  = entityManager.createNamedStoredProcedureQuery("buscarVentaParaIdParaSubasta");
