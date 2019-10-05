@@ -20,7 +20,7 @@
     <jsp:include page="layout/sidebar.jsp"></jsp:include>
     <main class="page-content">
         <div class="container-fluid mt-4">
-            <div class="row  ml-4 mr-4">
+            <div class="row  ml-3 mr-3">
                 <div class="col-lg">
                     <c:if test="${alerta != null}">
                         <div class="toast" id="myToast" data-autohide="true" data-delay="5000"

@@ -5,6 +5,7 @@
   Time: 20:44
   To change this template use File | Settings | File Templates.
 --%>
+
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
@@ -26,7 +27,7 @@
                         </c:when>
                         <c:otherwise>
                             <c:forEach items="${ventas}" var="v">
-                                <div class="mt-4 mr-4 ml-4 pt-2 border rounded text-center">
+                                <div class="pt-2 mb-4 border rounded text-center">
                                     <h4 class="letras">${v.solicitud.descripcionSol}</h4>
                                     <p class="lead">Tipo de venta:
                                         <c:if test="${v.tipoVenta eq 'E'.charAt(0)}">
@@ -43,7 +44,7 @@
                             </c:forEach>
                         </c:otherwise>
                     </c:choose>
-                    <div class="mt-4 mr-4 ml-4 pt-2 text-center">
+                    <div class="text-center">
                     <nav aria-label="Page navigation example">
                         <ul class="pagination">
                             <c:if test="${paginaActual != 1}">
