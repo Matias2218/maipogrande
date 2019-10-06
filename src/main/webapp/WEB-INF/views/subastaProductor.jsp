@@ -108,7 +108,7 @@
 										</tr>
 										<tr>
 											<th scope="row" class="text-center">3</th>
-											<td>Larry the Bird</td>
+											<td>Matias maldonado</td>
 											<td class="text-right">$ 500</td>
 										</tr>
 									</tbody>
