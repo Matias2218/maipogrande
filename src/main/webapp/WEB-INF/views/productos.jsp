@@ -8,6 +8,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <html>
 <head>
     <jsp:include page="layout/cabecera.jsp"/>
@@ -77,7 +78,7 @@
                                         <td class="align-middle">${productos.get(i).nombreProdu}</td>
                                         <td class="align-middle">${fechas.get(i)}</td>
                                         <td class="align-middle">${productos.get(i).stockProdu}${productos.get(i).unidadMasaProdu}</td>
-                                        <td class="align-middle">${productos.get(i).precioProdu} x Kg</td>
+                                        <td class="align-middle">$<fmt:formatNumber type="number" value="${productos.get(i).precioProdu}"></fmt:formatNumber> x Kg</td>
                                         <td class="align-middle">
                                             <c:choose>
                                                 <c:when test="${productos.get(i).tipoComercializacionProdu eq 'I'.charAt(0)}">

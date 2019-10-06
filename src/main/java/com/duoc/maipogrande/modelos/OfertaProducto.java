@@ -4,7 +4,6 @@ import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
-import java.util.List;
 
 @Entity
 @Table(name = "Ofertas_Productos")
@@ -24,9 +23,14 @@ public class OfertaProducto {
     @NotNull
     @Column(length = 2, nullable = false)
     private String unidadMasaOferta;
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "DETALLES_OFERTAS_PRODUCTOS", joinColumns = {@JoinColumn(name = "ID_OFERP")}, inverseJoinColumns = {@JoinColumn(name = "ID_PRODU")})
-    private List<Producto> productos;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "ID_PRODU")
+    private Producto producto;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "ID_VENTA")
+    private Venta venta;
+
+
 
     public OfertaProducto() {
     }
@@ -41,6 +45,14 @@ public class OfertaProducto {
 
     public Integer getStockOferta() {
         return stockOferta;
+    }
+
+    public Venta getVenta() {
+        return venta;
+    }
+
+    public void setVenta(Venta venta) {
+        this.venta = venta;
     }
 
     public void setStockOferta(Integer stockOferta) {
@@ -71,11 +83,11 @@ public class OfertaProducto {
         this.precioOferta = precioOferta;
     }
 
-    public List<Producto> getProductos() {
-        return productos;
+    public Producto getProducto() {
+        return producto;
     }
 
-    public void setProductos(List<Producto> productos) {
-        this.productos = productos;
+    public void setProducto(Producto producto) {
+        this.producto = producto;
     }
 }

@@ -38,7 +38,7 @@
                                     <div class="invalid-feedback">Nombre obligatorio</div>
                                 </div>
                                 <div class="form-group col-md-6">
-                                    <form:label path="precioProdu">Precio</form:label>
+                                    <form:label path="precioProdu">Precio por Kg</form:label>
                                     <form:input path="precioProdu" required="true"
                                                 onkeypress="return event.charCode >= 48 && event.charCode <= 57"
                                                 cssClass="form-control" id="txtPrecio"></form:input>

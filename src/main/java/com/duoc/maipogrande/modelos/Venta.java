@@ -77,9 +77,6 @@ public class Venta {
     @JoinColumn(name = "ID_ADM")
     private Administrador administrador;
     @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "DETALLES_VENTAS_PRODUCTOS", joinColumns = {@JoinColumn(name = "ID_VENTA")}, inverseJoinColumns = {@JoinColumn(name = "ID_OFERP")})
-    private List<OfertaProducto> ofertaProductos;
-    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "DETALLES_OFERTAS_TRAN", joinColumns = {@JoinColumn(name = "ID_VENTA")}, inverseJoinColumns = {@JoinColumn(name = "ID_OFERT")})
     private List<OfertaTransportista> ofertaTransportistas;
     @OneToOne(fetch = FetchType.EAGER)
@@ -127,14 +124,6 @@ public class Venta {
 
     public void setTipoVenta(Character tipoVenta) {
         this.tipoVenta = tipoVenta;
-    }
-
-    public List<OfertaProducto> getOfertaProductos() {
-        return ofertaProductos;
-    }
-
-    public void setOfertaProductos(List<OfertaProducto> ofertaProductos) {
-        this.ofertaProductos = ofertaProductos;
     }
 
     public List<OfertaTransportista> getOfertaTransportistas() {
