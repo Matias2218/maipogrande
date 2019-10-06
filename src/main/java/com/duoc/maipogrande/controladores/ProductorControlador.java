@@ -40,7 +40,11 @@ public class ProductorControlador {
         return "productor";
     }
 
-    //Añadir Producto GET
+    /**
+     * Metodo que permite la redireccion a la correspondiente pagina y ademas carga el tipo de unidad de medida
+     * @param model interface que permite enviar elementos a la vista en tipo {@code java.util.Map}.
+     * @return Permite la redirecion correspondiente a la vista, segun el flujo del algoritmo
+     */
     @Secured("ROLE_PRODUCTOR")
     @GetMapping(value = "/añadirProducto")
     public String paginaAñadirProducto(Model model) {
@@ -54,7 +58,14 @@ public class ProductorControlador {
         return "añadirProducto";
     }
 
-    //Productos GET
+    /**
+     * Metodo que permite la visualizacion de los productos y los pagina
+     * @param model interface que permite enviar elementos a la vista en tipo {@code java.util.Map}.
+     * @param session Proporciona una manera de identificar un usuario o solicitud y alamacena la informacion
+     * @param i Anotacion que indica que parametro se solicito, en este caso, la creacion de una variable para contador
+     * @param txtBuscar Anotacion que indica que parametro se solicito, en este caso, el valor de txtBuscar
+     * @return Permite la redirecion correspondiente a la vista, segun el flujo del algoritmo
+     */
     @Secured("ROLE_PRODUCTOR")
     @GetMapping(value = "/productos")
     public String paginaDeProductos(Model model,
@@ -111,7 +122,13 @@ public class ProductorControlador {
         return"productos";
 }
 
-    //Editar Producto GET
+    /**
+     * Metodo que redirecciona a la pagina correspondiente y ademas almacena los datos para la edicion del producto mas adelante
+     * @param id Parametro de metodo que debe estar vinculado a una plantilla URI, si esta es de tipo MAP se obtienen todos sus valores
+     * @param model interface que permite enviar elementos a la vista en tipo {@code java.util.Map}.
+     * @param session Proporciona una manera de identificar un usuario o solicitud y alamacena la informacion
+     * @return Permite la redirecion correspondiente a la vista, segun el flujo del algoritmo
+     */
     @Secured("ROLE_PRODUCTOR")
     @GetMapping(value = "/productos/{id}")
     public String paginaEditarProducto(@PathVariable(value = "id") Long id,
@@ -131,7 +148,12 @@ public class ProductorControlador {
         return "editarProducto";
     }
 
-    //Eliminar Producto POST
+    /**
+     * Metodo que permite la eliminacion de productos por parte del productor
+     * @param id Anotacion que indica que parametro se solicito, en este caso, el valor de idProdu
+     * @param attributes Manda informacion a la vista, cuando esta es redirigida mediante una ruta que va hacia un metodo
+     * @return Permite la redirecion correspondiente a la vista, la cual ejecuta el metodo correspondiente
+     */
     @Secured("ROLE_PRODUCTOR")
     @PostMapping(value = "/eliminarProducto")
     public String eliminarProducto(@RequestParam(name = "idProdu") Long id,
@@ -141,7 +163,17 @@ public class ProductorControlador {
         return "redirect:productos";
     }
 
-    //Crear Producto POST
+    /**
+     * Metodo que permite el agregar productos por parte del productor
+     * @param producto Clase {@code com.duoc.maipogrande.modelos.Producto} proveniente de la vista añadirProducto
+     * @param bindingResult Valida si existen errores en la clase {@code com.duoc.maipogrande.modelos.Producto}
+     * @param imagen Anotacion que indica que parametro se solicito, en este caso, el valor de imagen
+     * @param session Proporciona una manera de identificar un usuario o solicitud y alamacena la informacion
+     * @param attributes Manda informacion a la vista, cuando esta es redirigida mediante una ruta que va hacia un metodo
+     * @return Permite la redirecion correspondiente a la vista, segun el flujo del algoritmo
+     * @throws IOException Control de excepciones
+     * @throws SQLException Control de excepciones, servidor
+     */
     @Secured("ROLE_PRODUCTOR")
     @PostMapping(value = "/productos")
     public String añadirProducto(@Valid @ModelAttribute("producto") Producto producto,
@@ -160,7 +192,17 @@ public class ProductorControlador {
         return "redirect:productos";
     }
 
-    //Editar Producto POST
+    /**
+     * Metodo que permite editar el producto por parte del productor
+     * @param producto Clase {@code com.duoc.maipogrande.modelos.Producto} proveniente de la vista añadirProducto
+     * @param bindingResult Valida si existen errores en la clase {@code com.duoc.maipogrande.modelos.Producto}
+     * @param imagen Anotacion que indica que parametro se solicito, en este caso, el valor de imagen
+     * @param session Proporciona una manera de identificar un usuario o solicitud y alamacena la informacion
+     * @param attributes Manda informacion a la vista, cuando esta es redirigida mediante una ruta que va hacia un metodo
+     * @return Permite la redirecion correspondiente a la vista, segun el flujo del algoritmo
+     * @throws IOException Control de excepciones
+     * @throws SQLException Control de excepciones, servidor
+     */
     @Secured("ROLE_PRODUCTOR")
     @PostMapping(value = "/editarProducto")
     public String editarProducto(@Valid @ModelAttribute("producto") Producto producto,

@@ -4,9 +4,13 @@ import javax.persistence.*;
 import javax.validation.constraints.Min;
 import java.time.LocalDateTime;
 
+/**
+ * Clase utilizada para la almacenacion de los datos correspondientes a la Boleta
+ */
 @Entity
 @Table(name = "Boletas")
 public class Boleta {
+    //
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idBol;
