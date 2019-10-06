@@ -1,12 +1,66 @@
 package com.duoc.maipogrande.modelos;
 
+
 import javax.persistence.*;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Entity
 @Table(name = "Ventas")
+@NamedStoredProcedureQueries({
+        @NamedStoredProcedureQuery(
+                name = "buscarVentasParaSubasta",
+                procedureName = "BUSCARVENTASPARASUBASTA",
+                resultClasses = {Venta.class},
+                parameters = {
+                        @StoredProcedureParameter(
+                                mode = ParameterMode.IN,
+                                name = "i",
+                                type = Integer.class
+                        ),
+                        @StoredProcedureParameter(
+                                mode = ParameterMode.REF_CURSOR,
+                                name = "q",
+                                type = void.class
+                        ),
+                }
+        ),
+        @NamedStoredProcedureQuery(
+                name = "buscarVentasActivasProductor",
+                procedureName = "BUSCARVENTASACTIVASPRODUCTOR",
+                resultClasses = {Venta.class},
+                parameters = {
+                        @StoredProcedureParameter(
+                                mode = ParameterMode.IN,
+                                name = "id",
+                                type = Long.class
+                        ),
+                        @StoredProcedureParameter(
+                                mode = ParameterMode.REF_CURSOR,
+                                name = "q",
+                                type = void.class
+                        ),
+                }
+        ),
+        @NamedStoredProcedureQuery(
+                name = "buscarVentaParaIdParaSubasta",
+                procedureName = "BUSCARVENTAPORIDPARASUBASTA",
+                resultClasses = {Venta.class},
+                parameters = {
+                        @StoredProcedureParameter(
+                                mode = ParameterMode.IN,
+                                name = "id",
+                                type = Integer.class
+                        ),
+                        @StoredProcedureParameter(
+                                mode = ParameterMode.REF_CURSOR,
+                                name = "q",
+                                type = void.class
+                        ),
+                }
+        ),
+
+})
 public class Venta {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,16 +73,13 @@ public class Venta {
     private Character tipoVenta;
     @Column(length = 1, nullable = false)
     private Character estadoVenta;
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ID_ADM")
     private Administrador administrador;
     @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "DETALLES_VENTAS_PRODUCTOS", joinColumns = {@JoinColumn(name = "ID_VENTA")}, inverseJoinColumns = {@JoinColumn(name = "ID_OFERP")})
-    private List<OfertaProducto> ofertaProductos;
-    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "DETALLES_OFERTAS_TRAN", joinColumns = {@JoinColumn(name = "ID_VENTA")}, inverseJoinColumns = {@JoinColumn(name = "ID_OFERT")})
     private List<OfertaTransportista> ofertaTransportistas;
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "ID_SOL")
     private Solicitud solicitud;
 
@@ -73,14 +124,6 @@ public class Venta {
 
     public void setTipoVenta(Character tipoVenta) {
         this.tipoVenta = tipoVenta;
-    }
-
-    public List<OfertaProducto> getOfertaProductos() {
-        return ofertaProductos;
-    }
-
-    public void setOfertaProductos(List<OfertaProducto> ofertaProductos) {
-        this.ofertaProductos = ofertaProductos;
     }
 
     public List<OfertaTransportista> getOfertaTransportistas() {

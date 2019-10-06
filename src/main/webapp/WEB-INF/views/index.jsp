@@ -5,6 +5,7 @@
   Time: 17:07
   To change this template use File | Settings | File Templates.
 --%>
+
 <%@ page contentType="text/html;charset=UTF-8" language="java"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <html>
@@ -102,7 +103,7 @@
 	<section class="bg-light page-section pb-3" id="portfolio">
 		<div class="">
 			<div class="container">
-				<div class="row">
+				<div class="row" style="margin-right: 0px !important;">
 					<div class="col-lg-12 text-center">
 						<img class="d-block mx-auto mt-5 mb-3" src="img/logo-maipo-bg.png"
 							alt="" height="110">
@@ -110,50 +111,6 @@
 							es la feria virtual mas grande del pais! En nuestra página se
 							encuentran registradas las mayores empresas dedicadas a la
 							producción de frutas de la zona metropolitana.</h3>
-					</div>
-				</div>
-			</div>
-			<div class="row">
-				<div class="col-md-4 col-sm-6 portfolio-item">
-					<a class="portfolio-link" data-toggle="modal"
-						href="#portfolioModal1">
-						<div class="portfolio-hover">
-							<div class="portfolio-hover-content">
-								<i class="fas fa-shopping-cart fa-3x"></i>
-							</div>
-						</div> <img class="img-fluid rounded" src="img/venta-1.jpg" alt="">
-					</a>
-					<div class="portfolio-caption">
-						<h4>Venta de fruta</h4>
-						<p class="text-muted">escribir</p>
-					</div>
-				</div>
-				<div class="col-md-4 col-sm-6 portfolio-item">
-					<a class="portfolio-link" data-toggle="modal"
-						href="#portfolioModal2">
-						<div class="portfolio-hover">
-							<div class="portfolio-hover-content">
-								<i class="fas fa-user fa-3x"></i>
-							</div>
-						</div> <img class="img-fluid rounded" src="img/venta-2.jpg" alt="">
-					</a>
-					<div class="portfolio-caption">
-						<h4>Cuentas de usuario</h4>
-						<p class="text-muted">escribir</p>
-					</div>
-				</div>
-				<div class="col-md-4 col-sm-6 portfolio-item">
-					<a class="portfolio-link" data-toggle="modal"
-						href="#portfolioModal3">
-						<div class="portfolio-hover">
-							<div class="portfolio-hover-content">
-								<i class="fas fa-lock fa-3x"></i>
-							</div>
-						</div> <img class="img-fluid rounded" src="img/venta-3.jpg" alt="">
-					</a>
-					<div class="portfolio-caption">
-						<h4>Seguridad garantizada</h4>
-						<p class="text-muted">escribir</p>
 					</div>
 				</div>
 			</div>
@@ -168,7 +125,6 @@
 			© 2019 Copyright: <a href="#" class="text-success"> Quality
 				Solution Team</a>
 		</div>
-
 	</footer>
 	<!-- FIN FOOTER -->
 
