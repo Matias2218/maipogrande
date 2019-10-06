@@ -172,7 +172,6 @@ h3,
 h4,
 h5,
 h6 {
-  font-weight: 700;
   font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
 }
 
@@ -181,3 +180,6 @@ h6 {
   text-transform: none;
 }
 
+.subasta-card{
+	background-color: rgba(228, 230, 231, 1);
+}

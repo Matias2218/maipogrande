@@ -19,9 +19,9 @@
 <div class="page-wrapper chiller-theme toggled">
     <jsp:include page="layout/sidebar.jsp"></jsp:include>
     <main class="page-content">
-        <div class="container-fluid mt-4">
-            <div class="row  ml-3 mr-3">
-                <div class="col-lg">
+        <div class="container-fluid w-80 mt-2 pl-0 pr-0">
+            <div class="row  ml-5 mr-5">
+                <div class="col-lg pl-0 pr-0 mr-3 ml-3">
                     <c:if test="${alerta != null}">
                         <div class="toast" id="myToast" data-autohide="true" data-delay="5000"
                              style="position: relative;">
@@ -57,7 +57,7 @@
                         </c:when>
                         <c:otherwise>
                         <div class="table-responsive mt-2">
-                            <table class="table table-hover">
+                            <table class="table table-hover thead-light">
                                 <thead>
                                 <tr>
                                     <th scope="col"></th>
@@ -66,20 +66,19 @@
                                     <th scope="col">Stock</th>
                                     <th scope="col">Precio</th>
                                     <th scope="col">Tipo de venta</th>
-                                    <th scope="col">Editar</th>
-                                    <th scope="col">Eliminar</th>
+                                    <th scope="col" class="text-center">Acciones</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 <c:forEach begin="0" end="${fn:length(productos)-1}" var="i">
                                     <tr>
-                                        <td><img style="width: 100px; height: 100px;" src="${imagenes.get(i)}" alt="">
+                                        <td class="align-middle"><img style="height: 100px; min-width: 120px;" src="${imagenes.get(i)}" class="img-thumbnail rounded" alt="">
                                         </td>
-                                        <td>${productos.get(i).nombreProdu}</td>
-                                        <td>${fechas.get(i)}</td>
-                                        <td>${productos.get(i).stockProdu}${productos.get(i).unidadMasaProdu}</td>
-                                        <td>${productos.get(i).precioProdu}</td>
-                                        <td>
+                                        <td class="align-middle">${productos.get(i).nombreProdu}</td>
+                                        <td class="align-middle">${fechas.get(i)}</td>
+                                        <td class="align-middle">${productos.get(i).stockProdu}${productos.get(i).unidadMasaProdu}</td>
+                                        <td class="align-middle">${productos.get(i).precioProdu} x Kg</td>
+                                        <td class="align-middle">
                                             <c:choose>
                                                 <c:when test="${productos.get(i).tipoComercializacionProdu eq 'I'.charAt(0)}">
                                                     Venta Interna
@@ -89,18 +88,16 @@
                                                 </c:otherwise>
                                             </c:choose>
                                         </td>
-                                        <td>
-                                            <button type="button" class="btn btn-link pt-0 pl-1"
+                                        <td class="align-middle text-center">
+                                            <button type="button" class="btn btn-link text-success pt-0 pl-1"
                                                     onclick="location.href='/productos/${productos.get(i).idProdu}';">
-                                                Editar
+                                                <i class="fas fa-pencil-alt"></i>
                                             </button>
-                                        </td>
-                                        <td>
                                             <button type="button" name="btnEliminar"
                                                     value="${productos.get(i).idProdu}.${productos.get(i).nombreProdu}"
-                                                    class="btn btn-link pt-0 pl-1" data-toggle="modal"
+                                                    class="btn btn-link text-success pt-0 pl-1" data-toggle="modal"
                                                     data-target="#exampleModal">
-                                                Eliminar
+                                                <i class="fas fa-trash-alt"></i>
                                             </button>
                                         </td>
                                     </tr>
@@ -149,7 +146,7 @@
                                 </div>
                                 <div class="modal-body">
                                     ¿Esta seguro que desea eliminar el producto <label id="lblNombre"></label>?
-                                </div>
+                                 </div>
                                 <div class="modal-footer">
                                     <h1 id="test"></h1>
                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar
