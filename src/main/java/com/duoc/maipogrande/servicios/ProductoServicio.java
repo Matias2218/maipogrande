@@ -143,4 +143,19 @@ public class ProductoServicio {
             return false;
         }
     }
+    @Transactional(readOnly = true, noRollbackFor = RuntimeException.class)
+    public List<Producto> productosDisponibles(Long idProductoSolicitado,Long idProd,Character tipoVenta) {
+        try {
+            StoredProcedureQuery query  = entityManager.createNamedStoredProcedureQuery("productosDisponibles");
+            query.setParameter("idProductoSolicitado",idProductoSolicitado);
+            query.setParameter("idProd",idProd);
+            query.setParameter("tipoVenta",tipoVenta);
+            query.execute();
+            return query.getResultList();
+        }
+        catch (Exception e)
+        {
+            return null;
+        }
+    }
 }

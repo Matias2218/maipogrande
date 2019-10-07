@@ -25,80 +25,106 @@
 						idProductoSolicitado:num[1]
 					}),
 					success : function (response) {
-						console.log(response.success);
+						const productos = response.productos;
+						localStorage.setItem("items".concat(num[1]),JSON.stringify(productos));
+						let productosCombo = "";
+						    productos.forEach((p)=>{
+							 productosCombo += "<option value='"+p.idProdu+"'>"+p.nombreProdu+"</option>";
+							return productosCombo;
+						});
+						const divAgregar = "<div class=\"card-body\">\n" +
+								"<div class=\"row\">\n" +
+								"<div class=\"col\">\n" +
+								"<div class=\"form-group\">\n" +
+								"<label>Producto a ofrecer</label> <select\n" +
+								"class=\"form-control\" id='cmbCancelar"+num[1]+"' name='cmbCancelar'>\n" +
+								"<option value=\"\" disabled selected>-Mis productos-</option>\n" +
+								productosCombo +
+								"</select>\n" +
+								"</div>\n" +
+								"</div>\n" +
+								"<div class=\"col\">\n" +
+								"<div class=\"form-group\">\n" +
+								"<label>Disponible</label> <input class=\"form-control\"\n" +
+								"required name=\"\" disabled value=\"\" />\n" +
+								"</div>\n" +
+								"</div>\n" +
+								"</div>\n" +
+								"\n" +
+								"<div class=\"form-group\">\n" +
+								"<label>Precio a ofertar X Kg</label> <input\n" +
+								"class=\"form-control\" required name=\"\" />\n" +
+								"</div>\n" +
+								"</div>\n" +
+								"<div class=\"card-footer py-0 px-0\">\n" +
+								"<button type=\"button\"\n" +
+								"class=\"btn btn-secondary rounded-0 btn-block\" id='btnCancelar"+num[1]+"' name='btnCancelar'>Cancelar</button>\n" +
+								"</div>";
+						const divPrincipal = $('#'+e.currentTarget.id+'').parent().parent();
+						const divOfertar  = $('#'+e.currentTarget.id+'').parent();
+						divOfertar.remove();
+						$(divPrincipal).append(divAgregar);
 					},
 					error : function (e) {
 						console.log(e);
 					}
 				});
-
-				const divAgregar = "<div class=\"card-body\">\n" +
-						"<div class=\"row\">\n" +
-						"<div class=\"col\">\n" +
-						"<div class=\"form-group\">\n" +
-						"<label>Producto a ofrecer</label> <select\n" +
-						"class=\"form-control\">\n" +
-						"<option value=\"\" disabled selected>-Mis productos-</option>\n" +
-						"<option value=\"\">Manzanas</option>\n" +
-						"</select>\n" +
-						"</div>\n" +
-						"</div>\n" +
-						"<div class=\"col\">\n" +
-						"<div class=\"form-group\">\n" +
-						"<label>Disponible</label> <input class=\"form-control\"\n" +
-						"required name=\"\" disabled value=\"600 Kg\" />\n" +
-						"</div>\n" +
-						"</div>\n" +
-						"</div>\n" +
-						"\n" +
-						"<div class=\"form-group\">\n" +
-						"<label>Precio a ofertar X Kg</label> <input\n" +
-						"class=\"form-control\" required name=\"\" />\n" +
-						"</div>\n" +
-						"</div>\n" +
-						"<div class=\"card-footer py-0 px-0\">\n" +
-						"<button type=\"button\"\n" +
-						"class=\"btn btn-secondary rounded-0 btn-block\" id='btnCancelar"+num[1]+"' name='btnCancelar'>Cancelar</button>\n" +
-						"</div>";
-				const divPrincipal = $('#'+e.currentTarget.id+'').parent().parent();
-				const divOfertar  = $('#'+e.currentTarget.id+'').parent();
-				divOfertar.remove();
-				$(divPrincipal).append(divAgregar);
 			});
-			$(document).on('click', '[name="btnOfertar"]', (e) => {
+			$('body').on('click', '[name="btnOfertar"]', (e) => {
 				const num = e.currentTarget.id.split(/(\d+)/);
-				const divAgregar = "<div class=\"card-body\">\n" +
-						"<div class=\"row\">\n" +
-						"<div class=\"col\">\n" +
-						"<div class=\"form-group\">\n" +
-						"<label>Producto a ofrecer</label> <select\n" +
-						"class=\"form-control\">\n" +
-						"<option value=\"\" disabled selected>-Mis productos-</option>\n" +
-						"<option value=\"\">Manzanas</option>\n" +
-						"</select>\n" +
-						"</div>\n" +
-						"</div>\n" +
-						"<div class=\"col\">\n" +
-						"<div class=\"form-group\">\n" +
-						"<label>Disponible</label> <input class=\"form-control\"\n" +
-						"required name=\"\" disabled value=\"600 Kg\" />\n" +
-						"</div>\n" +
-						"</div>\n" +
-						"</div>\n" +
-						"\n" +
-						"<div class=\"form-group\">\n" +
-						"<label>Precio a ofertar X Kg</label> <input\n" +
-						"class=\"form-control\" required name=\"\" />\n" +
-						"</div>\n" +
-						"</div>\n" +
-						"<div class=\"card-footer py-0 px-0\">\n" +
-						"<button type=\"button\"\n" +
-						"class=\"btn btn-secondary rounded-0 btn-block\" id='btnCancelar"+num[1]+"' name='btnCancelar'>Cancelar</button>\n" +
-						"</div>";
-				const divPrincipal = $('#'+e.currentTarget.id+'').parent().parent();
-				const divOfertar  = $('#'+e.currentTarget.id+'').parent();
-				divOfertar.remove();
-				$(divPrincipal).append(divAgregar);
+				$.ajax({
+					type : 'POST',
+					contentType: 'application/json; charset=utf-8',
+					dataType: 'json',
+					url: '/productosDisponibles',
+					data: JSON.stringify({
+						idProductoSolicitado:num[1]
+					}),
+					success : function (response) {
+						const productos = response.productos;
+						localStorage.setItem("items".concat(num[1]),JSON.stringify(productos));
+						let productosCombo = "";
+						productos.forEach((p)=>{
+							productosCombo += "<option value='"+p.idProdu+"'>"+p.nombreProdu+"</option>";
+							return productosCombo;
+						});
+						const divAgregar = "<div class=\"card-body\">\n" +
+								"<div class=\"row\">\n" +
+								"<div class=\"col\">\n" +
+								"<div class=\"form-group\">\n" +
+								"<label>Producto a ofrecer</label> <select\n" +
+								"class=\"form-control\" id='cmbCancelar"+num[1]+"' name='cmbCancelar'>\n" +
+								"<option value=\"\" disabled selected>-Mis productos-</option>\n" +
+								productosCombo +
+								"</select>\n" +
+								"</div>\n" +
+								"</div>\n" +
+								"<div class=\"col\">\n" +
+								"<div class=\"form-group\">\n" +
+								"<label>Disponible</label> <input class=\"form-control\"\n" +
+								"required name=\"\" disabled value=\"\" />\n" +
+								"</div>\n" +
+								"</div>\n" +
+								"</div>\n" +
+								"\n" +
+								"<div class=\"form-group\">\n" +
+								"<label>Precio a ofertar X Kg</label> <input\n" +
+								"class=\"form-control\" required name=\"\" />\n" +
+								"</div>\n" +
+								"</div>\n" +
+								"<div class=\"card-footer py-0 px-0\">\n" +
+								"<button type=\"button\"\n" +
+								"class=\"btn btn-secondary rounded-0 btn-block\" id='btnCancelar"+num[1]+"' name='btnCancelar'>Cancelar</button>\n" +
+								"</div>";
+						const divPrincipal = $('#'+e.currentTarget.id+'').parent().parent();
+						const divOfertar  = $('#'+e.currentTarget.id+'').parent();
+						divOfertar.remove();
+						$(divPrincipal).append(divAgregar);
+					},
+					error : function (e) {
+						console.log(e);
+					}
+				});
 			});
 			$(document).on('click', '[name="btnCancelar"]', (e) => {
 				const num = e.currentTarget.id.split(/(\d+)/);
@@ -112,7 +138,22 @@
 				divBody.remove();
 				$(divPadre).append(divAgregar);
 			});
+
+			$(document).on('change', '[name="cmbCancelar"]', (e) => {
+				const cmb = e.currentTarget.id;
+				const num = e.currentTarget.id.split(/(\d+)/);
+				const idProd = $('#'.concat(cmb)).val();
+				const productos = JSON.parse(localStorage.getItem('items'.concat(num[1])));
+				productos.forEach((producto) => {
+					if(producto.idProdu == idProd)
+					{
+						console.log(producto.precioProdu);
+					}
+				});
+
+			});
 		});
+
 
 	</script>
 </head>

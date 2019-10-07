@@ -35,6 +35,33 @@ import java.time.LocalDateTime;
                 }
         ),
         @NamedStoredProcedureQuery(
+                name = "productosDisponibles",
+                procedureName = "PRODUCTOSDISPONIBLES",
+                resultClasses = {Producto.class},
+                parameters = {
+                        @StoredProcedureParameter(
+                                mode = ParameterMode.IN,
+                                name = "idProductoSolicitado",
+                                type = Long.class
+                        ),
+                        @StoredProcedureParameter(
+                                mode = ParameterMode.IN,
+                                name = "idProd",
+                                type = Long.class
+                        ),
+                        @StoredProcedureParameter(
+                                mode = ParameterMode.IN,
+                                name = "tipoVenta",
+                                type = Character.class
+                        ),
+                        @StoredProcedureParameter(
+                                mode = ParameterMode.REF_CURSOR,
+                                name = "q",
+                                type = void.class
+                        ),
+                }
+        ),
+        @NamedStoredProcedureQuery(
                 name = "crearProducto",
                 procedureName = "CREARPRODUCTO",
                 parameters = {

@@ -90,6 +90,7 @@ public class ProductorControlador {
     @Secured("ROLE_PRODUCTOR")
     @GetMapping(value = "/subasta/{id}")
     public String paginaEditarProducto(@PathVariable(name = "id") String idString,
+                                       HttpSession session,
                                        Model model)
     {
         Integer id = null;
@@ -113,7 +114,7 @@ public class ProductorControlador {
         {
             return "redirect:/productor";
         }
-        model.addAttribute("venta",venta);
+        session.setAttribute("venta",venta);
         model.addAttribute("pais",pais);
         return "subastaProductor";
     }
@@ -304,18 +305,23 @@ public class ProductorControlador {
 
     @Secured("ROLE_PRODUCTOR")
     @PostMapping(value = "/productosDisponibles", produces = "application/json")
-    public ResponseEntity<?> productosDisponibles(@RequestBody HashMap<String,String> idProductoDisponibleMap)
+    public ResponseEntity<?> productosDisponibles(@RequestBody HashMap<String,String> idProductoDisponibleMap,
+                                                  HttpSession httpSession)
     {
         Map<String,Object> result = new HashMap<>();
-        Integer idProductoDisponible;
+        Long idProductoDisponible;
+        Long idProductor;
+        List<Producto> productos;
         try{
-            idProductoDisponible = Integer.parseInt(idProductoDisponibleMap.get("idProductoSolicitado"));
+            idProductoDisponible = Long.parseLong(idProductoDisponibleMap.get("idProductoSolicitado"));
+            idProductor = ((Productor)httpSession.getAttribute("productor")).getIdProd();
         }catch (NumberFormatException e)
         {
             result.put("fail","fail");
             return new ResponseEntity<>(result,HttpStatus.BAD_REQUEST);
         }
-        result.put("success",idProductoDisponible);
+        productos = productoServicio.productosDisponibles(idProductoDisponible,idProductor,((Venta)httpSession.getAttribute("venta")).getTipoVenta());
+        result.put("productos",productos);
         return new ResponseEntity<>(result,HttpStatus.OK);
     }
 
