@@ -1,0 +1,130 @@
+/* COLOR FORMAL PAG: #28a445 */
+.navbar-verde{
+    background-color: rgba(40, 164, 69, 1) !important;
+    color: rgba(255,255,255,0.8);
+}
+
+.navbar-verde:hover{
+    color: rgba(255,255,255,1);
+}
+
+.navbar-light .navbar-toggler-icon {
+    background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3e%3cpath stroke='rgba(255,255,255,0.7)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+}
+
+.navbar-light .navbar-toggler {
+    color: rgba(255,255,255,0.7) !important;
+    border-color: rgba(255,255,255,0.7) !important;
+}
+
+.navbar-light .navbar-toggler:hover {
+    color: rgba(255,255,255,0.9) !important;
+    border-color: #218838 !important;
+    background-color: #218838;
+}
+.custom-file-input ~ .custom-file-label::after {
+    content: "Subir";
+}
+.custom-file-label {
+    overflow: hidden;
+}
+.container{
+    max-width: 960px;
+}
+
+.letras{
+    letter-spacing: 3px;
+    text-transform: uppercase;
+}
+
+.sc-main{
+    background: linear-gradient(rgba(0,0,0,0), rgba(0,0,0,0)),url(/img/fondo.jpg) no-repeat 50% 50% !important;
+    background-size: cover !important;
+    position: relative;
+}
+
+.sc-main{
+	min-height: 50vh;
+}
+
+.btnes{
+    border-color: white !important;
+}
+
+.btnes:hover{
+    border-color: transparent !important;
+}
+
+.sc-header-content{
+	position:absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	min-width: 100%;
+}
+
+.text-light{
+    font-size: 25px;
+}
+#error-container {
+    margin-top:10px;
+    position: fixed;
+}
+/* MENU DE PERFILES */
+.div-menu{
+    border-radius: 0 0;
+    height: 80px;
+    background-color: rgb(108, 117, 125);
+    color: rgb(242, 242, 242);
+}
+
+.div-menu:hover{
+    background-color: rgb(153, 153, 153);
+    cursor: pointer;
+    color: white;
+}
+
+.div-menu-sin-hover{
+    background-color: rgb(108, 117, 125);
+    color: rgb(242, 242, 242);
+}
+
+.menu{
+    background-color: rgb(108, 117, 125);
+}
+
+.rate {
+    float: left;
+    height: 46px;
+    padding: 0 10px;
+}
+.rate:not(:checked) > input {
+    position:absolute;
+    visibility: hidden;
+}
+.rate:not(:checked) > label {
+    float:right;
+    width:1em;
+    overflow:hidden;
+    white-space:nowrap;
+    cursor:pointer;
+    font-size:30px;
+    color:#ccc;
+}
+.rate:not(:checked) > label:before {
+    content: '★ ';
+}
+.rate > input:checked ~ label {
+    color: #ffc700;
+}
+.rate:not(:checked) > label:hover,
+.rate:not(:checked) > label:hover ~ label {
+    color: #deb217;
+}
+.rate > input:checked + label:hover,
+.rate > input:checked + label:hover ~ label,
+.rate > input:checked ~ label:hover,
+.rate > input:checked ~ label:hover ~ label,
+.rate > label:hover ~ input:checked ~ label {
+    color: #c59b08;
+}
