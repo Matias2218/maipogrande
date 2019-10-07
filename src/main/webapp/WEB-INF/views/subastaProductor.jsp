@@ -127,7 +127,7 @@
 							<h3 class="letras text-center jumbotron-heading font-weight-bold">Subasta N°
 								${venta.solicitud.idSol}</h3>
 
-
+<!--  -->
 							<table class="table table-sm table-borderless">
 								<tbody>
 								<tr>
