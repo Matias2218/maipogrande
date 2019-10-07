@@ -82,8 +82,18 @@ public class Venta {
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "ID_SOL")
     private Solicitud solicitud;
+    @OneToMany(mappedBy = "venta")
+    private List<OfertaProducto> ofertaProductos;
 
     public Venta() {
+    }
+
+    public List<OfertaProducto> getOfertaProductos() {
+        return ofertaProductos;
+    }
+
+    public void setOfertaProductos(List<OfertaProducto> ofertaProductos) {
+        this.ofertaProductos = ofertaProductos;
     }
 
     public Character getEstadoVenta() {
