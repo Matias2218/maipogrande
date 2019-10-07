@@ -150,5 +150,6 @@
         </div>
     </main>
 </div>
+<jsp:include page="layout/modalCargando.jsp"></jsp:include>
 </body>
 </html>

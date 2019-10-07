@@ -7,6 +7,8 @@ import com.duoc.maipogrande.paginador.Pagina;
 import com.duoc.maipogrande.servicios.ProductoServicio;
 import com.duoc.maipogrande.servicios.ProductorServicio;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,6 +27,7 @@ import java.sql.Blob;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.*;
+import java.util.stream.Collectors;
 
 
 @Controller
@@ -84,11 +87,20 @@ public class ProductorControlador {
             return "redirect:/productor";
         }
         Venta venta = productorServicio.buscarVentaPorIdParaSubasta(id);
+        String pais = venta
+                .getSolicitud()
+                .obtenerPaises().
+                entrySet().stream()
+                .filter(x -> venta.getSolicitud().getPaisDestinoSol().equals(x.getKey()))
+                .map(x -> x.getValue())
+                .collect(Collectors.joining());
+
         if(venta == null)
         {
             return "redirect:/productor";
         }
         model.addAttribute("venta",venta);
+        model.addAttribute("pais",pais);
         return "subastaProductor";
     }
 
@@ -275,4 +287,22 @@ public class ProductorControlador {
         attributes.addFlashAttribute("alerta", "Producto editado correctamente");
         return "redirect:productos";
     }
+
+    @Secured("ROLE_PRODUCTOR")
+    @PostMapping(value = "/productosDisponibles", produces = "application/json")
+    public ResponseEntity<?> productosDisponibles(@RequestBody HashMap<String,String> idProductoDisponibleMap)
+    {
+        Map<String,Object> result = new HashMap<>();
+        Integer idProductoDisponible;
+        try{
+            idProductoDisponible = Integer.parseInt(idProductoDisponibleMap.get("idProductoSolicitado"));
+        }catch (NumberFormatException e)
+        {
+            result.put("fail","fail");
+            return new ResponseEntity<>(result,HttpStatus.BAD_REQUEST);
+        }
+        result.put("success",idProductoDisponible);
+        return new ResponseEntity<>(result,HttpStatus.OK);
+    }
+
 }
