@@ -4,6 +4,9 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
+/**
+ * Clase utilizada para el almacenamiento de las variables asignadas al transportista
+ */
 @Entity
 @Table(name = "Transportistas")
 @NamedStoredProcedureQueries({
@@ -44,45 +47,58 @@ import java.time.LocalDateTime;
 }
 )
 public class Transportista {
+    // Variable que alamacena el id del transportista, este facilita la identificacion del transportista
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idTran;
+    // Variable que almacena el nombre del transportista
     @NotNull
     @Column(length = 50, nullable = false)
     private String nombreTran;
+    // Variable que almacena el apellido del transportista
     @Column(length = 100)
     private String apellidosTran;
+    // Varible que almacena el rut del transportista
     @NotNull
     @Column(length = 11, nullable = false)
     private String rutTran;
+    // Variable que almacena el email de transportista, esto como medio de comunicacion e identificacion dentro de la pagina
     @NotNull
     @Column(length = 80, nullable = false,  unique = true)
     private String emailTran;
+    // Variable que alamcena la contraseña asignada por el transportista a la cuenta
     @NotNull
     @Column(length = 60, nullable = false)
     private String contraseñaTran;
+    // Variable que alamacena la fecha de creacion de la cuenta
     @NotNull
     @Column(nullable = false, columnDefinition = "DATE")
     private LocalDateTime fechaCreacion;
+    // Variable que almacena el numero de contacto del transportista
     @NotNull
     @Column(length = 12, nullable = false)
     private String telefonoTran;
+    // Variable que almacena la patente del vehiculo que conduce el transportista
     @NotNull
     @Column(length = 6, nullable = false)
     private String patente;
+    // Variable que almacena el tamaño del transporte para ver la magnitud de este
     @NotNull
     @Column(length = 30, nullable = false)
     private String tamaño;
+    // Variable que almacena la capacidad del transporte
     @NotNull
     @Column(nullable = false)
     private Double capacidadCarga;
+    // Variable almacena el estado del transporte, esto con el fin de saber si cuenta o no con una correspondiente refrigeracion para el transporte de la carga asignada
     @NotNull
     @Column(length = 1, nullable = false)
     private Character refrigeracion;
+    // Varible que hereda de contrato
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "ID_CONTRA")
     private Contrato contrato;
-
+    // Inicio de los metodos accesadores y mutadores
     public Transportista() {
     }
 

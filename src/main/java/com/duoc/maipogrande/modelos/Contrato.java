@@ -5,28 +5,34 @@ import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 /**
- *
+ * Clase que almacena los datos correspondientes a los contratos
  */
 @Entity
 @Table(name = "Contratos")
 public class Contrato {
+    // Variable que almacena el id del contrato, este sirve para identificar el contrato
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idContra;
+    // Variable que almacena la fecha de inicio del contrato
     @Column(nullable = false)
     private LocalDate fechaInicioContra;
+    // Variable que almacena la fecha de termino del contraro
     @Column(nullable = false)
     private LocalDate fechaTerminoContra;
+    // Variable que almacena un PDF del contrato, el cual puede ser visualizado en pa pagina
     @Lob
     @Column(columnDefinition = "BLOB")
     private byte[] pdfContra;
+    // Variable que almacena el tipo de contrato, entre los roles estan el transportista y el productor
     @NotNull
     @Column(nullable = false, length = 1)
     private Character tipoContra;
+    // Varible que almacena el estado del contrato, entre estos existen vigente y vencido
     @NotNull
     @Column(nullable = false, length = 1)
     private Character estadoContra;
-
+    // Inicio de los metodos accesadores y mutadores
     public Contrato() {
     }
 

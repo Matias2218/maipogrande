@@ -5,6 +5,9 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+/**
+ * Clase que permite el almacenamiento de los datos de la solicitud creada
+ */
 @Entity
 @Table(name = "Productos_Solicitados")
 @NamedStoredProcedureQueries({
@@ -31,23 +34,28 @@ import javax.validation.constraints.Size;
         )
 })
 public class ProductoSolicitado {
+    //  Variable asignada a toda solicitud para su correcta identificacion
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idProdS;
+    // Varible que almacena el nombre de la solicitud
     @NotNull
     @Column(length = 50, nullable = false)
     private String nombreProdS;
+    // Variable que almacena la unidad de medida del prodcuto
     @NotNull
     @Size(max = 2)
     @Column(length = 2, nullable = false)
     private String unidadProdS;
+    // Variable que almacena la cantidad de productos para la solicitud
     @Min(1)
     @Column(nullable = false)
     private Integer cantidadProdS;
+    // Variable heredada de la Solicitud
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "ID_SOL")
     private Solicitud solicitud;
-
+    // Inicio de los metodos accesadores y mutadores
     public ProductoSolicitado() {
     }
 
