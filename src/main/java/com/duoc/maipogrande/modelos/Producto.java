@@ -9,6 +9,9 @@ import javax.validation.constraints.NotNull;
 import java.sql.Blob;
 import java.time.LocalDateTime;
 
+/**
+ * Clase utilizada para guardas las variables requeridas para la futura implementacion, en este caso se almacenan los datos del producto
+ */
 @Entity
 @Table(name = "Productos")
 @NamedStoredProcedureQueries({
@@ -252,37 +255,47 @@ import java.time.LocalDateTime;
         ),
 })
 public class Producto {
+    // Variable que almacena el id del producto, este dato es auto incrementable y se le asigna a cada producto para luego poder ser identificado
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idProdu;
+    // Variable que almacena el nombre del producto
     @NotNull
     @Column(length = 50, nullable = false)
     private String nombreProdu;
+    // Variable que almacena la fecha de ingreso del producto, esto con el fin de tener un registro
     @Column(nullable = false, columnDefinition = "DATE")
     private LocalDateTime fechaIngresoProdu;
+    // Variable que almacena la calidad del producto, esto consta de una valoracion del 1 al 5, donde 1 es una pesima calidad y 5 una excelente
     @Min(1)
     @Max(5)
     @Column(nullable = false)
     private Byte calidadProdu;
+    // Variable que almacena el precio total del producto
     @Min(1)
     @Column(nullable = false)
     private Integer precioProdu;
+    // Variable que almacena la unidad de mediad del producto
     @NotNull
     @Column(length = 2, nullable = false)
     private String unidadMasaProdu;
+    // Variable que almacena una imagen para el reconocimiento mas certero del producto
     @Lob
     @Column(columnDefinition = "BLOB")
     private byte[] imagenProdu;
+    // Variable que almacena el tipo de comercializacion del producto, en este caso se tiene registro de los tipos como, externo y interno
     @NotNull
     @Column(length = 1, nullable = false)
     private Character tipoComercializacionProdu;
+    // Variable que almacena el stock o cantidad todal del producto seleccionado
     @Min(0)
     @Column(nullable = false)
     private Integer stockProdu;
+    // Variable que hereda de Productor, esta sirve para dar conocimiento del productor que publica sus productos
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "ID_PROD")
     private Productor productor;
-
+    //inicio de los metodos accesadores
     public Producto() {
     }
 
