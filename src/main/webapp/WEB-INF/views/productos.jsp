@@ -58,9 +58,9 @@
                         </c:when>
                         <c:otherwise>
                         <div class="table-responsive mt-2">
-                            <table class="table table-hover thead-light">
+                            <table class="table table-hover table-borderless thead-light border border-success rounded-lg mb-0">
                                 <thead>
-                                <tr>
+                                <tr class="border-bottom border-secondary">
                                     <th scope="col"></th>
                                     <th scope="col">Nombre</th>
                                     <th scope="col">Fecha ingreso</th>
@@ -72,7 +72,7 @@
                                 </thead>
                                 <tbody>
                                 <c:forEach begin="0" end="${fn:length(productos)-1}" var="i">
-                                    <tr>
+                                    <tr class="">
                                         <td class="align-middle"><img style="height: 100px; min-width: 120px;" src="${imagenes.get(i)}" class="img-thumbnail rounded" alt="">
                                         </td>
                                         <td class="align-middle">${productos.get(i).nombreProdu}</td>
@@ -105,28 +105,30 @@
                                 </c:forEach>
                                 </tbody>
                             </table>
+                            <p class="text-right text-muted"><i class="fas fa-pencil-alt"></i>: Editar producto - <i class="fas fa-trash-alt"></i>: Eliminar producto</p>
                         </div>
                         </c:otherwise>
+                        
                         </c:choose>
                         <nav aria-label="Page navigation example">
-                            <ul class="pagination">
+                            <ul class="pagination justify-content-center">
                                 <c:if test="${paginaActual != 1}">
-                                    <li class="page-item"><button type="submit" name="pagina" value="${paginaActual-1}" class="page-link">&laquo;</button></li>
+                                    <li class="page-item"><button type="submit" name="pagina" value="${paginaActual-1}" class="page-link paginador-item">&laquo;</button></li>
                                 </c:if>
                                 <c:forEach begin="${paginador.desde-1}" end="${paginador.hasta-1}" var="i">
                                     <c:choose>
                                         <c:when test="${paginaActual-1 eq i}">
                                             <li class="page-item active">
-                                                <a class="page-link" href="#">${i+1}<span class="sr-only">(current)</span></a>
+                                                <a class="page-link paginador-current" href="#">${i+1}<span class="sr-only">(current)</span></a>
                                             </li>
                                         </c:when>
                                         <c:otherwise>
-                                            <li class="page-item"><button type="submit" name="pagina" value="${i+1}" class="page-link">${i+1}</button></li>
+                                            <li class="page-item"><button type="submit" name="pagina" value="${i+1}" class="page-link paginador-item">${i+1}</button></li>
                                         </c:otherwise>
                                     </c:choose>
                                 </c:forEach>
                                 <c:if test="${paginaActual  < paginador.totalPaginas}">
-                                    <li class="page-item"><button type="submit" name="pagina" value="${paginaActual+1}" class="page-link">&raquo;</button></li>
+                                    <li class="page-item"><button type="submit" name="pagina" value="${paginaActual+1}" class="page-link paginador-item">&raquo;</button></li>
                                 </c:if>
                             </ul>
                         </nav>

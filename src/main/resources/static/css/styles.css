@@ -183,3 +183,27 @@ h6 {
 .subasta-card{
 	background-color: rgba(228, 230, 231, 1);
 }
+
+.paginador-current{
+	background-color: rgb(255, 84, 0) !important; 
+	color: white !important; 
+	border: 1px solid #FF5400 !important;
+}
+
+.paginador-item{
+	color: #FF5400;
+}
+
+.paginador-item:hover{
+	color:rgb(204, 68, 0);
+}
+
+.page-link:focus {
+    z-index: 2;
+    outline: 0;
+    box-shadow: 0 0 0 .2rem rgba(255, 85, 0,.25);
+}
+    
+.texto-verde{
+	color:rgba(30, 123, 52,0.9);
+}

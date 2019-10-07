@@ -124,27 +124,27 @@
 				<div class="row  ml-5 mr-5">
 					<div class="col-lg pl-0 pr-0 mr-3 ml-3">
 						<div class="container" style="max-width: 45rem;">
-							<h3 class="letras text-center jumbotron-heading">Subasta N°
+							<h3 class="letras text-center jumbotron-heading font-weight-bold">Subasta N°
 								${venta.solicitud.idSol}</h3>
 
 
 							<table class="table table-sm table-borderless">
 								<tbody>
 								<tr>
-									<th colspan="2">Datos del cliente</th>
+									<th colspan="2" class="lead text-uppercase texto-verde">Datos del cliente</th>
 								</tr>
 								<tr>
-									<td><u>Nombre</u></td>
-									<td>${venta.solicitud.cliente.nombreCli} ${venta.solicitud.cliente.apellidosCli}</td>
-									<td><u>Correo</u></td>
-									<td>${venta.solicitud.cliente.emailCli}</td>
+									<td class="lead"><u>Nombre</u></td>
+									<td class="lead">${venta.solicitud.cliente.nombreCli} ${venta.solicitud.cliente.apellidosCli}</td>
+									<td class="lead"><u>Correo</u></td>
+									<td class="lead">${venta.solicitud.cliente.emailCli}</td>
 								</tr>
 								<tr>
-									<th colspan="2">Datos de la venta</th>
+									<th colspan="2" class="lead text-uppercase texto-verde">Datos de la venta</th>
 								</tr>
 								<tr>
-									<td><u>Tipo de venta</u></td>
-									<td>
+									<td class="lead"><u>Tipo de venta</u></td>
+									<td class="lead">
 										<c:if test="${venta.tipoVenta eq 'E'.charAt(0)}">
 											Venta Externa
 										</c:if>
@@ -153,16 +153,16 @@
 										</c:if>
 
 									</td>
-									<td><u>Fecha limite</u></td>
-									<td>${venta.solicitud.fechalimiteSol}</td>
+									<td class="lead"><u>Fecha limite</u></td>
+									<td class="lead">${venta.solicitud.fechalimiteSol}</td>
 								</tr>
 								<tr>
-									<td><u>Dirección</u></td>
-									<td colspan="3">${venta.solicitud.direccionDestinoSol}, ${pais}</td>
+									<td class="lead"><u>Dirección</u></td>
+									<td colspan="3" class="lead">${venta.solicitud.direccionDestinoSol}, ${pais}</td>
 								</tr>
 								<tr>
-									<td><u>Descripción</u></td>
-									<td colspan="3">${venta.solicitud.descripcionSol}</td>
+									<td class="lead"><u>Descripción</u></td>
+									<td colspan="3" class="lead">${venta.solicitud.descripcionSol}</td>
 								</tr>
 								</tbody>
 							</table>
