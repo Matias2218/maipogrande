@@ -37,14 +37,14 @@ public class ClientesControlador {
     TransportistaServicio transportistaServicio;
 
     /**
-     *
-     * @param model
-     * @param principal
-     * @param session
-     * @param logout
-     * @param error
-     * @param attributes
-     * @return
+     * Metodo que permite el redireccionamiento de pagina y que ademas logra realizar el papel de control de inicio de sesiones
+     * @param model interface que permite enviar elementos a la vista en tipo {@code java.util.Map}.
+     * @param principal Control el ingreso de entidades a la pagina, segun sus roles
+     * @param session Proporciona una manera de identificar un usuario o solicitud y alamacena la informacion
+     * @param logout Anotacion que indica que parametro se solicito, en este caso, logout el cual permite cerrar sesion dentro del sitio
+     * @param error Anotacion que indica que parametro se solicito, en este caso, error que permite determinar que problemas se detectan
+     * @param attributes Manda informacion a la vista, cuando esta es redirigida mediante una ruta que va hacia un metodo
+     * @return Permite la redirecion correspondiente a la vista, segun el flujo del algoritmo
      */
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String index(Model model,
@@ -98,6 +98,12 @@ public class ClientesControlador {
     public String paginaPrincipalClienteInterno() {
         return "clienteInterno";
     }
+
+    /**
+     * Metodo que permite el redireccionamiento segun el flujo del metodo, ademas logra cargar las unidades de medida para su respectivo uso
+     * @param model interface que permite enviar elementos a la vista en tipo {@code java.util.Map}.
+     * @return Permite la redirecion correspondiente a la vista, segun el flujo del algoritmo
+     */
     @Secured("ROLE_CLIENTE_INTERNO")
     @GetMapping(value = "/clienteInterno/crearSolicitud")
     public String paginaAñadirSolcitudInterno(Model model)
@@ -111,6 +117,17 @@ public class ClientesControlador {
         model.addAttribute("solicitud",solicitud);
         return "añadirSolicitudClienteInterno";
     }
+
+    /**
+     * Metodo que permite la creacion de solicitudes para el cliente interno
+     * @param solicitud Clase {@code com.duoc.maipogrande.modelos.Solicitud} proveniente de la vista ClienteInterno
+     * @param bindingResult Valida si existen errores en la clase {@code com.duoc.maipogrande.modelos.Solicitud}
+     * @param session Proporciona una manera de identificar un usuario o solicitud y alamacena la informacion
+     * @param nombresProductos Anotacion que indica que parametro se solicito, en este caso, nombreProductos el cual proporciona el nombre del producto
+     * @param cantidadProductosString Anotacion que indica que parametro se solicito, en este caso, cantidadProductos el cual proporciona la cantidad de productos
+     * @param unidadMasas Anotacion que indica que parametro se solicito, en este caso, unidadMasas el cual proporciona el tipo de medidad
+     * @return Permite la redirecion correspondiente a la vista, para luego ejecutar el metodo correspondiente
+     */
     @Secured("ROLE_CLIENTE_INTERNO")
     @PostMapping(value = "/clienteInterno/crearSolicitud")
     public String peticionPostAñadirSolicitudInterno(@Valid @ModelAttribute("solicitud") Solicitud solicitud,
@@ -159,6 +176,11 @@ public class ClientesControlador {
         return "clienteExterno";
     }
 
+    /**
+     *
+     * @param model interface que permite enviar elementos a la vista en tipo {@code java.util.Map}.
+     * @return Permite la redirecion correspondiente a la vista, para luego ejecutar el metodo correspondiente
+     */
     @Secured("ROLE_CLIENTE_EXTERNO")
     @GetMapping(value = "/clienteExterno/crearSolicitud")
     public String paginaAñadirSolcitud(Model model)
@@ -174,6 +196,17 @@ public class ClientesControlador {
         model.addAttribute("solicitud",solicitud);
         return "añadirSolicitudClienteExterno";
     }
+
+    /**
+     * Metodo que permite la creacion de solicitudes para el cliente interno
+     * @param solicitud Clase {@code com.duoc.maipogrande.modelos.Solicitud} proveniente de la vista ClienteInterno
+     * @param bindingResult Valida si existen errores en la clase {@code com.duoc.maipogrande.modelos.Solicitud}
+     * @param session Proporciona una manera de identificar un usuario o solicitud y alamacena la informacion
+     * @param nombresProductos Anotacion que indica que parametro se solicito, en este caso, nombreProductos el cual proporciona el nombre del producto
+     * @param cantidadProductosString Anotacion que indica que parametro se solicito, en este caso, cantidadProductos el cual proporciona la cantidad de productos
+     * @param unidadMasas Anotacion que indica que parametro se solicito, en este caso, unidadMasas el cual proporciona el tipo de medidad
+     * @return Permite la redirecion correspondiente a la vista, para luego ejecutar el metodo correspondiente
+     */
     @Secured("ROLE_CLIENTE_EXTERNO")
     @PostMapping(value = "/clienteExterno/crearSolicitud")
     public String peticionPostAñadirSolicitud(@Valid @ModelAttribute("solicitud") Solicitud solicitud,
@@ -215,7 +248,6 @@ public class ClientesControlador {
                 clienteServicio.crearProductosSolicitados(productoSolicitados);
         return "redirect:/clienteExterno";
     }
-
 
     @Secured("ROLE_TRANSPORTISTA")
     @RequestMapping(value = "/transportista", method = RequestMethod.GET)

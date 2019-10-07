@@ -42,6 +42,13 @@ public class ProductorControlador {
     private static final List<String> EXTENSIONES = Arrays.asList("image/png", "image/jpeg", "image/jpg");
     private static final Long MAXIMO_PESO_IMAGEN = 83886080L;
 
+    /**
+     * Metodo que permite la redireccion a la pagina principal del productor
+     * @param model interface que permite enviar elementos a la vista en tipo {@code java.util.Map}.
+     * @param p Anotacion que indica que parametro se solicito, en este caso, el valor de pagina
+     * @param session Proporciona una manera de identificar un usuario o solicitud y alamacena la informacion
+     * @return Permite la redirecion correspondiente a la vista, segun el flujo del algoritmo
+     */
     @Secured("ROLE_PRODUCTOR")
     @GetMapping(value = "/productor")
     public String paginaPrincipalProductor(Model model,
@@ -73,6 +80,13 @@ public class ProductorControlador {
         model.addAttribute("paginaActual",(paginaActual==0)?1: paginaActual+1);
         return "productor";
     }
+
+    /**
+     * Metodo que permite la redireccion a la pagina editar del producto
+     * @param idString Parametro vinculado a una plantilla URI, si es de tipo map, este trae todos sus elementos
+     * @param model interface que permite enviar elementos a la vista en tipo {@code java.util.Map}.
+     * @return Permite la redirecion correspondiente a la vista, segun el flujo del algoritmo
+     */
     @Secured("ROLE_PRODUCTOR")
     @GetMapping(value = "/subasta/{id}")
     public String paginaEditarProducto(@PathVariable(name = "id") String idString,

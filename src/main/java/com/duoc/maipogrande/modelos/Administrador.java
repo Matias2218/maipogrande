@@ -45,7 +45,7 @@ public class Administrador {
     // Controlador sin parametros
     public Administrador() {
     }
-    // Inicio de los metodos accesadores
+    // Inicio de los metodos accesadores y mutadores
     public Long getIdAdm() {
         return idAdm;
     }

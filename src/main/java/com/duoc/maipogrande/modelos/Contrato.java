@@ -4,6 +4,9 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
+/**
+ *
+ */
 @Entity
 @Table(name = "Contratos")
 public class Contrato {
