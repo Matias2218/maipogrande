@@ -1,6 +1,6 @@
 /* COLOR FORMAL PAG: #28a445 */
 body {
-  font-family: 'Roboto Slab', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+    font-family: 'Roboto Slab', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
 }
 
 .navbar-verde{
@@ -28,9 +28,9 @@ body {
 }
 
 .alerta-naranja{
-	background-color: orange; 
-	color: white; 
-	border: orange;
+    background-color: orange;
+    color: white;
+    border: orange;
     border-radius: 0px;
 }
 
@@ -65,7 +65,7 @@ body {
 }
 
 .sc-main{
-	min-height: 50vh;
+    min-height: 50vh;
 }
 
 .btnes{
@@ -77,11 +77,11 @@ body {
 }
 
 .sc-header-content{
-	position:absolute;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%);
-	min-width: 100%;
+    position:absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    min-width: 100%;
 }
 
 .text-light{
@@ -152,18 +152,18 @@ body {
 
 /* INDEX */
 .page-section h2.section-heading {
-  font-size: 40px;
-  margin-top: 0;
-  margin-bottom: 5px;
+    font-size: 40px;
+    margin-top: 0;
+    margin-bottom: 5px;
 }
 
 .page-section h3.section-subheading {
-  font-size: 16px;
-  font-weight: 400;
-  font-style: italic;
-  margin-bottom: 15px;
-  text-transform: none;
-  font-family: 'Droid Serif', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+    font-size: 16px;
+    font-weight: 400;
+    font-style: italic;
+    margin-bottom: 15px;
+    text-transform: none;
+    font-family: 'Droid Serif', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
 }
 
 h1,
@@ -172,30 +172,30 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+    font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
 }
 
 .service-heading {
-  margin: 15px 0;
-  text-transform: none;
+    margin: 15px 0;
+    text-transform: none;
 }
 
 .subasta-card{
-	background-color: rgba(228, 230, 231, 1);
+    background-color: rgba(228, 230, 231, 1);
 }
 
 .paginador-current{
-	background-color: rgb(255, 84, 0) !important; 
-	color: white !important; 
-	border: 1px solid #FF5400 !important;
+    background-color: rgb(255, 84, 0) !important;
+    color: white !important;
+    border: 1px solid #FF5400 !important;
 }
 
 .paginador-item{
-	color: #FF5400;
+    color: #FF5400;
 }
 
 .paginador-item:hover{
-	color:rgb(204, 68, 0);
+    color:rgb(204, 68, 0);
 }
 
 .page-link:focus {
@@ -203,7 +203,7 @@ h6 {
     outline: 0;
     box-shadow: 0 0 0 .2rem rgba(255, 85, 0,.25);
 }
-    
+
 .texto-verde{
-	color:rgba(30, 123, 52,0.9);
+    color:rgba(30, 123, 52,0.9);
 }

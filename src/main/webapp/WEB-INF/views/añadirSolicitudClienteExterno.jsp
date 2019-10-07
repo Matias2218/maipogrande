@@ -16,12 +16,13 @@
 </head>
 <body>
 <div class="page-wrapper chiller-theme toggled">
+    <jsp:include page="layout/sidebarCliente.jsp" />
     <!-- SIDEBAR -->
     <main class="page-content">
         <div class="container-fluid">
             <div class="row mr-3 ml-3">
                 <div class="col-lg mt-4 mb-4">
-                    <h3 class="letras text-center mb-4">Crear solicitud</h3>
+                    <h3 class="letras text-center mb-4">Crear solicitud compra externa</h3>
                     <div class="card card-body">
                         <form:form novalidate="novalidate" method="POST"
                                    class="needs-validation" action=""

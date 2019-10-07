@@ -108,7 +108,7 @@
                             </div>
                             <div class="form-group text-center">
                                 <figure class="figure">
-                                    <img id="imagenSalida" class="img-fluid" name="imagenSalida"
+                                    <img id="imagenSalida" class="img-fluid" style="max-height:300px;"  name="imagenSalida"
                                          src="">
                                     <figcaption class="figure-caption">Vista previa</figcaption>
                                 </figure>

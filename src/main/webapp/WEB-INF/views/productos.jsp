@@ -15,6 +15,15 @@
     <script src="/js/utilidades/mantenedorProducto.js"></script>
     <script src="/js/utilidades/index.js"></script>
     <title>Productos</title>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            setInterval(function () {
+                setTimeout(function () {
+                    $("#alert").slideUp(1500);
+                });
+            },4000);
+        });
+    </script>
 </head>
 <body>
 <div class="page-wrapper chiller-theme toggled">
@@ -23,18 +32,7 @@
         <div class="container-fluid w-80 mt-2 pl-0 pr-0">
             <div class="row  ml-5 mr-5">
                 <div class="col-lg pl-0 pr-0 mr-3 ml-3">
-                    <c:if test="${alerta != null}">
-                        <div class="toast" id="myToast" data-autohide="true" data-delay="5000"
-                             style="position: relative;">
-                            <div class="toast-header" style="background-color: orange; color: white;">
-                                <h5><strong class="mr-auto">${alerta}</strong></h5>
-                                <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" style="width: 50px">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                        </div>
-                        <br>
-                    </c:if>
+
                     <h3 class="letras text-center mb-4">Productos</h3>
                     <form action="/productos" method="get">
 
@@ -50,6 +48,17 @@
                                 </button>
                             </div>
                         </div>
+                        <c:if test="${alerta != null}">
+                        <div
+                                class="alert alert-warning alert-dismissible fade show text-right mb-0 mt-2 alerta-naranja"
+                                id="alert" role="alert" data-autohide="true" data-delay="5000">
+                            <strong>${alerta}</strong>
+                            <button type="button" class="close py-2" data-dismiss="alert"
+                                    aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        </c:if>
                         <c:choose>
                         <c:when test="${fn:length(productos) < 1 }">
                         <div class="alert alert-warning mt-2" role="alert">

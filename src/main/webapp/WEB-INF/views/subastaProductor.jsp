@@ -13,6 +13,10 @@
 <title>Subasta</title>
 	<script>
 		$(document).ready(()=> {
+			function exit()
+			{
+				console.log('nothing');
+			}
 			$('[name="btnOfertar"]').click((e)=>
 			{
 				const num = e.currentTarget.id.split(/(\d+)/);
@@ -26,44 +30,51 @@
 					}),
 					success : function (response) {
 						const productos = response.productos;
-						localStorage.setItem("items".concat(num[1]),JSON.stringify(productos));
-						let productosCombo = "";
-						    productos.forEach((p)=>{
-							 productosCombo += "<option value='"+p.idProdu+"'>"+p.nombreProdu+"</option>";
-							return productosCombo;
-						});
-						const divAgregar = "<div class=\"card-body\">\n" +
-								"<div class=\"row\">\n" +
-								"<div class=\"col\">\n" +
-								"<div class=\"form-group\">\n" +
-								"<label>Producto a ofrecer</label> <select\n" +
-								"class=\"form-control\" id='cmbCancelar"+num[1]+"' name='cmbCancelar'>\n" +
-								"<option value=\"\" disabled selected>-Mis productos-</option>\n" +
-								productosCombo +
-								"</select>\n" +
-								"</div>\n" +
-								"</div>\n" +
-								"<div class=\"col\">\n" +
-								"<div class=\"form-group\">\n" +
-								"<label>Disponible</label> <input class=\"form-control\"\n" +
-								"required name=\"\" disabled value=\"\" />\n" +
-								"</div>\n" +
-								"</div>\n" +
-								"</div>\n" +
-								"\n" +
-								"<div class=\"form-group\">\n" +
-								"<label>Precio a ofertar X Kg</label> <input\n" +
-								"class=\"form-control\" required name=\"\" />\n" +
-								"</div>\n" +
-								"</div>\n" +
-								"<div class=\"card-footer py-0 px-0\">\n" +
-								"<button type=\"button\"\n" +
-								"class=\"btn btn-secondary rounded-0 btn-block\" id='btnCancelar"+num[1]+"' name='btnCancelar'>Cancelar</button>\n" +
-								"</div>";
-						const divPrincipal = $('#'+e.currentTarget.id+'').parent().parent();
-						const divOfertar  = $('#'+e.currentTarget.id+'').parent();
-						divOfertar.remove();
-						$(divPrincipal).append(divAgregar);
+
+						if(productos.length === 0)
+						{
+							exit();
+						}
+						else {
+							localStorage.setItem("items".concat(num[1]), JSON.stringify(productos));
+							let productosCombo = "";
+							productos.forEach((p) => {
+								productosCombo += "<option value='" + p.idProdu + "'>" + p.nombreProdu + "</option>";
+								return productosCombo;
+							});
+							const divAgregar = "<div class=\"card-body\">\n" +
+									"<div class=\"row\">\n" +
+									"<div class=\"col\">\n" +
+									"<div class=\"form-group\">\n" +
+									"<label>Producto a ofrecer</label> <select\n" +
+									"class=\"form-control\" id='cmbCancelar" + num[1] + "' name='cmbCancelar[]'>\n" +
+									"<option value=\"\" disabled selected>-Mis productos-</option>\n" +
+									productosCombo +
+									"</select>\n" +
+									"</div>\n" +
+									"</div>\n" +
+									"<div class=\"col\">\n" +
+									"<div class=\"form-group\">\n" +
+									"<label>Disponible</label> <input name='txtDisponible' class=\"form-control\" \n" +
+									"readonly='true' value=\"\" />\n" +
+									"</div>\n" +
+									"</div>\n" +
+									"</div>\n" +
+									"\n" +
+									"<div class=\"form-group\">\n" +
+									"<label>Precio a ofertar X Kg</label> <input\n" +
+									"class=\"form-control\" type='number' required name='precioOfertar[]' />\n" +
+									"</div>\n" +
+									"</div>\n" +
+									"<div class=\"card-footer py-0 px-0\">\n" +
+									"<button type=\"button\"\n" +
+									"class=\"btn btn-secondary rounded-0 btn-block\" id='btnCancelar" + num[1] + "' name='btnCancelar'>Cancelar</button>\n" +
+									"</div>";
+							const divPrincipal = $('#' + e.currentTarget.id + '').parent().parent();
+							const divOfertar = $('#' + e.currentTarget.id + '').parent();
+							divOfertar.remove();
+							$(divPrincipal).append(divAgregar);
+						}
 					},
 					error : function (e) {
 						console.log(e);
@@ -82,44 +93,50 @@
 					}),
 					success : function (response) {
 						const productos = response.productos;
-						localStorage.setItem("items".concat(num[1]),JSON.stringify(productos));
-						let productosCombo = "";
-						productos.forEach((p)=>{
-							productosCombo += "<option value='"+p.idProdu+"'>"+p.nombreProdu+"</option>";
-							return productosCombo;
-						});
-						const divAgregar = "<div class=\"card-body\">\n" +
-								"<div class=\"row\">\n" +
-								"<div class=\"col\">\n" +
-								"<div class=\"form-group\">\n" +
-								"<label>Producto a ofrecer</label> <select\n" +
-								"class=\"form-control\" id='cmbCancelar"+num[1]+"' name='cmbCancelar'>\n" +
-								"<option value=\"\" disabled selected>-Mis productos-</option>\n" +
-								productosCombo +
-								"</select>\n" +
-								"</div>\n" +
-								"</div>\n" +
-								"<div class=\"col\">\n" +
-								"<div class=\"form-group\">\n" +
-								"<label>Disponible</label> <input class=\"form-control\"\n" +
-								"required name=\"\" disabled value=\"\" />\n" +
-								"</div>\n" +
-								"</div>\n" +
-								"</div>\n" +
-								"\n" +
-								"<div class=\"form-group\">\n" +
-								"<label>Precio a ofertar X Kg</label> <input\n" +
-								"class=\"form-control\" required name=\"\" />\n" +
-								"</div>\n" +
-								"</div>\n" +
-								"<div class=\"card-footer py-0 px-0\">\n" +
-								"<button type=\"button\"\n" +
-								"class=\"btn btn-secondary rounded-0 btn-block\" id='btnCancelar"+num[1]+"' name='btnCancelar'>Cancelar</button>\n" +
-								"</div>";
-						const divPrincipal = $('#'+e.currentTarget.id+'').parent().parent();
-						const divOfertar  = $('#'+e.currentTarget.id+'').parent();
-						divOfertar.remove();
-						$(divPrincipal).append(divAgregar);
+						if(productos.length === 0)
+						{
+							exit();
+						}
+						else {
+							localStorage.setItem("items".concat(num[1]), JSON.stringify(productos));
+							let productosCombo = "";
+							productos.forEach((p) => {
+								productosCombo += "<option value='" + p.idProdu + "'>" + p.nombreProdu + "</option>";
+								return productosCombo;
+							});
+							const divAgregar = "<div class=\"card-body\">\n" +
+									"<div class=\"row\">\n" +
+									"<div class=\"col\">\n" +
+									"<div class=\"form-group\">\n" +
+									"<label>Producto a ofrecer</label> <select\n" +
+									"class=\"form-control\" id='cmbCancelar" + num[1] + "' name='cmbCancelar[]'>\n" +
+									"<option value=\"\" disabled selected>-Mis productos-</option>\n" +
+									productosCombo +
+									"</select>\n" +
+									"</div>\n" +
+									"</div>\n" +
+									"<div class=\"col\">\n" +
+									"<div class=\"form-group\">\n" +
+									"<label>Disponible</label> <input name='txtDisponible' class=\"form-control\"\n" +
+									"readonly='true'  />\n" +
+									"</div>\n" +
+									"</div>\n" +
+									"</div>\n" +
+									"\n" +
+									"<div class=\"form-group\">\n" +
+									"<label>Precio a ofertar X Kg</label> <input\n" +
+									"class=\"form-control\" type='number' required name='precioOfertar[]' />\n" +
+									"</div>\n" +
+									"</div>\n" +
+									"<div class=\"card-footer py-0 px-0\">\n" +
+									"<button type=\"button\"\n" +
+									"class=\"btn btn-secondary rounded-0 btn-block\" id='btnCancelar" + num[1] + "' name='btnCancelar'>Cancelar</button>\n" +
+									"</div>";
+							const divPrincipal = $('#' + e.currentTarget.id + '').parent().parent();
+							const divOfertar = $('#' + e.currentTarget.id + '').parent();
+							divOfertar.remove();
+							$(divPrincipal).append(divAgregar);
+						}
 					},
 					error : function (e) {
 						console.log(e);
@@ -139,19 +156,26 @@
 				$(divPadre).append(divAgregar);
 			});
 
-			$(document).on('change', '[name="cmbCancelar"]', (e) => {
+			$(document).on('change', '[name="cmbCancelar[]"]', (e) => {
 				const cmb = e.currentTarget.id;
 				const num = e.currentTarget.id.split(/(\d+)/);
 				const idProd = $('#'.concat(cmb)).val();
 				const productos = JSON.parse(localStorage.getItem('items'.concat(num[1])));
+				const txtDisponible = $(e.currentTarget).parent().parent().parent().parent().find('[name="txtDisponible"]');
+
+				console.log(txtDisponible);
 				productos.forEach((producto) => {
 					if(producto.idProdu == idProd)
 					{
-						console.log(producto.precioProdu);
+						txtDisponible.val(producto.stockProdu+" "+firstLetter(producto.unidadMasaProdu.toLowerCase()));
 					}
 				});
 
 			});
+			function firstLetter(s) {
+
+				return s.replace(/^.{1}/g, s[0].toUpperCase());
+			}
 		});
 
 
@@ -160,6 +184,7 @@
 <body>
 	<div class="page-wrapper chiller-theme toggled">
 		<jsp:include page="layout/sidebar.jsp" />
+		<form method="post" action="/subasta">
 		<main class="page-content">
 			<div class="container-fluid w-80 mt-2 pl-0 pr-0">
 				<div class="row  ml-5 mr-5">
@@ -175,16 +200,16 @@
 									<th colspan="2" class="lead text-uppercase texto-verde">Datos del cliente</th>
 								</tr>
 								<tr>
-									<td class="lead"><u>Nombre</u></td>
+									<td class="lead"><strong>Nombre</strong></td>
 									<td class="lead">${venta.solicitud.cliente.nombreCli} ${venta.solicitud.cliente.apellidosCli}</td>
-									<td class="lead"><u>Correo</u></td>
+									<td class="lead"><strong>Correo</strong></td>
 									<td class="lead">${venta.solicitud.cliente.emailCli}</td>
 								</tr>
 								<tr>
 									<th colspan="2" class="lead text-uppercase texto-verde">Datos de la venta</th>
 								</tr>
 								<tr>
-									<td class="lead"><u>Tipo de venta</u></td>
+									<td class="lead"><strong>Tipo de venta</strong></td>
 									<td class="lead">
 										<c:if test="${venta.tipoVenta eq 'E'.charAt(0)}">
 											Venta Externa
@@ -194,19 +219,21 @@
 										</c:if>
 
 									</td>
-									<td class="lead"><u>Fecha limite</u></td>
+									<td class="lead"><strong>Fecha limite</strong></td>
 									<td class="lead">${venta.solicitud.fechalimiteSol}</td>
 								</tr>
 								<tr>
-									<td class="lead"><u>Dirección</u></td>
+									<td class="lead"><strong>Dirección</strong></td>
 									<td colspan="3" class="lead">${venta.solicitud.direccionDestinoSol}, ${pais}</td>
 								</tr>
 								<tr>
-									<td class="lead"><u>Descripción</u></td>
+									<td class="lead"><strong>Descripción</strong></td>
 									<td colspan="3" class="lead">${venta.solicitud.descripcionSol}</td>
 								</tr>
 								</tbody>
 							</table>
+
+
 						</div>
 						<c:forEach items="${venta.solicitud.productoSolicitados}" var="p">
 						<div class="card border-success mb-3">
@@ -228,7 +255,8 @@
 
 						</c:forEach>
 
-
+						<input type="submit"  value="Agregar oferta a subasta" class="btn btn-block btn-lg mb-2" style="background-color: #FF5400; color: white;"/>
+						<hr class="border border-secondary my-5">
 						<h5 class="letras jumbotron-heading">Mejores subastas</h5>
 						<div class="card border-success">
 							<div class="card-header text-uppercase">
@@ -271,10 +299,12 @@
 								</table>
 							</div>
 						</div>
+
 					</div>
 				</div>
 			</div>
 		</main>
+		</form>
 	</div>
 </body>
 </html>

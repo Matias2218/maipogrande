@@ -10,6 +10,41 @@ import javax.validation.constraints.Null;
  */
 @Entity
 @Table(name = "Ofertas_Productos")
+@NamedStoredProcedureQueries({
+        @NamedStoredProcedureQuery(
+                name = "crearOfertaProducto",
+                procedureName = "CREAROFERTAPRODUCTO",
+                parameters = {
+                        @StoredProcedureParameter(
+                                mode = ParameterMode.IN,
+                                name = "paisOrigen",
+                                type = String.class
+                        ),
+                        @StoredProcedureParameter(
+                                mode = ParameterMode.IN,
+                                name = "precioOferta",
+                                type = Integer.class
+                        ),
+                        @StoredProcedureParameter(
+                                mode = ParameterMode.IN,
+                                name = "unidadMasaOferta",
+                                type = String.class
+                        ),
+                        @StoredProcedureParameter(
+                                mode = ParameterMode.IN,
+                                name = "idProdu",
+                                type = Long.class
+                        ),
+                        @StoredProcedureParameter(
+                                mode = ParameterMode.IN,
+                                name = "idVenta",
+                                type = Long.class
+                        ),
+
+
+                }
+        ),
+})
 public class OfertaProducto {
     // Variable que almacena el id de la oferta, este valor es unico y auti incrementable
     @Id

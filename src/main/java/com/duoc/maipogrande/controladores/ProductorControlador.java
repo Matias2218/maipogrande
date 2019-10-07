@@ -1,5 +1,6 @@
 package com.duoc.maipogrande.controladores;
 
+import com.duoc.maipogrande.modelos.OfertaProducto;
 import com.duoc.maipogrande.modelos.Producto;
 import com.duoc.maipogrande.modelos.Productor;
 import com.duoc.maipogrande.modelos.Venta;
@@ -28,6 +29,7 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 
 @Controller
@@ -118,6 +120,43 @@ public class ProductorControlador {
         model.addAttribute("pais",pais);
         return "subastaProductor";
     }
+
+    @Secured("ROLE_PRODUCTOR")
+    @PostMapping(value = "/subasta")
+    public String subastarProducto(@RequestParam(name = "cmbCancelar[]") String[] idProdsTexto,
+                                   @RequestParam(name = "precioOfertar[]") String[] precioOfertarTexto,
+                                   HttpSession session,
+                                   Model model)
+    {
+        Long[] idProds;
+        Integer[] precioOferta;
+        try {
+             idProds = Stream.of(idProdsTexto)
+                       .map(Long::parseLong)
+                       .toArray(Long[]::new);
+             precioOferta = Stream.of(precioOfertarTexto)
+                     .map(Integer::parseInt)
+                     .toArray(Integer[]::new);
+        }
+        catch (Exception e)
+        {
+            return "redirect:/subasta/"+((Venta)session.getAttribute("venta")).getIdVenta();
+        }
+
+        for (int i = 0; i < precioOferta.length ; i++) {
+            OfertaProducto ofertaProducto = new OfertaProducto();
+            ofertaProducto.setUnidadMasaOferta("KG");
+            ofertaProducto.setPrecioOferta(precioOferta[i]);
+            ofertaProducto.setPaisOrigen("Chile");
+            ofertaProducto.setProducto(new Producto());
+            ofertaProducto.getProducto().setIdProdu(idProds[i]);
+            ofertaProducto.setVenta(new Venta());
+            ofertaProducto.getVenta().setIdVenta(((Venta)session.getAttribute("venta")).getIdVenta());
+            productorServicio.crearOfertaProducto(ofertaProducto);
+        }
+        return "redirect:/productor";
+    }
+
 
 
 

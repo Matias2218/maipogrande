@@ -12,7 +12,22 @@
     <title>Cliente</title>
 </head>
 <body>
-<h2>Cliente Externo</h2>
-<a href="/clienteExterno/crearSolicitud">Agregar solicitud</a>
+<div class="page-wrapper chiller-theme toggled">
+    <jsp:include page="layout/sidebarCliente.jsp" />
+    <main class="page-content">
+        <div class="container" style="max-width: 45rem;">
+            <h2 class="letras text-center jumbotron-heading font-weight-bold">Cliente Externo</h2>
+
+                <button type="button"
+                        onclick="window.location.href='/clienteExterno/crearSolicitud'"
+                        class="btn btn-secondary btn-block letras">Agregar solicitud</button>
+        </div>
+
+    </main>
+</div>
+
+
+
+
 </body>
 </html>

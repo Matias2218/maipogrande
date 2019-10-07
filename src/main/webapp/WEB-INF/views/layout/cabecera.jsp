@@ -33,7 +33,7 @@
         <ul class="navbar-nav mr-auto">
         </ul>
         <div class="form-inline my-2 my-lg-0 float-right">
-        <label class="letras my-2 my-sm-0 mr-3 ml-1">${nombre}</label>
+        <label class="letras my-2 my-sm-0 mr-3 ml-1">${nombre} ${apellido}</label>
         <button class="btn btn-success my-2 my-sm-0 mr-1 ml-1 letras btnes" type="submit"
         onclick="window.location.href='/logout'">Cerrar Sesion</button>
         </div>

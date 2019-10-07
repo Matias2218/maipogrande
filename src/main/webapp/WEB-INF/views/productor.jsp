@@ -17,7 +17,7 @@
 	<div class="page-wrapper chiller-theme toggled">
 		<jsp:include page="layout/sidebar.jsp" />
 		<form method="get" action="/productor">
-			<div class="page-content">
+			<main class="page-content">
 				<div class="row">
 					<!-- PUBLICACIONES -->
 					<div class="col-lg">
@@ -86,7 +86,7 @@
 						</div>
 					</div>
 				</div>
-			</div>
+			</main>
 		</form>
 </body>
 </html>

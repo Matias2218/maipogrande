@@ -1,5 +1,6 @@
 package com.duoc.maipogrande.servicios;
 
+import com.duoc.maipogrande.modelos.OfertaProducto;
 import com.duoc.maipogrande.modelos.Productor;
 import com.duoc.maipogrande.modelos.Venta;
 import org.springframework.stereotype.Service;
@@ -43,6 +44,24 @@ public class ProductorServicio {
             return null;
         }
     }
+    @Transactional(noRollbackFor = RuntimeException.class)
+    public boolean crearOfertaProducto(OfertaProducto ofertaProducto)
+    {
+        try {
+            StoredProcedureQuery query  = entityManager.createNamedStoredProcedureQuery("crearOfertaProducto");
+            query.setParameter("paisOrigen",ofertaProducto.getPaisOrigen());
+            query.setParameter("precioOferta",ofertaProducto.getPrecioOferta());
+            query.setParameter("unidadMasaOferta",ofertaProducto.getUnidadMasaOferta());
+            query.setParameter("idProdu",ofertaProducto.getProducto().getIdProdu());
+            query.setParameter("idVenta",ofertaProducto.getVenta().getIdVenta());
+            query.execute();
+            return true;
+        }
+        catch (Exception e)
+        {
+            return false;
+        }
+    }
     @Transactional(readOnly = true, noRollbackFor = RuntimeException.class)
     public List<Venta> ventasParaSubasta(Integer pagina) {
         try {
@@ -82,6 +101,7 @@ public class ProductorServicio {
             return null;
         }
     }
+
     @Transactional(readOnly = true, noRollbackFor = RuntimeException.class)
     public Integer contarVentasSubasta() {
         try {
