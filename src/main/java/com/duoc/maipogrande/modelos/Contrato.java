@@ -23,8 +23,19 @@ public class Contrato {
     @NotNull
     @Column(nullable = false, length = 1)
     private Character tipoContra;
+    @NotNull
+    @Column(nullable = false, length = 1)
+    private Character estadoContra;
 
     public Contrato() {
+    }
+
+    public Character getEstadoContra() {
+        return estadoContra;
+    }
+
+    public void setEstadoContra(Character estadoContra) {
+        this.estadoContra = estadoContra;
     }
 
     public Long getIdContra() {
