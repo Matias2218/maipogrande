@@ -106,11 +106,12 @@ public class ProductorControlador {
         Venta venta = productorServicio.buscarVentaPorIdParaSubasta(id);
         String pais = venta
                 .getSolicitud()
-                .obtenerPaises().
-                entrySet().stream()
+                .obtenerPaises()
+                .entrySet().stream()
                 .filter(x -> venta.getSolicitud().getPaisDestinoSol().equals(x.getKey()))
                 .map(x -> x.getValue())
                 .collect(Collectors.joining());
+
 
         if(venta == null)
         {
