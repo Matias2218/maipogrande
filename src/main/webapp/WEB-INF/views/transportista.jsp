@@ -12,6 +12,15 @@
     <title>Transportista</title>
 </head>
 <body>
-<h2>Transportista</h2>
+<div class="page-wrapper chiller-theme toggled">
+    <jsp:include page="layout/sidebarTransportista.jsp" />
+    <main class="page-content">
+        <div class="container" style="max-width: 45rem;">
+            <h2 class="letras text-center jumbotron-heading font-weight-bold">Transportista</h2>
+
+        </div>
+
+    </main>
+</div>
 </body>
 </html>

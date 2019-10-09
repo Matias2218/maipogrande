@@ -94,7 +94,7 @@
                                                     </div>
                                                 </div>
                                                 <a class="align-self-center ml-3 text-secondary">
-                                                    <i class="fas fa-trash fa-2x" id="1" name="trash"
+                                                    <i class="fas fa-trash-alt fa-2x mt-2" id="1" name="trash"
                                                        style="cursor: pointer"></i>
                                                 </a>
                                             </div>
@@ -125,7 +125,7 @@
                                                     </div>
                                                 </div>
                                                 <a class="align-self-center ml-3 text-secondary">
-                                                    <i class="fas fa-trash fa-2x" id="2" name="trash"
+                                                    <i class="fas fa-trash-alt fa-2x mt-2" id="2" name="trash"
                                                        style="cursor: pointer"></i>
                                                 </a>
                                             </div>

@@ -72,7 +72,7 @@ $(document).ready(function () {
         "                                                    </div>\n" +
         "                                                </div>\n" +
         "                                                <a class=\"align-self-center ml-3 text-secondary\">\n" +
-        "                                                    <i class=\"fas fa-trash fa-2x\" id='" + numeroDiv + "' name=\"trash\"\n" +
+        "                                                    <i class=\"fas fa-trash-alt fa-2x mt-2\" id='" + numeroDiv + "' name=\"trash\"\n" +
         "                                                       style=\"cursor: pointer\"></i>\n" +
         "                                                </a>\n" +
         "                                            </div>"
