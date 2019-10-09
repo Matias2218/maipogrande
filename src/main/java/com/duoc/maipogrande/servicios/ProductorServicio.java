@@ -45,7 +45,7 @@ public class ProductorServicio {
         }
     }
     @Transactional(noRollbackFor = RuntimeException.class)
-    public boolean crearOfertaProducto(OfertaProducto ofertaProducto)
+    public boolean crearOfertaProducto(OfertaProducto ofertaProducto, Long idProds)
     {
         try {
             StoredProcedureQuery query  = entityManager.createNamedStoredProcedureQuery("crearOfertaProducto");
@@ -54,6 +54,7 @@ public class ProductorServicio {
             query.setParameter("unidadMasaOferta",ofertaProducto.getUnidadMasaOferta());
             query.setParameter("idProdu",ofertaProducto.getProducto().getIdProdu());
             query.setParameter("idVenta",ofertaProducto.getVenta().getIdVenta());
+            query.setParameter("idProds",idProds);
             query.execute();
             return true;
         }
@@ -80,6 +81,19 @@ public class ProductorServicio {
         try {
             StoredProcedureQuery query  = entityManager.createNamedStoredProcedureQuery("buscarVentasActivasProductor");
             query.setParameter("id",id);
+            query.execute();
+            return query.getResultList();
+        }
+        catch (Exception e)
+        {
+            return null;
+        }
+    }
+    @Transactional(readOnly = true, noRollbackFor = RuntimeException.class)
+    public List<OfertaProducto> buscarOfertasPorIdVenta(Long id) {
+        try {
+            StoredProcedureQuery query  = entityManager.createNamedStoredProcedureQuery("buscarOfertasPorIdVenta");
+            query.setParameter("idVenta",id);
             query.execute();
             return query.getResultList();
         }

@@ -40,8 +40,30 @@ import javax.validation.constraints.Null;
                                 name = "idVenta",
                                 type = Long.class
                         ),
+                        @StoredProcedureParameter(
+                                mode = ParameterMode.IN,
+                                name = "idProds",
+                                type = Long.class
+                        ),
 
 
+                }
+        ),
+        @NamedStoredProcedureQuery(
+                name = "buscarOfertasPorIdVenta",
+                procedureName = "buscarOfertasPorIdVenta",
+                resultClasses = {OfertaProducto.class},
+                parameters = {
+                        @StoredProcedureParameter(
+                                mode = ParameterMode.IN,
+                                name = "idVenta",
+                                type = Long.class
+                        ),
+                        @StoredProcedureParameter(
+                                mode = ParameterMode.REF_CURSOR,
+                                name = "q",
+                                type = void.class
+                        ),
                 }
         ),
 })
@@ -66,16 +88,27 @@ public class OfertaProducto {
     @NotNull
     @Column(length = 2, nullable = false)
     private String unidadMasaOferta;
-    // Varible que almacena el tipo de producto ofrecido
+    // Variable que almacena el tipo de producto ofrecido
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "ID_PRODU")
     private Producto producto;
-    // Varible que hereda de la venta
+    // Variable que hereda de la venta
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "ID_VENTA")
     private Venta venta;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "ID_PRODS")
+    private  ProductoSolicitado productoSolicitado;
     // Inicio de los metodos accesadores y mutadores
     public OfertaProducto() {
+    }
+
+    public ProductoSolicitado getProductoSolicitado() {
+        return productoSolicitado;
+    }
+
+    public void setProductoSolicitado(ProductoSolicitado productoSolicitado) {
+        this.productoSolicitado = productoSolicitado;
     }
 
     public Long getIdOferp() {

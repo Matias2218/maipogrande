@@ -54,6 +54,7 @@
 					});
 					const divAgregar = "<div class=\"card-body\">\n" +
 							"<div class=\"row\">\n" +
+							"\t\t\t<input type=\"hidden\" name=\"idProds[]\" value='"+num[1]+"'/>"+
 							"<div class=\"col\">\n" +
 							"<div class=\"form-group\">\n" +
 							"<label>Producto a ofrecer</label> <select\n" +
@@ -259,15 +260,16 @@
 						</div>
 
 						</c:forEach>
-
 						<input type="submit"  value="Agregar oferta a subasta" id="btnAgregar" class="btn btn-block btn-lg mb-2" style="background-color: #FF5400; color: white;"/>
+
 						<hr class="border border-secondary my-5">
 						<h5 class="letras jumbotron-heading">Mejores subastas</h5>
-						<div class="card border-success">
+                       <c:forEach items="${venta.solicitud.productoSolicitados}" var="j" varStatus="index">
+						<div class="card border-success mb-4">
 							<div class="card-header text-uppercase">
 								<table class="table table-sm table-borderless mb-0">
 									<tr>
-										<td class="text-left font-weight-bold">Manzanas</td>
+										<td class="text-left font-weight-bold">${j.nombreProdS}</td>
 										<td class="text-right text-warning py-0"><h3 class="mb-0">
 												<i class="fas fa-trophy"></i>
 											</h3></td>
@@ -284,27 +286,36 @@
 											<th scope="col" class="text-right">Precio X Kg</th>
 										</tr>
 									</thead>
-									<tbody>
-										<tr>
-											<th scope="row" class="text-center">1</th>
-											<td>Juanito Perez</td>
-											<td class="text-right">$ 400</td>
-										</tr>
-										<tr>
-											<th scope="row" class="text-center">2</th>
-											<td>Juanito Perez</td>
-											<td class="text-right">$ 420</td>
-										</tr>
-										<tr>
-											<th scope="row" class="text-center">3</th>
-											<td>Matias maldonado</td>
-											<td class="text-right">$ 500</td>
-										</tr>
-									</tbody>
+									<c:choose>
+										<c:when test="${venta.ofertaProductos.size()>0}">
+											<c:set var="top3" value="1" scope="page"></c:set>
+											<c:set var="done" value="false" />
+											<c:forEach items="${venta.ofertaProductos}" var="op">
+												<c:if test="${op.productoSolicitado.idProdS == idProdsSolicitados[index.index] && !done}">
+													<tbody>
+													<tr>
+														<th scope="row" class="text-center">${top3}</th>
+														<td>${op.producto.productor.nombreProd} ${op.producto.productor.apellidoProd}</td>
+														<td class="text-right">${op.precioOferta}</td>
+														<c:set var="top3" value="${top3 + 1}" scope="page" ></c:set>
+														<c:if test="${top3 > 3}">
+															<c:set var="done" value="true" />
+														</c:if>
+													</tr>
+													</tbody>
+												</c:if>
+											</c:forEach>
+										</c:when>
+										<c:otherwise>
+											    <tr>
+													<th scope="row">No hay ofertas para esta subasta</th>
+												</tr>
+										</c:otherwise>
+									</c:choose>
 								</table>
 							</div>
 						</div>
-
+                      </c:forEach>
 					</div>
 				</div>
 			</div>

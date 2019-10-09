@@ -1,9 +1,6 @@
 package com.duoc.maipogrande.controladores;
 
-import com.duoc.maipogrande.modelos.OfertaProducto;
-import com.duoc.maipogrande.modelos.Producto;
-import com.duoc.maipogrande.modelos.Productor;
-import com.duoc.maipogrande.modelos.Venta;
+import com.duoc.maipogrande.modelos.*;
 import com.duoc.maipogrande.paginador.Pagina;
 import com.duoc.maipogrande.servicios.ProductoServicio;
 import com.duoc.maipogrande.servicios.ProductorServicio;
@@ -30,6 +27,8 @@ import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import static java.util.Collections.reverseOrder;
 
 
 @Controller
@@ -112,13 +111,25 @@ public class ProductorControlador {
                 .map(x -> x.getValue())
                 .collect(Collectors.joining());
 
-
+        List<OfertaProducto> ofertaProductos = venta.getOfertaProductos()
+                .stream()
+                .sorted(Comparator.comparing(OfertaProducto::getPrecioOferta)
+                        .thenComparing(reverseOrder(Comparator.comparing
+                                (ofertaProducto -> ofertaProducto.getProducto().getCalidadProdu()))))
+                .collect(Collectors.toList());
+        Long[] idProdsSolicitados = ofertaProductos
+                .stream()
+                .map(ofertaProducto -> ofertaProducto.getProductoSolicitado().getIdProdS())
+                .distinct()
+                .toArray(Long[]::new);
         if(venta == null)
         {
             return "redirect:/productor";
         }
+        venta.setOfertaProductos(ofertaProductos);
         session.setAttribute("venta",venta);
         model.addAttribute("pais",pais);
+        model.addAttribute("idProdsSolicitados",idProdsSolicitados);
         return "subastaProductor";
     }
 
@@ -126,10 +137,12 @@ public class ProductorControlador {
     @PostMapping(value = "/subasta")
     public String subastarProducto(@RequestParam(name = "cmbCancelar[]") String[] idProdsTexto,
                                    @RequestParam(name = "precioOfertar[]") String[] precioOfertarTexto,
+                                   @RequestParam(name = "idProds[]") String[] idProductosSolictadosTexto,
                                    HttpSession session,
                                    Model model)
     {
         Long[] idProds;
+        Long[] idProdSolicitados;
         Integer[] precioOferta;
         try {
              idProds = Stream.of(idProdsTexto)
@@ -138,6 +151,9 @@ public class ProductorControlador {
              precioOferta = Stream.of(precioOfertarTexto)
                      .map(Integer::parseInt)
                      .toArray(Integer[]::new);
+            idProdSolicitados = Stream.of(idProductosSolictadosTexto)
+                     .map(Long::parseLong)
+                     .toArray(Long[]::new);
         }
         catch (Exception e)
         {
@@ -153,7 +169,7 @@ public class ProductorControlador {
             ofertaProducto.getProducto().setIdProdu(idProds[i]);
             ofertaProducto.setVenta(new Venta());
             ofertaProducto.getVenta().setIdVenta(((Venta)session.getAttribute("venta")).getIdVenta());
-            productorServicio.crearOfertaProducto(ofertaProducto);
+            productorServicio.crearOfertaProducto(ofertaProducto,idProdSolicitados[i]);
         }
         return "redirect:/productor";
     }

@@ -26,15 +26,10 @@
 
 	<nav
 		class="navbar navbar-expand-lg navbar-light bg-lg sticky-top navbar-verde">
-		<a class="navbar-brand"
-			<c:choose>
-   				<c:when test="${tipo eq 'E'.charAt(0)}">href="/clienteExterno"</c:when>
-   				<c:when test="${tipo eq 'I'.charAt(0)}">href="/clienteInterno"</c:when>
-   				<c:otherwise>href="/productor"</c:otherwise>
-			</c:choose>>
-			<img src="/img/logo-maipo.png" height="50"
-			class="d-inline-block align-top" alt="">
-		</a>
+	<a href="/" class="navbar-brand">
+	<img src="/img/logo-maipo.png" height="50"
+	class="d-inline-block align-top" alt="">
+	</a>
 		<button class="navbar-toggler" type="button" data-toggle="collapse"
 			data-target="#navbarSupportedContent"
 			aria-controls="navbarSupportedContent" aria-expanded="false"

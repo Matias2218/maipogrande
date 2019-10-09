@@ -65,15 +65,12 @@ public class ClientesControlador {
                     session.setAttribute("clienteExterno", clienteExterno);
                     session.setAttribute("nombre",clienteExterno.getNombreCli());
                     session.setAttribute("apellido",clienteExterno.getApellidosCli());
-                    session.setAttribute("tipo",clienteExterno.getTipoCli());
                     return "redirect:clienteExterno";
                 case "ROLE_CLIENTE_INTERNO":
                     Cliente clienteInterno = clienteServicio.buscarClientePorId(Long.parseLong(principal.getName()));
                     session.setAttribute("clienteInterno", clienteInterno);
                     session.setAttribute("nombre",clienteInterno.getNombreCli());
                     session.setAttribute("apellido",clienteInterno.getApellidosCli());
-                    session.setAttribute("tipo",clienteInterno.getTipoCli());
-
                     return "redirect:clienteInterno";
                 case "ROLE_PRODUCTOR":
                     Productor productor = productorServicio.buscarProdPorId(Long.parseLong(principal.getName()));
@@ -85,7 +82,6 @@ public class ClientesControlador {
                     Transportista transportista = transportistaServicio.buscarTranPorId(Long.parseLong(principal.getName()));
                     session.setAttribute("transportista", transportista);
                     session.setAttribute("nombre",transportista.getNombreTran());
-                    session.setAttribute("nombre",transportista.getApellidosTran());
                     return "redirect:transportista";
             }
         }
