@@ -51,7 +51,7 @@
 					<li class="sidebar"><a href="/productos"> <i
 							class="far fa-lemon"></i> <span>Mis Productos</span>
 					</a></li>
-					<li class="sidebar-dropdown"><a href="#"> <i
+					<li class="sidebar-dropdown"><a href="javascript:void(0)"> <i
 							class="fa fa-shopping-cart"></i> <span>Ventas en proceso</span> <span
 							class="badge badge-pill badge-success">${ventasActivas.size()}</span>
 					</a>

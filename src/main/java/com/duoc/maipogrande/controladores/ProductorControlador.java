@@ -117,11 +117,14 @@ public class ProductorControlador {
                         .thenComparing(reverseOrder(Comparator.comparing
                                 (ofertaProducto -> ofertaProducto.getProducto().getCalidadProdu()))))
                 .collect(Collectors.toList());
-        Long[] idProdsSolicitados = ofertaProductos
+        Map<Long,Long> idProdsSolicitados = ofertaProductos
                 .stream()
-                .map(ofertaProducto -> ofertaProducto.getProductoSolicitado().getIdProdS())
                 .distinct()
-                .toArray(Long[]::new);
+                .collect(Collectors.toMap(OfertaProducto::getIdOferp,ofertaProducto -> ofertaProducto.getProductoSolicitado().getIdProdS()));
+                /*.map(ofertaProducto -> ofertaProducto.getProductoSolicitado().getIdProdS())
+                .sorted(Long::compareTo)
+                .distinct()
+                .toArray(Long[]::new);*/
         if(venta == null)
         {
             return "redirect:/productor";
@@ -139,11 +142,12 @@ public class ProductorControlador {
                                    @RequestParam(name = "precioOfertar[]") String[] precioOfertarTexto,
                                    @RequestParam(name = "idProds[]") String[] idProductosSolictadosTexto,
                                    HttpSession session,
-                                   Model model)
+                                   RedirectAttributes redirectAttributes)
     {
         Long[] idProds;
         Long[] idProdSolicitados;
         Integer[] precioOferta;
+        Venta venta;
         try {
              idProds = Stream.of(idProdsTexto)
                        .map(Long::parseLong)
@@ -159,7 +163,9 @@ public class ProductorControlador {
         {
             return "redirect:/subasta/"+((Venta)session.getAttribute("venta")).getIdVenta();
         }
-
+        venta = (Venta) session.getAttribute("venta");
+        Long idProductor = ((Productor) session.getAttribute("productor")).getIdProd();
+        List<OfertaProducto> ofertaProductos = new ArrayList<>();
         for (int i = 0; i < precioOferta.length ; i++) {
             OfertaProducto ofertaProducto = new OfertaProducto();
             ofertaProducto.setUnidadMasaOferta("KG");
@@ -169,8 +175,24 @@ public class ProductorControlador {
             ofertaProducto.getProducto().setIdProdu(idProds[i]);
             ofertaProducto.setVenta(new Venta());
             ofertaProducto.getVenta().setIdVenta(((Venta)session.getAttribute("venta")).getIdVenta());
-            productorServicio.crearOfertaProducto(ofertaProducto,idProdSolicitados[i]);
+            for (OfertaProducto producto:
+                 venta.getOfertaProductos()) {
+                if(producto.getProducto().getProductor().getIdProd().equals(idProductor)
+                        && producto.getPrecioOferta() <= ofertaProducto.getPrecioOferta()
+                        && producto.getProducto().getIdProdu().equals(ofertaProducto.getProducto().getIdProdu() )
+                        && producto.getProductoSolicitado().getIdProdS().equals(idProdSolicitados[i])
+                        && producto.getVenta().getIdVenta().equals(((Venta)session.getAttribute("venta")).getIdVenta()))
+                {
+                    return "redirect:/subasta/"+((Venta)session.getAttribute("venta")).getIdVenta();
+                }
+            }
+            ofertaProductos.add(ofertaProducto);
+
         }
+        for (int i = 0; i <ofertaProductos.size() ; i++) {
+             productorServicio.crearOfertaProducto(ofertaProductos.get(i),idProdSolicitados[i]);
+        }
+        redirectAttributes.addFlashAttribute("alerta",(ofertaProductos.size()==1)?"Oferta ingresada correctamente a la venta":"Ofertas ingresadas correctamente a la venta");
         return "redirect:/productor";
     }
 
