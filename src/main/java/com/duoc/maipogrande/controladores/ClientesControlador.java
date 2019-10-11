@@ -253,9 +253,5 @@ public class ClientesControlador {
         return "redirect:/clienteExterno";
     }
 
-    @Secured("ROLE_TRANSPORTISTA")
-    @RequestMapping(value = "/transportista", method = RequestMethod.GET)
-    public String paginaPrincipalTransportista() {
-        return "transportista";
-    }
+   
 }
