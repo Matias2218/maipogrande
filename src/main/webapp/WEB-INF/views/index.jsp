@@ -17,21 +17,20 @@
 <link rel="stylesheet" href="\css\bootstrap.min.css">
 <link rel="stylesheet" href="\css\styles.css">
 <script src='https://kit.fontawesome.com/a076d05399.js'></script>
-	<script
-			src="https://code.jquery.com/jquery-3.3.1.js"
-			integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
-			crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.js"
+	integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+	crossorigin="anonymous"></script>
 <link rel="shortcut icon" type="image/png" href="img\icono-maipo.png" />
 <script src="js/utilidades/index.js"></script>
-	<script type="text/javascript">
-		$(document).ready(function() {
-			setInterval(function () {
-				setTimeout(function () {
-					$("#alert").slideUp(1500);
-				});
-			},4000);
-		});
-	</script>
+<script type="text/javascript">
+	$(document).ready(function() {
+		setInterval(function() {
+			setTimeout(function() {
+				$("#alert").slideUp(1500);
+			});
+		}, 4000);
+	});
+</script>
 </head>
 <body>
 	<!-- HEADER -->
@@ -44,7 +43,9 @@
 		</div>
 	</header>
 	<c:if test="${logout != null}">
-		<div class="alert alert-warning alert-dismissible fade show text-right mb-0 alerta-naranja" id="alert" role="alert" data-autohide="true" data-delay="5000">
+		<div
+			class="alert alert-warning alert-dismissible fade show text-right mb-0 alerta-naranja"
+			id="alert" role="alert" data-autohide="true" data-delay="5000">
 			<strong>${logout}</strong>
 			<button type="button" class="close" data-dismiss="alert"
 				aria-label="Close">
@@ -54,10 +55,12 @@
 	</c:if>
 
 	<c:if test="${error != null}">
-		<div class="alert alert-danger alert-dismissible fade show text-right mb-0 alerta-roja" id="alert" role="alert" data-autohide="true" data-delay="5000">
+		<div
+			class="alert alert-danger alert-dismissible fade show text-right mb-0 alerta-roja"
+			id="alert" role="alert" data-autohide="true" data-delay="5000">
 			<strong>${error}</strong>
 			<button type="button" class="close" data-dismiss="alert"
-					aria-label="Close">
+				aria-label="Close">
 				<span aria-hidden="true">&times;</span>
 			</button>
 		</div>
@@ -98,9 +101,8 @@
 
 
 
-
 	<!-- LOGO/PRESENTACION -->
-	<section class="bg-light page-section pb-3" id="portfolio">
+	<section class="bg-light page-section-one pb-3" id="portfolio">
 		<div class="">
 			<div class="container">
 				<div class="row" style="margin-right: 0px !important;">
@@ -116,8 +118,106 @@
 			</div>
 		</div>
 	</section>
-
 	<!-- FIN LOGO/PRESENTACION -->
+
+	<!-- IMAGENES -->
+	<section id="imagenes">
+		<div class="container-fluid p-0">
+			<div class="row no-gutters">
+				<div class="col-lg-4 col-sm-6">
+					<a class="imagenes-box" href="#"> <img class="img-fluid"
+						src="img/venta-1.jpg" alt="">
+						<div class="imagenes-box-caption">
+							<div class="project-category text-white-50">Proveedores</div>
+							<div class="project-name">Los mejores proveedores</div>
+						</div>
+					</a>
+				</div>
+				<div class="col-lg-4 col-sm-6">
+					<a class="imagenes-box" href="#"> <img class="img-fluid"
+						src="img/venta-2.jpg" alt="">
+						<div class="imagenes-box-caption">
+							<div class="project-category text-white-50">Ventas</div>
+							<div class="project-name">Ventas nacionales e
+								internacionales</div>
+						</div>
+					</a>
+				</div>
+				<div class="col-lg-4 col-sm-6">
+					<a class="imagenes-box" href="#"> <img class="img-fluid"
+						src="img/venta-3.jpg" alt="">
+						<div class="imagenes-box-caption">
+							<div class="project-category text-white-50">Fruta</div>
+							<div class="project-name">La mejor fruta del pais</div>
+						</div>
+					</a>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<!-- NUESTROS SERVICIOS -->
+	<section class="page-section" id="services">
+		<div class="container">
+			<h2 class="text-center mt-0 letras">Nuestros servicios</h2>
+			<hr class="divider my-4">
+			<div class="row">
+				<div class="col-lg-3 col-md-6 text-center">
+					<div class="mt-5">
+						<i class="fas fa-4x fa-mobile-alt text-primary mb-4"></i>
+						<h3 class="h4 mb-2">Responsivo</h3>
+						<p class="text-muted mb-0">Podrás ver tus ventas en cualquier dispositivo</p>
+					</div>
+				</div>
+				<div class="col-lg-3 col-md-6 text-center">
+					<div class="mt-5">
+						<i class="fas fa-4x fa-laptop-code text-primary mb-4"></i>
+						<h3 class="h4 mb-2">Actualizaciones</h3>
+						<p class="text-muted mb-0">Estamos mejorando el sitio de manera constante</p>
+					</div>
+				</div>
+				<div class="col-lg-3 col-md-6 text-center">
+					<div class="mt-5">
+						<i class="fas fa-4x fa-globe text-primary mb-4"></i>
+						<h3 class="h4 mb-2">Información</h3>
+						<p class="text-muted mb-0">Tendras información sobre tus pedidos en todo momento</p>
+					</div>
+				</div>
+				<div class="col-lg-3 col-md-6 text-center">
+					<div class="mt-5">
+						<i class="fas fa-4x fa-lock text-primary mb-4"></i>
+						<h3 class="h4 mb-2">Seguridad</h3>
+						<p class="text-muted mb-0">Encriptación en contraseñas para sus cuentas</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+
+	<!-- INFORMACION -->
+	<section class="page-section bg-primary" id="about">
+		<div class="container">
+			<div class="row justify-content-center">
+				<div class="col-lg-8 text-center">
+					<h2 class="text-white mt-0">¡Siguenos!</h2>
+					<hr class="divider light my-4">
+					<p class="text-white-50 mb-4"></p>
+					<ul class="list-inline list-social">
+						<li class="list-inline-item social-twitter"><a href="#">
+								<i class="fab fa-twitter p-3"></i>
+						</a></li>
+						<li class="list-inline-item social-facebook"><a href="#">
+								<i class="fab fa-facebook-f p-3"></i>
+						</a></li>
+						<li class="list-inline-item social-google-plus"><a href="#">
+								<i class="fab fa-google-plus-g p-3"></i>
+						</a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</section>
 
 	<!-- FOOTER -->
 	<footer class="py-2 bg-dark text-white-50">
@@ -127,7 +227,6 @@
 		</div>
 	</footer>
 	<!-- FIN FOOTER -->
-
 
 	<script src="js/popper.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>
