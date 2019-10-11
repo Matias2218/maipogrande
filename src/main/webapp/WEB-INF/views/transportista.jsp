@@ -17,7 +17,8 @@
     <main class="page-content">
         <div class="container" style="max-width: 45rem;">
             <h2 class="letras text-center jumbotron-heading font-weight-bold">Transportista</h2>
-
+			<button type="button" onclick="window.location.href='#'"
+                        class="btn btn-secondary btn-block letras">Subasta de transporte N°1</button>
         </div>
 
     </main>
