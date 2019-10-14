@@ -408,12 +408,25 @@ public class ProductorControlador {
     }
     
     @Secured("ROLE_PRODUCTOR")
-    @RequestMapping(value = "/detalleVentaProductor", method = RequestMethod.GET)
-	public String paginaVentaProductor(Model model)
-
+    @RequestMapping(value = "/detalleVentaProductor/{id}", method = RequestMethod.GET)
+	public String paginaVentaProductor(Model model,
+                                       @PathVariable(value = "id",required = false) String idString,
+                                       HttpSession session)
 	{
+	    Long idVenta;
+	    Long idProd;
+	    try
+        {
+            idVenta = Long.parseLong(idString);
+        }
+	    catch (NumberFormatException e)
+        {
+            return "redirect:/productor";
+        }
+	    idProd = ((Productor)session.getAttribute("productor")).getIdProd();
+	    Venta venta = productorServicio.buscarVentaDetalleProdu(idVenta,idProd);
+	    model.addAttribute(venta);
         return "detalleVentaProductor";
     }
-    
 
 }

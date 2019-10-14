@@ -45,7 +45,7 @@
 			<div class="sidebar-menu">
 				<ul>
 					<li class="header-menu"><span>General</span></li>
-					<li class="sidebar"><a href="/detalleVentaProductor"> <i
+					<li class="sidebar"><a href="#"> <i
 							class="far fa-id-card"></i> <span>Mi perfil</span>
 					</a></li>
 					<li class="sidebar"><a href="/productos"> <i
@@ -58,7 +58,7 @@
 						<div class="sidebar-submenu">
 							<ul>
 								<c:forEach items="${ventasActivas}" var="v">
-									<li><a href="#">Venta Nº${v.idVenta}</a></li>
+									<li><a href="/detalleVentaProductor/${v.idVenta}">Venta Nº${v.idVenta}</a></li>
 								</c:forEach>
 							</ul>
 						</div></li>

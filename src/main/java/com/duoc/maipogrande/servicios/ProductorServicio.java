@@ -128,5 +128,18 @@ public class ProductorServicio {
             return 0;
         }
     }
-
+    public Venta buscarVentaDetalleProdu(Long idVenta,Long idProd)
+    {
+        try {
+            StoredProcedureQuery query = entityManager.createNamedStoredProcedureQuery("buscarVentaDetalleProdu");
+            query.setParameter("idVenta",idVenta);
+            query.setParameter("idProd",idProd);
+            query.execute();
+            return (Venta) query.getSingleResult();
+        }
+        catch (Exception e)
+        {
+            return null;
+        }
+    }
 }

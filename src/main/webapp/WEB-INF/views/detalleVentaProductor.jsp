@@ -1,4 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -18,9 +19,9 @@
 									<div class="col-lg-12 text-center">
 										<h3
 											class="letras text-center jumbotron-heading font-weight-bold">Venta
-											N°1</h3>
+											N°${venta.idVenta}</h3>
 										<h3 class="section-subheading text-muted">Estado:
-											Aprovado</h3>
+											Aprobado</h3>
 									</div>
 								</div>
 							</div>
@@ -74,7 +75,7 @@
 						<div class="tab-content mt-3" id="nav-tabContent">
 							<div class="tab-pane fade show active card" id="list-home"
 								role="tabpanel" aria-labelledby="list-home-list">
-								
+
 								<div class="alert alert-warning mb-0" role="alert">
 									<div class="container">
 										Sus productos se encuentran <strong>en espera</strong> de ser confirmados.
@@ -82,12 +83,10 @@
 								</div>
 								<div class="alert alert-success mb-0" role="alert">
 									<div class="container">
-										Sus productos han sido seleccionados, y pasaran al proceso de <strong>envio</strong>.
+										Sus productos han sido seleccionados, y pasaran al proceso de <strong>transporte</strong>.
 									</div>
 								</div>
-								
-								
-								<section class="page-section-one" id="portfolio">
+								<section class="page-section-one" >
 									<div class="container">
 										<div class="row">
 											<div class="col-lg-12 py-3">
@@ -112,7 +111,7 @@
 													<input type="hidden" name="idProds[]" value="22">
 													<div class="col">
 														<div class="form-group mb-0">
-															<label>Producto ofrecido</label> 
+															<label>Producto ofrecido</label>
 															<input class="form-control" disabled value="Manzanas" style="background-color:white;">
 														</div>
 													</div>
@@ -134,38 +133,54 @@
 											</div>
 										</div>
 										<!-- PRODUCTOS -->
-										
+
 									</div>
 								</section>
 							</div>
 
 							<div class="tab-pane fade card" id="list-profile" role="tabpanel"
 								aria-labelledby="list-profile-list">
-								
+
 								<div class="alert alert-warning mb-0" role="alert">
 									<div class="container">
 										El transporte se encuentra <strong>en espera</strong> de ser confirmado.
 									</div>
 								</div>
-								
+
 								<section class="page-section-one">
 									<div class="container">
 										<div class="row">
 											<div class="col-lg-12 py-3">
 												<h5 class="letras text-left jumbotron-heading mb-0">ELECCION
 													DE TRANSPORTISTA</h5>
-												<h3 class="section-subheading text-muted">Los productos</h3>
+												<h3 class="section-subheading text-muted mb-0">Los productos</h3>
 											</div>
-											
-											
 										</div>
+                                        <div class="row text-center">
+                                            <div class="col">
+                                                <button type="button" class="btn btn-secondary" style="min-width: 250px;" disabled>ORIGEN</button>
+                                            </div>
+                                            <div class="col">
+                                                <button type="button" class="btn btn-secondary" style="min-width: 250px;" disabled>DESTINO</button>
+                                            </div>
+                                        </div>
+                                        <div class="row text-center mb-3">
+                                            <div class="col">
+                                                <p class="mb-0">Villa los ciruelos, psj 8 #561, Talagante</p>
+                                                <p class="mb-0 text-uppercase font-weight-bold">Chile</p>
+                                            </div>
+                                            <div class="col">
+                                                <p class="mb-0">Calle los rios #0461, Buenos Aires</p>
+                                                <p class="mb-0 text-uppercase font-weight-bold">Argentina</p>
+                                            </div>
+                                        </div>
 									</div>
 								</section>
-							</div>
+                            </div>
 
 							<div class="tab-pane fade card" id="list-messages"
 								role="tabpanel" aria-labelledby="list-messages-list">
-								<section class="page-section-one" id="portfolio">
+								<section class="page-section-one" >
 									<div class="container">
 										<div class="row">
 											<div class="col-lg-12 py-3">
@@ -180,7 +195,7 @@
 
 							<div class="tab-pane fade card" id="list-settings"
 								role="tabpanel" aria-labelledby="list-settings-list">
-								<section class="page-section-one" id="portfolio">
+								<section class="page-section-one" >
 									<div class="container">
 										<div class="row">
 											<div class="col-lg-12 py-3">

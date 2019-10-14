@@ -112,6 +112,28 @@ import java.util.List;
                         ),
                 }
         ),
+        @NamedStoredProcedureQuery(
+                name = "buscarVentaDetalleProdu",
+                procedureName = "BUSCARVENTADETALLEPRODU",
+                resultClasses = {Venta.class},
+                parameters = {
+                        @StoredProcedureParameter(
+                                mode = ParameterMode.IN,
+                                name = "idVenta",
+                                type = Long.class
+                        ),
+                        @StoredProcedureParameter(
+                                mode = ParameterMode.IN,
+                                name = "idProd",
+                                type = Long.class
+                        ),
+                        @StoredProcedureParameter(
+                                mode = ParameterMode.REF_CURSOR,
+                                name = "q",
+                                type = void.class
+                        ),
+                }
+        ),
 
 
 })

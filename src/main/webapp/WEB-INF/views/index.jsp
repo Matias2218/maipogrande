@@ -85,7 +85,7 @@
 			</ul>
 			<form class="form-inline my-2 my-lg-0" action="/" method="post">
 				<input class="form-control my-2 my-sm-0 mr-1 ml-1" type="text"
-					placeholder="Usuario" name="username"> <input
+					placeholder="Correo Electronico" name="username"> <input
 					class="form-control my-2 my-sm-0 mr-1 ml-1" type="password"
 					placeholder="Contraseña" name="password">
 				<button class="btn btnes btn-success my-2 my-sm-0 mr-1 ml-1 letras"
