@@ -214,6 +214,12 @@ h1, h2, h3, h4, h5, h6 {
 	box-shadow: 0 0 0 .2rem rgba(255, 85, 0, .25);
 }
 
+.list-group-item:focus{
+	z-index: 2;
+	outline: 0;
+	box-shadow: 0 0 0 .2rem rgba(255, 85, 0, .25);
+}
+
 .texto-verde {
 	color: rgba(30, 123, 52, 0.9);
 }
@@ -339,5 +345,5 @@ ul.list-social li.social-google-plus a:hover {
 .list-group-item.active {
     color: #000;
     background-color: #fff;
-    border-color: #bfbfbf;
+    border-color: rgba(0,0,0,.125);
 }

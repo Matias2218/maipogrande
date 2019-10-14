@@ -80,11 +80,7 @@
 							<div class="card-body py-0 px-0">
 								<button type="button"  id="btnOfertar${p.idProdS}" name="btnOfertar"  class="btn btn-success btn-block rounded-0">O F E R T A R</button>
 							</div>
-
-							<!-- Info a aparecer -->
-							<!-- Info a aparecer -->
 						</div>
-
 						</c:forEach>
 						<input type="submit"  value="Agregar oferta a subasta" id="btnAgregar" class="btn btn-block btn-lg mb-2" style="background-color: #FF5400; color: white;"/>
 

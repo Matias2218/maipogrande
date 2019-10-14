@@ -47,7 +47,7 @@
 
 								<section class="page-section-one pb-3" id="portfolio">
 									<div class="container">
-										<div class="row" style="margin-right: 0px !important;">
+										<div class="row">
 											<div class="col-lg-12 text-center">
 												<h3
 													class="letras text-center jumbotron-heading font-weight-bold">Ventas
