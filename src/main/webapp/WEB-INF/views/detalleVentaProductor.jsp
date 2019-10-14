@@ -12,7 +12,7 @@
 			<div class="container-fluid w-80 mt-2 pl-0 pr-0">
 				<div class="row  ml-5 mr-5">
 					<div class="col-lg pl-0 pr-0 mr-3 ml-3">
-						<section class="page-section-one pb-3" id="portfolio">
+						<section class="page-section-one pb-3" >
 							<div class="container">
 								<div class="row" style="margin-right: 0px !important;">
 									<div class="col-lg-12 text-center">
@@ -85,6 +85,8 @@
 										Sus productos han sido seleccionados, y pasaran al proceso de <strong>envio</strong>.
 									</div>
 								</div>
+								
+								
 								<section class="page-section-one" id="portfolio">
 									<div class="container">
 										<div class="row">
@@ -139,7 +141,14 @@
 
 							<div class="tab-pane fade card" id="list-profile" role="tabpanel"
 								aria-labelledby="list-profile-list">
-								<section class="page-section-one" id="portfolio">
+								
+								<div class="alert alert-warning mb-0" role="alert">
+									<div class="container">
+										El transporte se encuentra <strong>en espera</strong> de ser confirmado.
+									</div>
+								</div>
+								
+								<section class="page-section-one">
 									<div class="container">
 										<div class="row">
 											<div class="col-lg-12 py-3">
@@ -147,6 +156,8 @@
 													DE TRANSPORTISTA</h5>
 												<h3 class="section-subheading text-muted">Los productos</h3>
 											</div>
+											
+											
 										</div>
 									</div>
 								</section>
