@@ -48,7 +48,10 @@
 
                             <div class="form-row">
                                 <div class="form-group col-md-6">
+                                
                                     <form:label path="stockProdu">Stock</form:label>
+                                    
+                                    
                                     <div class="input-group">
                                         <form:input path="stockProdu" required="true"
                                                     onkeypress="return event.charCode >= 48 && event.charCode <= 57"
@@ -60,7 +63,10 @@
                                             </form:select>
                                         </div>
                                     </div>
+                                    
+                                    
                                     <div class="invalid-feedback">Stock obligatorio</div>
+                                    
                                 </div>
                                 <div class="form-group col-md-3">
                                     <div class="form-check-label">

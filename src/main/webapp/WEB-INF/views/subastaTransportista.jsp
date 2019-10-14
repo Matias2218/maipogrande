@@ -19,7 +19,7 @@
 							<div class="container" style="max-width: 45rem;">
 								<h3
 									class="letras text-center jumbotron-heading font-weight-bold">Subasta
-									N° 001</h3>
+									Nº 001</h3>
 
 								<table class="table table-sm table-borderless">
 									<tbody>
@@ -66,14 +66,15 @@
 										</tr>
 									</table>
 								</div>
-
+								<!-- 
 								<div class="card-body">
 									<form class="form">
 										<div class="form-group m-0">
 											<label for="formGroupExampleInput">Precio a ofrecer</label>
 											<div class="input-group">
 												<div class="input-group-prepend">
-													<span class="input-group-text" id="inputGroupPrepend"><i class="fa fa-dollar-sign"></i></span>
+													<span class="input-group-text" id="inputGroupPrepend"><i
+														class="fa fa-dollar-sign"></i></span>
 												</div>
 												<input type="text" class="form-control"
 													id="validationCustomUsername" placeholder="Precio"
@@ -85,14 +86,34 @@
 
 								<div class="card-footer p-0">
 									<button type="button" name="btnOfertar"
-										class="btn btn-success btn-block rounded-0">O F E R T
-										A R</button>
+										class="btn btn-success btn-block rounded-0">O F E R T A R</button>
+								</div> 
+								-->
+
+
+
+								<!-- DIV NO SE PUEDE -->
+								<div class="card-body">
+									<section class="page-section-one" id="portfolio">
+										<div class="container">
+											<div class="row" style="margin-right: 0px !important;">
+												<div class="col-lg-12 text-center">
+													<h3 class="section-subheading text-muted mb-0"> Escribe eso aqui</h3>
+												</div>
+											</div>
+										</div>
+									</section>
 								</div>
+								<!-- FIN DE DIV NO SE PUEDE -->
+								
+								
+								
+								
 							</div>
 
 							<input type="submit" value="Agregar oferta a subasta"
 								id="btnAgregar" class="btn btn-block btn-lg mb-2"
-								style="background-color: #FF5400; color: white;" />
+								style="background-color: #FF5400; color: white;" disabled/>
 						</div>
 					</div>
 				</div>

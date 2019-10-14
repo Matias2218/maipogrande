@@ -9,7 +9,7 @@
 <html>
 <head>
     <jsp:include page="layout/cabecera.jsp" />
-    <title>Transportista</title>
+    <title>Transportista</title> 
 </head>
 <body>
 <div class="page-wrapper chiller-theme toggled">
@@ -20,7 +20,13 @@
 			<button type="button" onclick="window.location.href='subastaTransportista'"
                         class="btn btn-secondary btn-block letras">Subasta de transporte N°11</button>
         </div>
-
+        <!-- <embed src="http://mozilla.github.io/pdf.js/web/viewer.html" width="500" height="375" 
+ type="application/pdf">  -->
+ 
+ 
+ 
+ 
+ 
     </main>
 </div>
 </body>

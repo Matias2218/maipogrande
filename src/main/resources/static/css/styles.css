@@ -325,3 +325,19 @@ ul.list-social li.social-google-plus a {
 ul.list-social li.social-google-plus a:hover {
 	background-color: #d73925;
 }
+
+.list-group-item {
+    background-color: #f9f9f9;
+}
+
+.list-group-item.active {
+    color: #000;
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+.list-group-item.active {
+    color: #000;
+    background-color: #fff;
+    border-color: #bfbfbf;
+}

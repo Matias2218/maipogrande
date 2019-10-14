@@ -402,5 +402,14 @@ public class ProductorControlador {
         result.put("productos",productos);
         return new ResponseEntity<>(result,HttpStatus.OK);
     }
+    
+    @Secured("ROLE_PRODUCTOR")
+    @RequestMapping(value = "/detalleVentaProductor", method = RequestMethod.GET)
+	public String paginaVentaProductor(Model model)
+
+	{
+        return "detalleVentaProductor";
+    }
+    
 
 }

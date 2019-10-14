@@ -45,7 +45,7 @@
 			<div class="sidebar-menu">
 				<ul>
 					<li class="header-menu"><span>General</span></li>
-					<li class="sidebar"><a href="#"> <i
+					<li class="sidebar"><a href="/detalleVentaProductor"> <i
 							class="far fa-id-card"></i> <span>Mi perfil</span>
 					</a></li>
 					<li class="sidebar"><a href="/productos"> <i
