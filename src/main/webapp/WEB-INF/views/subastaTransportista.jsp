@@ -123,7 +123,7 @@
 										<table class="table table-sm table-borderless mb-0">
 											<tr>
 												<td class="text-left font-weight-bold">${venta.solicitud.direccionDestinoSol},${pais}</td>
-												<td class="text-right font-weight-bold">${kg}Kga
+												<td class="text-right font-weight-bold">${kg}Kg a
 													transportar</td>
 											</tr>
 										</table>

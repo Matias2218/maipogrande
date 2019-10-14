@@ -11,6 +11,15 @@
 <head>
     <jsp:include page="layout/cabecera.jsp" />
     <title>Transportista</title>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            setInterval(function () {
+                setTimeout(function () {
+                    $("#alert").slideUp(1500);
+                });
+            },4000);
+        });
+    </script>
 </head>
 <body>
 <div class="page-wrapper chiller-theme toggled">
@@ -21,6 +30,17 @@
                 <div class="col-lg pl-0 pr-0 mr-3 ml-3">
                     <!-- PUBLICACIONES -->
                     <div class="col-lg">
+                        <c:if test="${alerta != null}">
+                            <div
+                                    class="alert alert-warning alert-dismissible fade show text-right mb-3 mt-2 alerta-naranja"
+                                    id="alert" role="alert" data-autohide="true" data-delay="5000">
+                                <strong>${alerta}</strong>
+                                <button type="button" class="close py-2" data-dismiss="alert"
+                                        aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                        </c:if>
                         <section class="page-section-one pb-3" id="portfolio">
                             <div class="container">
                                 <div class="row" style="margin-right: 0px !important;">
