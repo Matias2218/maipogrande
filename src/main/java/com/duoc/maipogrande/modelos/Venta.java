@@ -46,14 +46,13 @@ import java.util.List;
                 }
         ),
         @NamedStoredProcedureQuery(
-                name = "buscarVentaParaIdParaSubasta",
-                procedureName = "BUSCARVENTAPORIDPARASUBASTA",
-                resultClasses = {Venta.class},
+                name = "buscarVentasActivasTran",
+                procedureName = "BUSCARVENTASACTIVASTRAN",
                 parameters = {
                         @StoredProcedureParameter(
                                 mode = ParameterMode.IN,
                                 name = "id",
-                                type = Integer.class
+                                type = Long.class
                         ),
                         @StoredProcedureParameter(
                                 mode = ParameterMode.REF_CURSOR,
@@ -62,6 +61,58 @@ import java.util.List;
                         ),
                 }
         ),
+        @NamedStoredProcedureQuery(
+        name = "buscarVentaParaIdParaSubasta",
+        procedureName = "BUSCARVENTAPORIDPARASUBASTA",
+        resultClasses = {Venta.class},
+        parameters = {
+                @StoredProcedureParameter(
+                        mode = ParameterMode.IN,
+                        name = "id",
+                        type = Integer.class
+                ),
+                @StoredProcedureParameter(
+                        mode = ParameterMode.REF_CURSOR,
+                        name = "q",
+                        type = void.class
+                ),
+        }
+),
+        @NamedStoredProcedureQuery(
+                name = "buscarVentasParaTransporte",
+                procedureName = "BUSCARVENTASPARATRANSPORTE",
+                resultClasses = {Venta.class},
+                parameters = {
+                        @StoredProcedureParameter(
+                                mode = ParameterMode.IN,
+                                name = "i",
+                                type = Short.class
+                        ),
+                        @StoredProcedureParameter(
+                                mode = ParameterMode.REF_CURSOR,
+                                name = "q",
+                                type = void.class
+                        ),
+                }
+        ),
+        @NamedStoredProcedureQuery(
+                name = "buscarVentaPorIdParaTransporte",
+                procedureName = "BUSCARVENTAPORIDPARATRANSPORTE",
+                resultClasses = {Venta.class},
+                parameters = {
+                        @StoredProcedureParameter(
+                                mode = ParameterMode.IN,
+                                name = "id",
+                                type = Long.class
+                        ),
+                        @StoredProcedureParameter(
+                                mode = ParameterMode.REF_CURSOR,
+                                name = "q",
+                                type = void.class
+                        ),
+                }
+        ),
+
 
 })
 public class Venta {
@@ -84,10 +135,6 @@ public class Venta {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ID_ADM")
     private Administrador administrador;
-    // Variable que hereda de la clase OfertaTransportista, con el fin de determinar la oferta final para la venta
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "DETALLES_OFERTAS_TRAN", joinColumns = {@JoinColumn(name = "ID_VENTA")}, inverseJoinColumns = {@JoinColumn(name = "ID_OFERT")})
-    private List<OfertaTransportista> ofertaTransportistas;
     // Varible que hereda de la clase solicitud, esto con el din de determinar la solicitud creada para la venta
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "ID_SOL")
@@ -95,8 +142,19 @@ public class Venta {
     // Variable que hereda de la clase OfertaProducto, esto con el fin determinar la oferta final del producto para la venta
     @OneToMany(mappedBy = "venta")
     private List<OfertaProducto> ofertaProductos;
+    @OneToMany(mappedBy = "venta")
+    private List<OfertaTransportista> ofertaTransportistas;
     // Inicio de los metodos accesadores y mutadores
     public Venta() {
+    }
+
+
+    public List<OfertaTransportista> getOfertaTransportistas() {
+        return ofertaTransportistas;
+    }
+
+    public void setOfertaTransportistas(List<OfertaTransportista> ofertaTransportistas) {
+        this.ofertaTransportistas = ofertaTransportistas;
     }
 
     public List<OfertaProducto> getOfertaProductos() {
@@ -147,19 +205,29 @@ public class Venta {
         this.tipoVenta = tipoVenta;
     }
 
-    public List<OfertaTransportista> getOfertaTransportistas() {
-        return ofertaTransportistas;
-    }
-
-    public void setOfertaTransportistas(List<OfertaTransportista> ofertaTransportistas) {
-        this.ofertaTransportistas = ofertaTransportistas;
-    }
-
     public Solicitud getSolicitud() {
         return solicitud;
     }
 
     public void setSolicitud(Solicitud solicitud) {
         this.solicitud = solicitud;
+    }
+
+    public boolean transportistaAptoParaOfertar(Venta venta,Transportista transportista)
+    {
+        Integer sumaCantidad = venta.getSolicitud().getProductoSolicitados()
+                .stream()
+                .map(productoSolicitado -> {
+                    if (productoSolicitado.getUnidadProdS().equals("T"))
+                    {
+                        return productoSolicitado.getCantidadProdS() * 1000;
+                    }
+                    else {
+                        return productoSolicitado.getCantidadProdS();
+                    }
+                })
+                .reduce(0, Integer::sum);
+        Integer capacidadMaximaTran = Math.toIntExact(Math.round(transportista.getCapacidadCarga() * 1000));
+        return (capacidadMaximaTran<sumaCantidad) ? false : true;
     }
 }

@@ -103,6 +103,10 @@ public class ProductorControlador {
             return "redirect:/productor";
         }
         Venta venta = productorServicio.buscarVentaPorIdParaSubasta(id);
+        if(venta == null)
+        {
+            return "redirect:/productor";
+        }
         String pais = venta
                 .getSolicitud()
                 .obtenerPaises()
@@ -125,10 +129,6 @@ public class ProductorControlador {
                 .sorted(Long::compareTo)
                 .distinct()
                 .toArray(Long[]::new);*/
-        if(venta == null)
-        {
-            return "redirect:/productor";
-        }
         venta.setOfertaProductos(ofertaProductos);
         session.setAttribute("venta",venta);
         model.addAttribute("pais",pais);
@@ -294,6 +294,10 @@ public class ProductorControlador {
                                        Model model,
                                        HttpSession session) {
         Producto producto = productoServicio.buscarProductosPorIdProducto(id);
+        if(producto == null)
+        {
+            return "redirect:/productos";
+        }
         String imagen = Producto.convertirImagen(producto.getImagenProdu());
         Map<String,String> unidadesDeMasa = new HashMap<String, String>() {{
             put("KG", "Kilogramos");

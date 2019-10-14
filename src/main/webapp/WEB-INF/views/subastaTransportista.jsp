@@ -7,11 +7,32 @@
 <meta charset="ISO-8859-1">
 <jsp:include page="layout/cabecera.jsp" />
 <title>Subasta Transportista</title>
+    <script>
+        (function () {
+            'use strict';
+            window.addEventListener('load', function () {
+// Fetch all the forms we want to apply custom Bootstrap validation styles to
+                var forms = document.getElementsByClassName('needs-validation');
+// Loop over them and prevent submission
+                var validation = Array.prototype.filter.call(forms, function (form) {
+                    form.addEventListener('submit', function (event) {
+                        if (form.checkValidity() === false) {
+                            event.preventDefault();
+                            event.stopPropagation();
+                        } else {
+                            $('#modalCargando').modal('show');
+                        }
+                        form.classList.add('was-validated');
+                    }, false);
+                });
+            }, false);
+        })();
+    </script>
 </head>
 <body>
 	<div class="page-wrapper chiller-theme toggled">
 		<jsp:include page="layout/sidebarTransportista.jsp" />
-		<form class="needs-validation">
+		<form class="needs-validation" method="post" novalidate action="/subastaTransportista">
 			<main class="page-content">
 				<div class="container-fluid w-80 mt-2 pl-0 pr-0">
 					<div class="row  ml-5 mr-5">
@@ -19,7 +40,7 @@
 							<div class="container" style="max-width: 45rem;">
 								<h3
 									class="letras text-center jumbotron-heading font-weight-bold">Subasta
-									Nº 001</h3>
+									N° ${venta.idVenta}</h3>
 
 								<table class="table table-sm table-borderless">
 									<tbody>
@@ -29,9 +50,9 @@
 										</tr>
 										<tr>
 											<td class="lead"><strong>Nombre</strong></td>
-											<td class="lead">Nombre y Apellido Cliente</td>
+											<td class="lead">${venta.solicitud.cliente.nombreCli} ${venta.solicitud.cliente.apellidosCli}</td>
 											<td class="lead"><strong>Correo</strong></td>
-											<td class="lead">correodelcliente@gmail.com</td>
+											<td class="lead">${venta.solicitud.cliente.emailCli}</td>
 										</tr>
 										<tr>
 											<th colspan="2" class="lead text-uppercase texto-verde">Datos
@@ -39,86 +60,96 @@
 										</tr>
 										<tr>
 											<td class="lead"><strong>Tipo de venta</strong></td>
-											<td class="lead">00/00/0000</td>
+											<td class="lead"><c:if test="${venta.tipoVenta eq 'E'.charAt(0)}">
+												Venta Externa
+											</c:if>
+												<c:if test="${venta.tipoVenta eq 'I'.charAt(0)}">
+													Venta Interna
+												</c:if></td>
 											<td class="lead"><strong>Fecha limite</strong></td>
-											<td class="lead">Fecha limite</td>
+											<td class="lead">${venta.solicitud.fechalimiteSol}</td>
 										</tr>
 										<tr>
 											<td class="lead"><strong>Descripción</strong></td>
-											<td colspan="3" class="lead">Descripcion de la solicitud</td>
+											<td colspan="3" class="lead">${venta.solicitud.descripcionSol}</td>
 										</tr>
 										<tr class="table-success">
 											<td class="lead"><strong>Dirección</strong></td>
-											<td colspan="3" class="lead">direccion de la venta, pais</td>
+											<td colspan="3" class="lead">${venta.solicitud.direccionDestinoSol},${pais}</td>
 										</tr>
 									</tbody>
 								</table>
 							</div>
-
+							<c:set var="kg" value="0"></c:set>
+							<c:forEach items="${venta.solicitud.productoSolicitados}" var="p">
+								<c:if test="${p.unidadProdS eq 'T'}">
+									<c:set var="kg" value="${kg + p.cantidadProdS*1000}"></c:set>
+								</c:if>
+								<c:if test="${p.unidadProdS eq 'KG'}">
+									<c:set var="kg" value="${kg + p.cantidadProdS}"></c:set>
+								</c:if>
+							</c:forEach>
+                            <c:if test="${esAptoParaOfertar}">
 							<div class="card mb-3">
 								<div class="card-header text-uppercase">
 									<table class="table table-sm table-borderless mb-0">
 										<tr>
-											<td class="text-left font-weight-bold">Dirección de la
-												compra, País</td>
-											<td class="text-right font-weight-bold">500 Kg a
+											<td class="text-left font-weight-bold">${venta.solicitud.direccionDestinoSol},${pais}</td>
+											<td class="text-right font-weight-bold">${kg} Kg a
 												transportar</td>
 										</tr>
 									</table>
 								</div>
-								<!-- 
+
 								<div class="card-body">
 									<form class="form">
 										<div class="form-group m-0">
-											<label for="formGroupExampleInput">Precio a ofrecer</label>
+											<label for="validationCustomUsername">Precio a ofrecer</label>
 											<div class="input-group">
 												<div class="input-group-prepend">
 													<span class="input-group-text" id="inputGroupPrepend"><i
 														class="fa fa-dollar-sign"></i></span>
 												</div>
 												<input type="text" class="form-control"
-													id="validationCustomUsername" placeholder="Precio"
+													   onkeypress="return event.charCode >= 48 && event.charCode <= 57"
+													id="validationCustomUsername" name="txtPrecio"  placeholder="Precio"
 													aria-describedby="inputGroupPrepend" required>
 											</div>
 										</div>
 									</form>
 								</div>
 
-								<div class="card-footer p-0">
-									<button type="button" name="btnOfertar"
-										class="btn btn-success btn-block rounded-0">O F E R T A R</button>
-								</div> 
-								-->
+                            </div>
 
+                                <input type="submit" value="Agregar oferta a subasta"
+                                       id="btnAgregar" class="btn btn-block btn-lg mb-2"
+                                       style="background-color: #FF5400; color: white;"/>
+                                </c:if>
+                                <c:if test="${!esAptoParaOfertar}">
+                                <div class="card-body">
+                                    <section class="page-section-one" id="portfolio">
+                                        <div class="container">
+                                            <div class="row" style="margin-right: 0px !important;">
+                                                <div class="col-lg-12 text-center">
+                                                    <h3 class="section-subheading text-muted mb-0">No cumple con los requisitos de la venta</h3>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </section>
+                                </div>
 
+                            </div>
 
-								<!-- DIV NO SE PUEDE -->
-								<div class="card-body">
-									<section class="page-section-one" id="portfolio">
-										<div class="container">
-											<div class="row" style="margin-right: 0px !important;">
-												<div class="col-lg-12 text-center">
-													<h3 class="section-subheading text-muted mb-0"> Escribe eso aqui</h3>
-												</div>
-											</div>
-										</div>
-									</section>
-								</div>
-								<!-- FIN DE DIV NO SE PUEDE -->
-								
-								
-								
-								
-							</div>
-
-							<input type="submit" value="Agregar oferta a subasta"
-								id="btnAgregar" class="btn btn-block btn-lg mb-2"
-								style="background-color: #FF5400; color: white;" disabled/>
+                            <input type="submit" value="Agregar oferta a subasta"
+                                   id="btnAgregar" class="btn btn-block btn-lg mb-2"
+                                   style="background-color: #FF5400; color: white;" disabled/>
+                                <!-- FIN DE DIV NO SE PUEDE -->
+                                </c:if>
 						</div>
 					</div>
-				</div>
 			</main>
 		</form>
 	</div>
+	<jsp:include page="layout/modalCargando.jsp"></jsp:include>
 </body>
 </html>

@@ -1,6 +1,7 @@
+	<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
+		<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -34,7 +35,7 @@
 							${apellido}</strong>
 					</span> <span class="user-role">Transportista
 					</span> <span class="user-status"> <span
-						class="badge badge-pill badge-success">0</span> <span>Transportes en proceso</span>
+						class="badge badge-pill badge-success">${ventasActivas.size()}</span> <span>Transportes en proceso</span>
 					</span>
 				</div>
 			</div>
@@ -52,7 +53,9 @@
 					</a>
 						<div class="sidebar-submenu">
 							<ul>
-								<li><a href="#">Venta N°</a></li>
+	<c:forEach items="${ventasActivas}" var="v">
+								<li><a href="#">Venta N° ${v}</a></li>
+	</c:forEach>
 							</ul>
 						</div></li>
 

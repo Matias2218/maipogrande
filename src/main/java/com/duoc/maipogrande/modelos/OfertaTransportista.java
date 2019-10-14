@@ -8,6 +8,30 @@ import javax.validation.constraints.Min;
  */
 @Entity
 @Table(name = "OFERTAS_TRANSPORTISTAS")
+@NamedStoredProcedureQueries({
+        @NamedStoredProcedureQuery(
+                name = "crearOfertaTransportista",
+                procedureName = "CREAROFERTATRANSPORTISTA",
+                parameters = {
+                        @StoredProcedureParameter(
+                                mode = ParameterMode.IN,
+                                name = "precioOferta",
+                                type = Integer.class
+                        ),
+                        @StoredProcedureParameter(
+                                mode = ParameterMode.IN,
+                                name = "idTran",
+                                type = Long.class
+                        ),
+                        @StoredProcedureParameter(
+                                mode = ParameterMode.IN,
+                                name = "idVenta",
+                                type = Long.class
+                        ),
+
+                }
+        ),
+})
 public class OfertaTransportista {
     // Dato que almacena de forma progresiva la id de la oferta ofrecida para el transportista
     @Id
@@ -21,8 +45,21 @@ public class OfertaTransportista {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "ID_TRAN")
     private Transportista transportista;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "ID_VENTA")
+    private  Venta venta;
     // Inicio de los metodos accesadores y mutadores
     public OfertaTransportista() {
+        transportista = new Transportista();
+        venta = new Venta();
+    }
+
+    public Venta getVenta() {
+        return venta;
+    }
+
+    public void setVenta(Venta venta) {
+        this.venta = venta;
     }
 
     public Long getIdOfert() {
