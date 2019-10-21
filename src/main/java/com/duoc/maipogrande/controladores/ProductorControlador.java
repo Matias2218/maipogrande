@@ -72,11 +72,9 @@ public class ProductorControlador {
             }
         }
         List<Venta> ventas = productorServicio.ventasParaSubasta(pagina);
-        List<Venta> ventasActivas = productorServicio.ventasActivasProductor(((Productor)session.getAttribute("productor")).getIdProd());
         int totalPaginas = productorServicio.contarVentasSubasta();
         Pagina paginador = new Pagina((short) totalPaginas,(short)(paginaActual+1));
         model.addAttribute("ventas",ventas);
-        session.setAttribute("ventasActivas",ventasActivas);
         model.addAttribute("paginador",paginador);
         model.addAttribute("paginaActual",(paginaActual==0)?1: paginaActual+1);
         return "productor";
@@ -125,10 +123,6 @@ public class ProductorControlador {
                 .stream()
                 .distinct()
                 .collect(Collectors.toMap(OfertaProducto::getIdOferp,ofertaProducto -> ofertaProducto.getProductoSolicitado().getIdProdS()));
-                /*.map(ofertaProducto -> ofertaProducto.getProductoSolicitado().getIdProdS())
-                .sorted(Long::compareTo)
-                .distinct()
-                .toArray(Long[]::new);*/
         venta.setOfertaProductos(ofertaProductos);
         session.setAttribute("venta",venta);
         model.addAttribute("pais",pais);

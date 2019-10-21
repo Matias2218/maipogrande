@@ -62,22 +62,22 @@ import java.util.List;
                 }
         ),
         @NamedStoredProcedureQuery(
-        name = "buscarVentaParaIdParaSubasta",
-        procedureName = "BUSCARVENTAPORIDPARASUBASTA",
-        resultClasses = {Venta.class},
-        parameters = {
-                @StoredProcedureParameter(
-                        mode = ParameterMode.IN,
-                        name = "id",
-                        type = Integer.class
-                ),
-                @StoredProcedureParameter(
-                        mode = ParameterMode.REF_CURSOR,
-                        name = "q",
-                        type = void.class
-                ),
-        }
-),
+                name = "buscarVentaParaIdParaSubasta",
+                procedureName = "BUSCARVENTAPORIDPARASUBASTA",
+                resultClasses = {Venta.class},
+                parameters = {
+                        @StoredProcedureParameter(
+                                mode = ParameterMode.IN,
+                                name = "id",
+                                type = Integer.class
+                        ),
+                        @StoredProcedureParameter(
+                                mode = ParameterMode.REF_CURSOR,
+                                name = "q",
+                                type = void.class
+                        ),
+                }
+        ),
         @NamedStoredProcedureQuery(
                 name = "buscarVentasParaTransporte",
                 procedureName = "BUSCARVENTASPARATRANSPORTE",
@@ -166,6 +166,7 @@ public class Venta {
     private List<OfertaProducto> ofertaProductos;
     @OneToMany(mappedBy = "venta")
     private List<OfertaTransportista> ofertaTransportistas;
+
     // Inicio de los metodos accesadores y mutadores
     public Venta() {
     }
@@ -235,21 +236,31 @@ public class Venta {
         this.solicitud = solicitud;
     }
 
-    public boolean transportistaAptoParaOfertar(Venta venta,Transportista transportista)
-    {
+    public boolean transportistaAptoParaOfertar(Venta venta, Transportista transportista) {
         Integer sumaCantidad = venta.getSolicitud().getProductoSolicitados()
                 .stream()
                 .map(productoSolicitado -> {
-                    if (productoSolicitado.getUnidadProdS().equals("T"))
-                    {
+                    if (productoSolicitado.getUnidadProdS().equals("T")) {
                         return productoSolicitado.getCantidadProdS() * 1000;
-                    }
-                    else {
+                    } else {
                         return productoSolicitado.getCantidadProdS();
                     }
                 })
                 .reduce(0, Integer::sum);
         Integer capacidadMaximaTran = Math.toIntExact(Math.round(transportista.getCapacidadCarga() * 1000));
-        return (capacidadMaximaTran<sumaCantidad) ? false : true;
+        return (capacidadMaximaTran < sumaCantidad) ? false : true;
+    }
+
+    public void ordernarTop3Transportistas() {
+        for (int i = this.ofertaTransportistas.size() - 1; i > 0; i--) {
+            for (int j = 0; j < i; j++) {
+                if (this.ofertaTransportistas.get(j).getPrecioOfertaOfert() > this.ofertaTransportistas.get(j + 1).getPrecioOfertaOfert()) {
+                    OfertaTransportista temp = this.ofertaTransportistas.get(j);
+                    this.ofertaTransportistas.set(j, this.ofertaTransportistas.get(j + 1));
+                    this.ofertaTransportistas.set(j + 1, temp);
+                }
+            }
+        }
+        this.ofertaTransportistas.subList(3,this.ofertaTransportistas.size()).clear();
     }
 }

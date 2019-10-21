@@ -21,9 +21,8 @@ public class Contrato {
     @Column(nullable = false)
     private LocalDate fechaTerminoContra;
     // Variable que almacena un PDF del contrato, el cual puede ser visualizado en pa pagina
-    @Lob
-    @Column(columnDefinition = "BLOB")
-    private byte[] pdfContra;
+    @Column(length = 150)
+    private String pdfContra;
     // Variable que almacena el tipo de contrato, entre los roles estan el transportista y el productor
     @NotNull
     @Column(nullable = false, length = 1)
@@ -68,11 +67,11 @@ public class Contrato {
         this.fechaTerminoContra = fechaTerminoContra;
     }
 
-    public byte[] getPdfContra() {
+    public String getPdfContra() {
         return pdfContra;
     }
 
-    public void setPdfContra(byte[] pdfContra) {
+    public void setPdfContra(String pdfContra) {
         this.pdfContra = pdfContra;
     }
 

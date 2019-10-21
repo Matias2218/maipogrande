@@ -91,43 +91,44 @@
 												</div>
 											</div>
 										</c:forEach>
+										<div class="text-center">
+											<nav aria-label="Page navigation example">
+												<ul class="pagination justify-content-center">
+													<c:if test="${paginaActual != 1}">
+														<li class="page-item">
+															<button type="submit" name="pagina"
+																	value="${paginaActual-1}" class="page-link paginador-item">&laquo;</button>
+														</li>
+													</c:if>
+													<c:forEach begin="${paginador.desde-1}"
+															   end="${paginador.hasta-1}" var="i">
+														<c:choose>
+															<c:when test="${paginaActual-1 eq i}">
+																<li class="page-item active"><a
+																		class="page-link paginador-current" href="#">${i+1}<span
+																		class="sr-only">(current)</span></a></li>
+															</c:when>
+															<c:otherwise>
+																<li class="page-item">
+																	<button type="submit" name="pagina" value="${i+1}"
+																			class="page-link paginador-item">${i+1}</button>
+																</li>
+															</c:otherwise>
+														</c:choose>
+													</c:forEach>
+													<c:if test="${paginaActual  < paginador.totalPaginas}">
+														<li class="page-item">
+															<button type="submit" name="pagina"
+																	value="${paginaActual+1}" class="page-link paginador-item">&raquo;</button>
+														</li>
+													</c:if>
+												</ul>
+											</nav>
+										</div>
 									</c:otherwise>
 								</c:choose>
 
-								<div class="text-center">
-									<nav aria-label="Page navigation example">
-										<ul class="pagination justify-content-center">
-											<c:if test="${paginaActual != 1}">
-												<li class="page-item">
-													<button type="submit" name="pagina"
-														value="${paginaActual-1}" class="page-link paginador-item">&laquo;</button>
-												</li>
-											</c:if>
-											<c:forEach begin="${paginador.desde-1}"
-												end="${paginador.hasta-1}" var="i">
-												<c:choose>
-													<c:when test="${paginaActual-1 eq i}">
-														<li class="page-item active"><a
-															class="page-link paginador-current" href="#">${i+1}<span
-																class="sr-only">(current)</span></a></li>
-													</c:when>
-													<c:otherwise>
-														<li class="page-item">
-															<button type="submit" name="pagina" value="${i+1}"
-																class="page-link paginador-item">${i+1}</button>
-														</li>
-													</c:otherwise>
-												</c:choose>
-											</c:forEach>
-											<c:if test="${paginaActual  < paginador.totalPaginas}">
-												<li class="page-item">
-													<button type="submit" name="pagina"
-														value="${paginaActual+1}" class="page-link paginador-item">&raquo;</button>
-												</li>
-											</c:if>
-										</ul>
-									</nav>
-								</div>
+
 							</div>
 						</div>
 					</div>

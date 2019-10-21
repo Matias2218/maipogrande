@@ -39,7 +39,9 @@
 									</div>
 									<i class="fa fa-chevron-right align-self-center"></i>
 								</div>
-							</a> <a class="list-group-item list-group-item-action"
+							</a>
+							<c:if test="${venta.estadoVenta != 'P'.charAt(0)}">
+							<a class="list-group-item list-group-item-action"
 								id="list-profile-list" data-toggle="list" href="#list-profile"
 								role="tab" aria-controls="profile">
 								<div class="media">
@@ -49,7 +51,10 @@
 									</div>
 									<i class="fa fa-chevron-right align-self-center"></i>
 								</div>
-							</a> <a class="list-group-item list-group-item-action"
+							</a>
+							</c:if>
+							<c:if test="${venta.estadoVenta != 'P'.charAt(0) and venta.estadoVenta != 'T'.charAt(0)}">
+							<a class="list-group-item list-group-item-action"
 								id="list-messages-list" data-toggle="list" href="#list-messages"
 								role="tab" aria-controls="messages">
 								<div class="media">
@@ -59,7 +64,10 @@
 									</div>
 									<i class="fa fa-chevron-right align-self-center"></i>
 								</div>
-							</a> <a class="list-group-item list-group-item-action"
+							</a>
+							</c:if>
+							<c:if test="${venta.estadoVenta == 'A'.charAt(0)}">
+							<a class="list-group-item list-group-item-action"
 								id="list-settings-list" data-toggle="list" href="#list-settings"
 								role="tab" aria-controls="settings">
 								<div class="media">
@@ -70,23 +78,27 @@
 									<i class="fa fa-chevron-right align-self-center"></i>
 								</div>
 							</a>
+                            </c:if>
 						</div>
 
 						<div class="tab-content mt-3" id="nav-tabContent">
 							<div class="tab-pane fade show active card" id="list-home"
 								role="tabpanel" aria-labelledby="list-home-list">
-
-								<div class="alert alert-warning mb-0" role="alert">
-									<div class="container">
-										Sus productos se encuentran <strong>en espera</strong> de ser confirmados.
-									</div>
-								</div>
-								<div class="alert alert-success mb-0" role="alert">
-									<div class="container">
-										Sus productos han sido seleccionados, y pasaran al proceso de <strong>transporte</strong>.
-									</div>
-								</div>
 								<section class="page-section-one" >
+									<c:if test="${venta.estadoVenta eq 'P'.charAt(0)}">
+										<div class="alert alert-warning mb-0" role="alert">
+											<div class="container">
+												Sus productos se encuentran <strong>en espera</strong> de ser confirmados.
+											</div>
+										</div>
+									</c:if>
+									<c:if test="${venta.estadoVenta eq 'T'.charAt(0)}">
+										<div class="alert alert-success mb-0" role="alert">
+											<div class="container">
+												Sus productos han sido seleccionados, y pasaran al proceso de <strong>transporte</strong>.
+											</div>
+										</div>
+									</c:if>
 									<div class="container">
 										<div class="row">
 											<div class="col-lg-12 py-3">
@@ -97,12 +109,13 @@
 										</div>
 
 										<!-- PRODUCTOS -->
+										<c:forEach items="${venta.ofertaProductos}" var="o">
 										<div class="card mb-3">
 											<div class="card-header text-uppercase">
 												<table class="table table-sm table-borderless mb-0">
 													<tr>
-														<td class="text-left font-weight-bold">MANZANAS</td>
-														<td class="text-right font-weight-bold">300 KG</td>
+														<td class="text-left font-weight-bold">${o.productoSolicitado.nombreProdS}</td>
+														<td class="text-right font-weight-bold">${o.productoSolicitado.cantidadProdS} ${o.productoSolicitado.unidadProdS}</td>
 													</tr>
 												</table>
 											</div>
@@ -112,7 +125,7 @@
 													<div class="col">
 														<div class="form-group mb-0">
 															<label>Producto ofrecido</label>
-															<input class="form-control" disabled value="Manzanas" style="background-color:white;">
+															<input class="form-control" disabled value="${o.producto.nombreProdu}" style="background-color:white;">
 														</div>
 													</div>
 													<div class="col">
@@ -125,19 +138,20 @@
 																</div>
 																<input type="text" class="form-control"
 																	id="validationCustomUsername" placeholder="Precio"
-																	aria-describedby="inputGroupPrepend" disabled style="background-color:white;" value="900 X KG">
+																	aria-describedby="inputGroupPrepend" disabled style="background-color:white;" value="${o.precioOferta} X ${o.unidadMasaOferta}">
 															</div>
 														</div>
 													</div>
 												</div>
 											</div>
 										</div>
+										</c:forEach>
 										<!-- PRODUCTOS -->
 
 									</div>
 								</section>
 							</div>
-
+							<c:if test="${venta.estadoVenta != 'P'.charAt(0)}">
 							<div class="tab-pane fade card" id="list-profile" role="tabpanel"
 								aria-labelledby="list-profile-list">
 
@@ -166,17 +180,18 @@
                                         </div>
                                         <div class="row text-center mb-3">
                                             <div class="col">
-                                                <p class="mb-0">Villa los ciruelos, psj 8 #561, Talagante</p>
+
                                                 <p class="mb-0 text-uppercase font-weight-bold">Chile</p>
                                             </div>
                                             <div class="col">
-                                                <p class="mb-0">Calle los rios #0461, Buenos Aires</p>
+                                                <p class="mb-0">${venta.solicitud.direccionDestinoSol},${venta.solicitud.paisDestinoSol}</p>
                                                 <p class="mb-0 text-uppercase font-weight-bold">Argentina</p>
                                             </div>
                                         </div>
 									</div>
 								</section>
                             </div>
+							</c:if>
 
 							<div class="tab-pane fade card" id="list-messages"
 								role="tabpanel" aria-labelledby="list-messages-list">
