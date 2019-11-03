@@ -45,6 +45,8 @@ $(document).ready(function () {
             return;
         }
         let numeroDiv = $('.media').last().attr('id').split('divProductos');
+        const frutas = $("#frutas").val().split('.');
+        const frutasOptions = traerFrutasEnOption(frutas);
         numeroDiv = numeroDiv[1];
         numeroDiv++;
         const html = "    <div class=\"media\" id=divProductos" + numeroDiv + ">\n" +
@@ -52,7 +54,9 @@ $(document).ready(function () {
             "                                                    <div class=\"form-row\">\n" +
             "                                                        <div class=\"form-group  col-md-6\">\n" +
             "                                                            <label>Nombre del producto</label>\n" +
-            "                                                            <input class=\"form-control\" required=\"true\" name=\"nombreproducto[]\"/>\n" +
+            "                                                           <select class=\"selectpicker form-control\" data-live-search=\"true\" required=\"true\" name=\"nombreproducto[]\">" +
+            "                                                           "+frutasOptions+"                     "+
+            "                                                            </select>" +
             "                                                            <div class=\"invalid-feedback\">Nombre obligatorio</div>\n" +
             "                                                        </div>\n" +
             "                                                        <div class=\"form-group  col-md-6\">\n" +
@@ -79,10 +83,17 @@ $(document).ready(function () {
 
         $(html).insertBefore($('#btnAgregar'));
         $("html, body").animate({scrollTop: $(document).height()}, 500);
-
+        $('.selectpicker').selectpicker('refresh');
 
     });
-
+    function traerFrutasEnOption(frutas)
+    {
+        let options = "";
+        frutas.forEach(f => {
+            options += `<option value="${f}">${f}</option>\n`;
+        })
+        return options;
+    }
     function fechaMinima() {
         var today = new Date();
         var dd = today.getDate();

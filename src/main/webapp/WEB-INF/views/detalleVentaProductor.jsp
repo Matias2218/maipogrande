@@ -4,9 +4,10 @@
 <html>
 <head>
 <title>Detalle venta</title>
-<jsp:include page="layout/cabecera.jsp" />
+<jsp:include page="layout/includes.jsp"></jsp:include>
 </head>
 <body>
+<jsp:include page="layout/cabecera.jsp" />
 	<div class="page-wrapper chiller-theme toggled">
 		<jsp:include page="layout/sidebar.jsp" />
 		<main class="page-content">

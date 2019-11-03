@@ -38,31 +38,36 @@ public class JpaUsuarioLoginServicio implements UserDetailsService {
         if (cliente != null && productor == null && transportista == null) {
             if (cliente.getTipoCli() == 'E') {
                 authorities.add(new SimpleGrantedAuthority("ROLE_CLIENTE_EXTERNO"));
+                List<Venta> ventasActivas = clienteServicio.traerVentasActivasPorIdCli(cliente.getIdCli());
                 session.setAttribute("clienteExterno", cliente);
-                session.setAttribute("nombre",cliente.getNombreCli());
-                session.setAttribute("apellido",cliente.getApellidosCli());
+                session.setAttribute("tipo", cliente.getTipoCli());
+                session.setAttribute("nombre", cliente.getNombreCli());
+                session.setAttribute("apellido", cliente.getApellidosCli());
+                session.setAttribute("ventasActivas", ventasActivas);
             } else if (cliente.getTipoCli() == 'I') {
-
                 authorities.add(new SimpleGrantedAuthority("ROLE_CLIENTE_INTERNO"));
+                List<Venta> ventasActivas = clienteServicio.traerVentasActivasPorIdCli(cliente.getIdCli());
                 session.setAttribute("clienteInterno", cliente);
-                session.setAttribute("nombre",cliente.getNombreCli());
-                session.setAttribute("apellido",cliente.getApellidosCli());
+                session.setAttribute("tipo", cliente.getTipoCli());
+                session.setAttribute("nombre", cliente.getNombreCli());
+                session.setAttribute("apellido", cliente.getApellidosCli());
+                session.setAttribute("ventasActivas", ventasActivas);
             }
             return new User(cliente.getIdCli().toString(), cliente.getContraseñaCli(), true, true, true, true, authorities);
         } else if (cliente == null && productor != null && transportista == null) {
             authorities.add(new SimpleGrantedAuthority("ROLE_PRODUCTOR"));
             List<Venta> ventasActivas = productorServicio.ventasActivasProductor(productor.getIdProd());
-            session.setAttribute("ventasActivas",ventasActivas);
+            session.setAttribute("ventasActivas", ventasActivas);
             session.setAttribute("productor", productor);
-            session.setAttribute("nombre",productor.getNombreProd());
-            session.setAttribute("apellido",productor.getApellidoProd());
+            session.setAttribute("nombre", productor.getNombreProd());
+            session.setAttribute("apellido", productor.getApellidoProd());
             return new User(productor.getIdProd().toString(), productor.getContraseñaProd(), true, true, true, true, authorities);
         } else {
             authorities.add(new SimpleGrantedAuthority("ROLE_TRANSPORTISTA"));
             List<Integer> ventasActivas = transportistaServicio.ventasActivasTran(transportista.getIdTran());
-            session.setAttribute("ventasActivas",ventasActivas);
+            session.setAttribute("ventasActivas", ventasActivas);
             session.setAttribute("transportista", transportista);
-            session.setAttribute("nombre",transportista.getNombreTran());
+            session.setAttribute("nombre", transportista.getNombreTran());
             return new User(transportista.getIdTran().toString(), transportista.getContraseñaTran(), true, true, true, true, authorities);
         }
 

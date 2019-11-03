@@ -104,6 +104,26 @@ public class TransportistaControlador {
         redirectAttributes.addFlashAttribute("alerta", "Oferta ingresada con exito");
         return "redirect:/transportista";
     }
-
+    @Secured("ROLE_TRANSPORTISTA")
+    @RequestMapping(value = "/detalleVentaTransportista/{id}", method = RequestMethod.GET)
+    public String paginaVentaProductor(Model model,
+                                       @PathVariable(value = "id",required = false) String idString,
+                                       HttpSession session)
+    {
+        Long idVenta;
+        Long idTran;
+        try
+        {
+            idVenta = Long.parseLong(idString);
+        }
+        catch (NumberFormatException e)
+        {
+            return "redirect:/transportista";
+        }
+        idTran = ((Transportista)session.getAttribute("transportista")).getIdTran();
+        Venta venta = transportistaServicio.buscarVentaDetalleTran(idVenta,idTran);
+        model.addAttribute(venta);
+        return "detalleVentaTransportista";
+    }
 
 }

@@ -10,7 +10,12 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.StoredProcedureQuery;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
+
+import static java.util.Collections.reverseOrder;
 
 @Service
 public class ProductorServicio {
@@ -108,7 +113,15 @@ public class ProductorServicio {
             StoredProcedureQuery query  = entityManager.createNamedStoredProcedureQuery("buscarVentaParaIdParaSubasta");
             query.setParameter("id",id);
             query.execute();
-            return (Venta) query.getSingleResult();
+            Venta venta = (Venta) query.getSingleResult();
+            List<OfertaProducto> ofertaProductos = venta.getOfertaProductos()
+                    .stream()
+                    .sorted(Comparator.comparing(OfertaProducto::getPrecioOferta)
+                            .thenComparing(reverseOrder(Comparator.comparing
+                                    (ofertaProducto -> ofertaProducto.getProducto().getCalidadProdu()))))
+                    .collect(Collectors.toList());
+            venta.setOfertaProductos(ofertaProductos);
+            return venta;
         }
         catch (Exception e)
         {
@@ -128,18 +141,48 @@ public class ProductorServicio {
             return 0;
         }
     }
+    @Transactional(readOnly = true, noRollbackFor = RuntimeException.class)
     public Venta buscarVentaDetalleProdu(Long idVenta,Long idProd)
     {
+        Venta venta = null;
         try {
             StoredProcedureQuery query = entityManager.createNamedStoredProcedureQuery("buscarVentaDetalleProdu");
             query.setParameter("idVenta",idVenta);
             query.setParameter("idProd",idProd);
             query.execute();
-            return (Venta) query.getSingleResult();
+            venta = (Venta) query.getSingleResult();
         }
         catch (Exception e)
         {
             return null;
         }
+        Long[] idProds = venta.getOfertaProductos()
+                .stream()
+                .map(ofertaProducto -> ofertaProducto.getProductoSolicitado().getIdProdS())
+                .distinct()
+                .toArray(Long[]::new);
+        List<OfertaProducto>  ofertaProductos = venta.getOfertaProductos()
+                .stream()
+                .sorted(Comparator.comparing(OfertaProducto::getPrecioOferta)
+                        .thenComparing(reverseOrder(Comparator.comparing
+                                (ofertaProducto -> ofertaProducto.getProducto().getCalidadProdu()))))
+                .filter(ofertaProducto -> ofertaProducto.getProducto().getProductor().getIdProd() == idProd)
+                .collect(Collectors.toList());
+        List<OfertaProducto> ofertaProductosFiltrados = new ArrayList<>();
+        int j = 0;
+        for (int i = 0; i < ofertaProductos.size() ; i++) {
+            if(ofertaProductos.get(i).getProductoSolicitado().getIdProdS() == idProds[j])
+            {
+                ofertaProductosFiltrados.add(ofertaProductos.get(i));
+                j++;
+                if(j == idProds[idProds.length-1] || idProds.length == 1 )
+                {
+                    break;
+                }
+                continue;
+            }
+        }
+        venta.setOfertaProductos(ofertaProductosFiltrados);
+        return venta;
     }
 }

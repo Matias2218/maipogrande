@@ -3,7 +3,13 @@ package com.duoc.maipogrande.modelos;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
+import static java.util.Collections.reverseOrder;
 
 /**
  * Clase que almacena los valores que seran requeridos para su correspondiente implementacion dentro de la pagina WEB
@@ -134,8 +140,67 @@ import java.util.List;
                         ),
                 }
         ),
-
-
+        @NamedStoredProcedureQuery(
+                name = "buscarVentaDetalleTran",
+                procedureName = "BUSCARVENTADETALLETRAN",
+                resultClasses = {Venta.class},
+                parameters = {
+                        @StoredProcedureParameter(
+                                mode = ParameterMode.IN,
+                                name = "idVenta",
+                                type = Long.class
+                        ),
+                        @StoredProcedureParameter(
+                                mode = ParameterMode.IN,
+                                name = "idTran",
+                                type = Long.class
+                        ),
+                        @StoredProcedureParameter(
+                                mode = ParameterMode.REF_CURSOR,
+                                name = "q",
+                                type = void.class
+                        ),
+                }
+        ),
+        @NamedStoredProcedureQuery(
+                name = "traerVentasActivasPorIdCli",
+                procedureName = "traerVentasActivasPorIdCli",
+                resultClasses = {Venta.class},
+                parameters = {
+                        @StoredProcedureParameter(
+                                mode = ParameterMode.IN,
+                                name = "id",
+                                type = Long.class
+                        ),
+                        @StoredProcedureParameter(
+                                mode = ParameterMode.REF_CURSOR,
+                                name = "q",
+                                type = void.class
+                        ),
+                }
+        ),
+        @NamedStoredProcedureQuery(
+                name = "traerVentaCliente",
+                procedureName = "traerVentaCliente",
+                resultClasses = {Venta.class},
+                parameters = {
+                        @StoredProcedureParameter(
+                                mode = ParameterMode.IN,
+                                name = "idVenta",
+                                type = Long.class
+                        ),
+                        @StoredProcedureParameter(
+                                mode = ParameterMode.IN,
+                                name = "idCli",
+                                type = Long.class
+                        ),
+                        @StoredProcedureParameter(
+                                mode = ParameterMode.REF_CURSOR,
+                                name = "q",
+                                type = void.class
+                        ),
+                }
+        ),
 })
 public class Venta {
     // Variable que almacena el id de la venta, esto se le asigna a cada uno para su correspondiente identificacion
@@ -248,19 +313,59 @@ public class Venta {
                 })
                 .reduce(0, Integer::sum);
         Integer capacidadMaximaTran = Math.toIntExact(Math.round(transportista.getCapacidadCarga() * 1000));
-        return (capacidadMaximaTran < sumaCantidad) ? false : true;
+        return capacidadMaximaTran >= sumaCantidad;
     }
 
     public void ordernarTop3Transportistas() {
+        if (this.ofertaTransportistas.isEmpty()) {
+            return;
+        }
         for (int i = this.ofertaTransportistas.size() - 1; i > 0; i--) {
             for (int j = 0; j < i; j++) {
-                if (this.ofertaTransportistas.get(j).getPrecioOfertaOfert() > this.ofertaTransportistas.get(j + 1).getPrecioOfertaOfert()) {
+                 int tamaño = (this.ofertaTransportistas.get(j).getTransportista().getTamaño().equalsIgnoreCase("Grande") ? 3 :
+                              (this.ofertaTransportistas.get(j).getTransportista().getTamaño().equalsIgnoreCase("Mediano") ? 2 :
+                                      (this.ofertaTransportistas.get(j).getTransportista().getTamaño().equalsIgnoreCase("Pequeño")) ? 1 : 0));
+                 int tamaño2 = (this.ofertaTransportistas.get(j+1).getTransportista().getTamaño().equalsIgnoreCase("Grande") ? 3 :
+                         (this.ofertaTransportistas.get(j+1).getTransportista().getTamaño().equalsIgnoreCase("Mediano") ? 2 :
+                                 (this.ofertaTransportistas.get(j+1).getTransportista().getTamaño().equalsIgnoreCase("Pequeño")) ? 1 : 0));
+                if (this.ofertaTransportistas.get(j).getPrecioOfertaOfert() >= this.ofertaTransportistas.get(j + 1).getPrecioOfertaOfert() &&
+                        this.ofertaTransportistas.get(j).getTransportista().getRefrigeracion() > this.ofertaTransportistas.get(j + 1).getTransportista().getRefrigeracion() &&
+                         tamaño >= tamaño2) {
                     OfertaTransportista temp = this.ofertaTransportistas.get(j);
                     this.ofertaTransportistas.set(j, this.ofertaTransportistas.get(j + 1));
                     this.ofertaTransportistas.set(j + 1, temp);
                 }
             }
         }
-        this.ofertaTransportistas.subList(3,this.ofertaTransportistas.size()).clear();
+        if (this.ofertaTransportistas.size() == 1) {
+            this.ofertaTransportistas.subList(1, this.ofertaTransportistas.size()).clear();
+        } else if (this.ofertaTransportistas.size() == 2) {
+            this.ofertaTransportistas.subList(2, this.ofertaTransportistas.size()).clear();
+        } else {
+            this.ofertaTransportistas.subList(3, this.ofertaTransportistas.size()).clear();
+        }
+    }
+    public void ordernarTop3SubastaProductos() {
+        if (this.ofertaProductos.isEmpty()) {
+            return;
+        }
+        List<OfertaProducto> ofertaProductosFiltrados = new ArrayList<>();
+        Long[] idProductosSolicitados = this.ofertaProductos.stream()
+                .map(ofertaProducto -> ofertaProducto.getProductoSolicitado().getIdProdS())
+                .distinct()
+                .toArray(Long[]::new);
+        this.ofertaProductos = this.ofertaProductos.stream()
+                .sorted(Comparator.comparing(OfertaProducto::getPrecioOferta)
+                        .thenComparing(reverseOrder(Comparator.comparing
+                                (ofertaProducto -> ofertaProducto.getProducto().getCalidadProdu()))))
+                .collect(Collectors.toList());
+
+        IntStream.range(0, idProductosSolicitados.length)
+                .forEach(i -> ofertaProductos
+                        .stream()
+                        .filter(ofertaProducto -> ofertaProducto.getProductoSolicitado().getIdProdS().equals(idProductosSolicitados[i]))
+                        .limit(3)
+                        .forEach(ofertaProductosFiltrados::add));
+        this.ofertaProductos = ofertaProductosFiltrados;
     }
 }

@@ -9,12 +9,13 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <html>
 <head>
-<jsp:include page="layout/cabecera.jsp" />
 <title>Subasta</title>
+	<jsp:include page="layout/includes.jsp"></jsp:include>
 	<script src="/js/utilidades/subastaProductor.js">
 	</script>
 </head>
 <body>
+<jsp:include page="layout/cabecera.jsp" />
 	<div class="page-wrapper chiller-theme toggled">
 		<jsp:include page="layout/sidebar.jsp" />
 		<form method="post" action="/subasta" novalidate class="needs-validation">
@@ -85,15 +86,15 @@
 						<input type="submit"  value="Agregar oferta a subasta" id="btnAgregar" class="btn btn-block btn-lg mb-2" style="background-color: #FF5400; color: white;"/>
 
 						<hr class="border border-secondary my-5">
-						<h5 class="letras jumbotron-heading">Mejores subastas</h5>
-                       <c:forEach items="${venta.solicitud.productoSolicitados}" var="j" varStatus="index">
-						<div class="card border-success mb-4">
-							<div class="card-header text-uppercase">
-								<table class="table table-sm table-borderless mb-0">
-									<tr>
-										<td class="text-left font-weight-bold">${j.nombreProdS}</td>
-										<td class="text-right text-warning py-0"><h3 class="mb-0">
-												<i class="fas fa-trophy"></i>
+						   <h5 class="letras jumbotron-heading">Mejores subastas</h5>
+						   <c:forEach items="${venta.solicitud.productoSolicitados}" var="j" varStatus="index">
+							   <div class="card border-success mb-4">
+								   <div class="card-header text-uppercase">
+									   <table class="table table-sm table-borderless mb-0">
+										   <tr>
+											   <td class="text-left font-weight-bold">${j.nombreProdS}</td>
+											   <td class="text-right text-warning py-0"><h3 class="mb-0">
+											   <i class="fas fa-trophy"></i>
 											</h3></td>
 									</tr>
 								</table>

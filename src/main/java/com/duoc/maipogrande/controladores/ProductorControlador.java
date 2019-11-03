@@ -1,6 +1,9 @@
 package com.duoc.maipogrande.controladores;
 
-import com.duoc.maipogrande.modelos.*;
+import com.duoc.maipogrande.modelos.OfertaProducto;
+import com.duoc.maipogrande.modelos.Producto;
+import com.duoc.maipogrande.modelos.Productor;
+import com.duoc.maipogrande.modelos.Venta;
 import com.duoc.maipogrande.paginador.Pagina;
 import com.duoc.maipogrande.servicios.ProductoServicio;
 import com.duoc.maipogrande.servicios.ProductorServicio;
@@ -27,8 +30,6 @@ import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import static java.util.Collections.reverseOrder;
 
 
 @Controller
@@ -72,9 +73,11 @@ public class ProductorControlador {
             }
         }
         List<Venta> ventas = productorServicio.ventasParaSubasta(pagina);
+        List<Venta> ventasActivas = productorServicio.ventasActivasProductor(((Productor)session.getAttribute("productor")).getIdProd());
         int totalPaginas = productorServicio.contarVentasSubasta();
         Pagina paginador = new Pagina((short) totalPaginas,(short)(paginaActual+1));
         model.addAttribute("ventas",ventas);
+        session.setAttribute("ventasActivas",ventasActivas);
         model.addAttribute("paginador",paginador);
         model.addAttribute("paginaActual",(paginaActual==0)?1: paginaActual+1);
         return "productor";
@@ -113,17 +116,10 @@ public class ProductorControlador {
                 .map(x -> x.getValue())
                 .collect(Collectors.joining());
 
-        List<OfertaProducto> ofertaProductos = venta.getOfertaProductos()
-                .stream()
-                .sorted(Comparator.comparing(OfertaProducto::getPrecioOferta)
-                        .thenComparing(reverseOrder(Comparator.comparing
-                                (ofertaProducto -> ofertaProducto.getProducto().getCalidadProdu()))))
-                .collect(Collectors.toList());
-        Map<Long,Long> idProdsSolicitados = ofertaProductos
+        Map<Long,Long> idProdsSolicitados = venta.getOfertaProductos()
                 .stream()
                 .distinct()
                 .collect(Collectors.toMap(OfertaProducto::getIdOferp,ofertaProducto -> ofertaProducto.getProductoSolicitado().getIdProdS()));
-        venta.setOfertaProductos(ofertaProductos);
         session.setAttribute("venta",venta);
         model.addAttribute("pais",pais);
         model.addAttribute("idProdsSolicitados",idProdsSolicitados);

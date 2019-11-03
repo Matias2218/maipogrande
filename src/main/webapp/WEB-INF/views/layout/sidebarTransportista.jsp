@@ -54,7 +54,7 @@
 						<div class="sidebar-submenu">
 							<ul>
 	<c:forEach items="${ventasActivas}" var="v">
-								<li><a href="#">Venta N° ${v}</a></li>
+								<li><a href="/detalleVentaTransportista/${v}">Venta N° ${v}</a></li>
 	</c:forEach>
 							</ul>
 						</div></li>

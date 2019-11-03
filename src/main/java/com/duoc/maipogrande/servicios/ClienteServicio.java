@@ -3,6 +3,7 @@ package com.duoc.maipogrande.servicios;
 import com.duoc.maipogrande.modelos.Cliente;
 import com.duoc.maipogrande.modelos.ProductoSolicitado;
 import com.duoc.maipogrande.modelos.Solicitud;
+import com.duoc.maipogrande.modelos.Venta;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -38,6 +39,49 @@ public class ClienteServicio{
             query.setParameter("id", id);
             query.execute();
             return (Cliente) query.getSingleResult();
+        }
+        catch (Exception e)
+        {
+            return null;
+        }
+    }
+
+    @Transactional(readOnly = true)
+    public List<Solicitud> traerSolicitudesPorIdCli(Long id) {
+        try {
+            StoredProcedureQuery query  = entityManager.createNamedStoredProcedureQuery("traerSolicitudesPorIdCli");
+            query.setParameter("idCli", id);
+            query.execute();
+            return query.getResultList();
+        }
+        catch (Exception e)
+        {
+            return null;
+        }
+    }
+
+    @Transactional(readOnly = true)
+    public List<Venta> traerVentasActivasPorIdCli(Long id) {
+        try {
+            StoredProcedureQuery query  = entityManager.createNamedStoredProcedureQuery("traerVentasActivasPorIdCli");
+            query.setParameter("id", id);
+            query.execute();
+            return query.getResultList();
+        }
+        catch (Exception e)
+        {
+            return null;
+        }
+    }
+
+    @Transactional(readOnly = true)
+    public Venta traerVentaCliente(Long idVenta, Long idCli) {
+        try {
+            StoredProcedureQuery query  = entityManager.createNamedStoredProcedureQuery("traerVentaCliente");
+            query.setParameter("idVenta", idVenta);
+            query.setParameter("idCli", idCli);
+            query.execute();
+            return (Venta) query.getSingleResult();
         }
         catch (Exception e)
         {

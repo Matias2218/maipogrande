@@ -55,6 +55,23 @@ import java.util.stream.Collectors;
                                 type = Long.class
                         ),
                 }
+        ),
+        @NamedStoredProcedureQuery(
+                name = "traerSolicitudesPorIdCli",
+                procedureName = "traerSolicitudesPorIdCli",
+                resultClasses = {Solicitud.class},
+                parameters = {
+                        @StoredProcedureParameter(
+                                mode = ParameterMode.IN,
+                                name = "idCli",
+                                type = Long.class
+                        ),
+                        @StoredProcedureParameter(
+                                mode = ParameterMode.REF_CURSOR,
+                                name = "q",
+                                type = void.class
+                        ),
+                }
         )
 })
 public class Solicitud {

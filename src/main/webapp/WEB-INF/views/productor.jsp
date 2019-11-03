@@ -10,7 +10,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <html>
 <head>
-<jsp:include page="layout/cabecera.jsp" />
+<jsp:include page="layout/includes.jsp"/>
 <title>Productor</title>
 <script type="text/javascript">
 	$(document).ready(function() {
@@ -23,6 +23,7 @@
 </script>
 </head>
 <body>
+<jsp:include page="layout/cabecera.jsp" />
 	<div class="page-wrapper chiller-theme toggled">
 		<jsp:include page="layout/sidebar.jsp" />
 		<form method="get" action="/productor">
@@ -127,8 +128,6 @@
 										</div>
 									</c:otherwise>
 								</c:choose>
-
-
 							</div>
 						</div>
 					</div>

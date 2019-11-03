@@ -1,6 +1,10 @@
 package com.duoc.maipogrande.controladores;
 
-import com.duoc.maipogrande.modelos.*;
+import com.duoc.maipogrande.modelos.Cliente;
+import com.duoc.maipogrande.modelos.ProductoSolicitado;
+import com.duoc.maipogrande.modelos.Solicitud;
+import com.duoc.maipogrande.modelos.Venta;
+import com.duoc.maipogrande.modelos.utilidades.Frutas;
 import com.duoc.maipogrande.servicios.ClienteServicio;
 import com.duoc.maipogrande.servicios.ProductorServicio;
 import com.duoc.maipogrande.servicios.TransportistaServicio;
@@ -18,10 +22,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.security.Principal;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -102,8 +103,11 @@ public class ClientesControlador {
             put("KG", "Kilogramos");
             put("T", "Toneladas");
         }};
+        Frutas[] frutas = Stream.of(Frutas.values()).sorted(Comparator.comparing(Frutas::name)).toArray(Frutas[]::new);
+        model.addAttribute("frutas",frutas);
         model.addAttribute("tipoUnidadMasa",tipoUnidadMasa);
         model.addAttribute("solicitud",solicitud);
+
         return "añadirSolicitudClienteInterno";
     }
 
@@ -159,6 +163,38 @@ public class ClientesControlador {
         clienteServicio.crearProductosSolicitados(productoSolicitados);
         return "redirect:/clienteInterno";
     }
+
+    @Secured("ROLE_CLIENTE_INTERNO")
+    @GetMapping(value = "/clienteInterno/solicitudes")
+    public String solicitudesClienteInterno(Model model, Principal principal)
+    {
+        List<Solicitud> solicitudes = clienteServicio.traerSolicitudesPorIdCli(Long.parseLong(principal.getName()));
+        model.addAttribute("solicitudes",solicitudes);
+        return "solicitudesClientes";
+    }
+    @Secured("ROLE_CLIENTE_INTERNO")
+    @GetMapping(value = "/clienteInterno/detalleVenta/{id}")
+    public String detalleVentaClienteInterno(Model model, Principal principal, @PathVariable String id)
+    {
+        Long idNumerico;
+        try {
+            idNumerico = Long.parseLong(id);
+        }catch (NumberFormatException e)
+        {
+            return "redirect:/";
+        }
+        Venta venta = clienteServicio.traerVentaCliente(idNumerico, Long.parseLong(principal.getName()));
+        if(venta == null)
+        {
+            return "redirect:/";
+        }
+        if(venta.getEstadoVenta().equals('P'))
+        {
+            venta.ordernarTop3SubastaProductos();
+        }
+        model.addAttribute("venta",venta);
+        return "detalleVentaCliente";
+    }
     @Secured("ROLE_CLIENTE_EXTERNO")
     @RequestMapping(value = "/clienteExterno", method = RequestMethod.GET)
     public String paginaPrincipalClienteExterno() {
@@ -180,6 +216,8 @@ public class ClientesControlador {
                 put("KG", "Kilogramos");
                 put("T", "Toneladas");
             }};
+        Frutas[] frutas = Stream.of(Frutas.values()).sorted(Comparator.comparing(Frutas::name)).toArray(Frutas[]::new);
+        model.addAttribute("frutas",frutas);
         model.addAttribute("paises",paises);
         model.addAttribute("tipoUnidadMasa",tipoUnidadMasa);
         model.addAttribute("solicitud",solicitud);
@@ -238,5 +276,36 @@ public class ClientesControlador {
         return "redirect:/clienteExterno";
     }
 
-   
+    @Secured("ROLE_CLIENTE_EXTERNO")
+    @GetMapping(value = "/clienteExterno/solicitudes")
+    public String solicitudesClienteExterno(Model model, Principal principal)
+    {
+        List<Solicitud> solicitudes = clienteServicio.traerSolicitudesPorIdCli(Long.parseLong(principal.getName()));
+        model.addAttribute("solicitudes",solicitudes);
+        return "solicitudesClientes";
+    }
+
+    @Secured("ROLE_CLIENTE_EXTERNO")
+    @GetMapping(value = "/clienteExterno/detalleVenta/{id}")
+    public String detalleVentaClienteExterno(Model model, Principal principal, @PathVariable String id)
+    {
+        Long idNumerico;
+        try {
+            idNumerico = Long.parseLong(id);
+        }catch (NumberFormatException e)
+        {
+            return "redirect:/";
+        }
+        Venta venta = clienteServicio.traerVentaCliente(idNumerico, Long.parseLong(principal.getName()));
+        if(venta == null)
+        {
+            return "redirect:/";
+        }
+        if(venta.getEstadoVenta().equals('P'))
+        {
+            venta.ordernarTop3SubastaProductos();
+        }
+        model.addAttribute("venta",venta);
+        return "detalleVentaCliente";
+    }
 }

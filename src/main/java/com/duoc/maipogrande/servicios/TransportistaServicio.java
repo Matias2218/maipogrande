@@ -43,7 +43,7 @@ public class TransportistaServicio {
             return null;
         }
     }
-    @Transactional()
+    @Transactional(readOnly = true)
     public List<Venta> ventasParaSubastaTrans(Short i)
     {
         try{
@@ -56,7 +56,7 @@ public class TransportistaServicio {
             return null;
         }
     }
-    @Transactional()
+    @Transactional(readOnly = true)
     public List<Integer> ventasActivasTran(Long id)
     {
         try{
@@ -108,6 +108,21 @@ public class TransportistaServicio {
         catch (Exception e)
         {
             return false;
+        }
+    }
+    @Transactional(readOnly = true, noRollbackFor = RuntimeException.class)
+    public Venta buscarVentaDetalleTran(Long idVenta,Long idTran)
+    {
+        try {
+            StoredProcedureQuery query = entityManager.createNamedStoredProcedureQuery("buscarVentaDetalleTran");
+            query.setParameter("idVenta",idVenta);
+            query.setParameter("idTran",idTran);
+            query.execute();
+            return (Venta) query.getSingleResult();
+        }
+        catch (Exception e)
+        {
+            return null;
         }
     }
 }

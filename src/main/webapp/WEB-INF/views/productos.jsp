@@ -11,7 +11,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <html>
 <head>
-    <jsp:include page="layout/cabecera.jsp"/>
+    <jsp:include page="layout/includes.jsp"></jsp:include>
     <script src="/js/utilidades/mantenedorProducto.js"></script>
     <script src="/js/utilidades/index.js"></script>
     <title>Productos</title>
@@ -26,6 +26,7 @@
     </script>
 </head>
 <body>
+<jsp:include page="layout/cabecera.jsp"/>
 <div class="page-wrapper chiller-theme toggled">
     <jsp:include page="layout/sidebar.jsp"></jsp:include>
     <main class="page-content">

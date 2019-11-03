@@ -10,11 +10,19 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
-    <jsp:include page="layout/cabecera.jsp"/>
+   <jsp:include page="layout/includes.jsp"></jsp:include>
     <script src="/js/utilidades/añadirSolicitudCliente.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/css/bootstrap-select.min.css">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/js/bootstrap-select.min.js"></script>
+
+    <!-- (Optional) Latest compiled and minified JavaScript translation files -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/js/i18n/defaults-*.min.js"></script>
     <title>Solicitud de venta</title>
 </head>
 <body>
+<jsp:include page="layout/cabecera.jsp"/>
 <div class="page-wrapper chiller-theme toggled">
     <jsp:include page="layout/sidebarCliente.jsp" />
     <!-- SIDEBAR -->
@@ -59,7 +67,17 @@
                                     <div class="invalid-feedback">Fecha obligatoria</div>
                                 </div>
                             </div>
-
+                            <c:set var="frutasSeparadas" value=""></c:set>
+                            <c:forEach items="${frutas}" var="t" varStatus="i">
+                                <c:choose>
+                                    <c:when test="${i.last}">
+                                        <c:set var="frutasSeparadas" value="${frutasSeparadas.concat(t.name())}"></c:set>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <c:set var="frutasSeparadas" value="${frutasSeparadas.concat(t.name())}."></c:set>
+                                    </c:otherwise>
+                                </c:choose>
+                            </c:forEach>
                             <div class="container-fluid">
                                 <div class="row">
                                     <div class="col-lg pl-0 pr-0">
@@ -71,7 +89,11 @@
                                                     <div class="form-row">
                                                         <div class="form-group  col-md-6">
                                                             <label>Nombre del producto</label>
-                                                            <input class="form-control" required="true" name="nombreproducto[]"/>
+                                                            <select class="selectpicker form-control" data-live-search="true" required="true" name="nombreproducto[]">
+                                                                <c:forEach items="${frutas}" var="f">
+                                                                    <option value="${f.name()}">${f.name()}</option>
+                                                                </c:forEach>
+                                                            </select>
                                                             <div class="invalid-feedback">Nombre obligatorio</div>
                                                         </div>
                                                         <div class="form-group  col-md-6">
@@ -101,7 +123,11 @@
                                                     <div class="form-row">
                                                         <div class="form-group  col-md-6">
                                                             <label>Nombre del producto</label>
-                                                            <input class="form-control" required="true" name="nombreproducto[]"/>
+                                                            <select class="selectpicker form-control" data-live-search="true" required="true" name="nombreproducto[]">
+                                                                <c:forEach items="${frutas}" var="f">
+                                                                    <option value="${f.name()}">${f.name()}</option>
+                                                                </c:forEach>
+                                                            </select>
                                                             <div class="invalid-feedback">Nombre obligatorio</div>
                                                         </div>
                                                         <div class="form-group  col-md-6">

@@ -10,11 +10,12 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <html>
 <head>
-    <jsp:include page="layout/cabecera.jsp"/>
+    <jsp:include page="layout/includes.jsp"></jsp:include>
     <script src="/js/utilidades/mantenedorProducto.js"></script>
     <title>Editar Producto</title>
 </head>
 <body>
+<jsp:include page="layout/cabecera.jsp"/>
 <div class="page-wrapper chiller-theme toggled">
     <jsp:include page="layout/sidebar.jsp"></jsp:include>
     <main class="page-content">

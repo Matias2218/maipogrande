@@ -5,31 +5,13 @@
 <html>
 <head>
     <meta charset="ISO-8859-1">
-    <jsp:include page="layout/cabecera.jsp"/>
     <title>Subasta Transportista</title>
-    <script>
-        (function () {
-            'use strict';
-            window.addEventListener('load', function () {
-                // Fetch all the forms we want to apply custom Bootstrap validation styles to
-                var forms = document.getElementsByClassName('needs-validation');
-                // Loop over them and prevent submission
-                var validation = Array.prototype.filter.call(forms, function (form) {
-                    form.addEventListener('submit', function (event) {
-                        if (form.checkValidity() === false) {
-                            event.preventDefault();
-                            event.stopPropagation();
-                        } else {
-                            $('#modalCargando').modal('show');
-                        }
-                        form.classList.add('was-validated');
-                    }, false);
-                });
-            }, false);
-        })();
+    <jsp:include page="layout/includes.jsp"></jsp:include>
+    <script src="/js/utilidades/subastaTransportista.js">
     </script>
 </head>
 <body>
+<jsp:include page="layout/cabecera.jsp"/>
 <div class="page-wrapper chiller-theme toggled">
     <jsp:include page="layout/sidebarTransportista.jsp"/>
     <form class="needs-validation" method="post" novalidate
@@ -176,6 +158,7 @@
                            style="background-color: #FF5400; color: white;" disabled/>
                     <!-- FIN DE DIV NO SE PUEDE -->
                     </c:if>
+                    <c:if test="${venta.ofertaTransportistas.size() > 0}">
                     <hr class="border border-secondary my-5">
                     <h5 class="letras jumbotron-heading">Mejores subastas</h5>
                     <div class="card border-success mb-4">
@@ -183,32 +166,34 @@
                             <table class="table table-sm table-borderless mb-0">
                                 <tr>
                                     <td class="text-left font-weight-bold">
-                                        <xd></xd>
+
                                     </td>
                                     <td class="text-right text-warning py-0"><h3 class="mb-0">
                                         <i class="fas fa-trophy"></i>
                                     </h3></td>
                                 </tr>
-
                             </table>
                         </div>
                         <div class="card-body text-cennter">
                             <table class="table table-sm table-borderless" style="max-width: 550px; margin: auto;">
                                 <thead>
                                 <tr>
+                                    <th scope="col">Nombre</th>
                                     <th scope="col">Precio</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-								<c:forEach items="${venta.ofertaTransportistas}" var="o">
-                                <tr>
-                                    <td>${o.precioOfertaOfert}</td>
-                                </tr>
-								</c:forEach>
+                                <c:forEach items="${venta.ofertaTransportistas}" var="o">
+                                    <tr>
+                                        <td>${o.transportista.nombreTran} ${o.transportista.apellidosTran}</td>
+                                        <td>${o.precioOfertaOfert}</td>
+                                    </tr>
+                                </c:forEach>
                                 </tbody>
                             </table>
                         </div>
                     </div>
+                    </c:if>
         </main>
     </form>
 </div>

@@ -8,10 +8,11 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <jsp:include page="layout/cabecera.jsp" />
+   <jsp:include page="layout/includes.jsp"></jsp:include>
     <title>Cliente</title>
 </head>
 <body>
+<jsp:include page="layout/cabecera.jsp" />
 <div class="page-wrapper chiller-theme toggled">
     <jsp:include page="layout/sidebarCliente.jsp" />
     <main class="page-content">

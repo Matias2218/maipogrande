@@ -10,11 +10,12 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
-    <jsp:include page="layout/cabecera.jsp"/>
     <script src="/js/utilidades/mantenedorProducto.js"></script>
+    <jsp:include page="layout/includes.jsp"></jsp:include>
     <title>Agregar Producto</title>
 </head>
 <body>
+<jsp:include page="layout/cabecera.jsp"/>
 <div class="page-wrapper chiller-theme toggled">
     <jsp:include page="layout/sidebar.jsp"></jsp:include>
     <!-- AGREGAR -->
