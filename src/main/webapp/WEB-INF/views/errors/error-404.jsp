@@ -10,7 +10,7 @@
 <head>
     <title>Pagina No Encontrada</title>
     <jsp:include page="../layout/includes.jsp"></jsp:include>
-    <link rel="shortcut icon" type="image/png" href="img\icono-maipo.png" />
+    <link rel="shortcut icon" type="image/png" href="\img\icono-maipo.png" />
     <link rel="stylesheet" href="\css\errorstyles.css">
 
 </head>
@@ -18,7 +18,7 @@
 <!-- NAVBAR -->
 <nav
         class="navbar navbar-expand-lg navbar-light bg-lg sticky-top navbar-trasnparente">
-    <a class="navbar-brand" href="/"> <img src="img/logo-maipo.png"
+    <a class="navbar-brand" href="/"> <img src="/img/logo-maipo.png"
                                            height="50" class="d-inline-block align-top" alt="">
     </a>
     <button class="navbar-toggler" type="button" data-toggle="collapse"
@@ -39,7 +39,7 @@
 </div>
 
 <div class="texto" align="center">
-    4<img class="error" src="img/icono-maipo.png" alt="Logo Maipo Grande">4
+    4<img class="error" src="/img/icono-maipo.png" alt="Logo Maipo Grande">4
     <hr>
 </div>
 <div  align="center">
