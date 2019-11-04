@@ -39,11 +39,12 @@ public class ClientesControlador {
 
     /**
      * Metodo que permite el redireccionamiento de pagina y que ademas logra realizar el papel de control de inicio de sesiones
-     * @param model interface que permite enviar elementos a la vista en tipo {@code java.util.Map}.
-     * @param principal Control el ingreso de entidades a la pagina, segun sus roles
-     * @param session Proporciona una manera de identificar un usuario o solicitud y alamacena la informacion
-     * @param logout Anotacion que indica que parametro se solicito, en este caso, logout el cual permite cerrar sesion dentro del sitio
-     * @param error Anotacion que indica que parametro se solicito, en este caso, error que permite determinar que problemas se detectan
+     *
+     * @param model      interface que permite enviar elementos a la vista en tipo {@code java.util.Map}.
+     * @param principal  Control el ingreso de entidades a la pagina, segun sus roles
+     * @param session    Proporciona una manera de identificar un usuario o solicitud y alamacena la informacion
+     * @param logout     Anotacion que indica que parametro se solicito, en este caso, logout el cual permite cerrar sesion dentro del sitio
+     * @param error      Anotacion que indica que parametro se solicito, en este caso, error que permite determinar que problemas se detectan
      * @param attributes Manda informacion a la vista, cuando esta es redirigida mediante una ruta que va hacia un metodo
      * @return Permite la redirecion correspondiente a la vista, segun el flujo del algoritmo
      */
@@ -71,12 +72,11 @@ public class ClientesControlador {
                     return "redirect:transportista";
             }
         }
-        if (logout != null){
+        if (logout != null) {
             mensaje = "Sesion cerrada correctamente";
             model.addAttribute("logout", mensaje);
         }
-        if(error !=null)
-        {
+        if (error != null) {
             mensaje = "Error en las credenciales";
             model.addAttribute("error", mensaje);
         }
@@ -91,47 +91,46 @@ public class ClientesControlador {
 
     /**
      * Metodo que permite el redireccionamiento segun el flujo del metodo, ademas logra cargar las unidades de medida para su respectivo uso
+     *
      * @param model interface que permite enviar elementos a la vista en tipo {@code java.util.Map}.
      * @return Permite la redirecion correspondiente a la vista, segun el flujo del algoritmo
      */
     @Secured("ROLE_CLIENTE_INTERNO")
     @GetMapping(value = "/clienteInterno/crearSolicitud")
-    public String paginaAñadirSolcitudInterno(Model model)
-    {
+    public String paginaAñadirSolcitudInterno(Model model) {
         Solicitud solicitud = new Solicitud();
-        Map<String,String> tipoUnidadMasa = new HashMap<String,String>(){{
+        Map<String, String> tipoUnidadMasa = new HashMap<String, String>() {{
             put("KG", "Kilogramos");
             put("T", "Toneladas");
         }};
         Frutas[] frutas = Stream.of(Frutas.values()).sorted(Comparator.comparing(Frutas::name)).toArray(Frutas[]::new);
-        model.addAttribute("frutas",frutas);
-        model.addAttribute("tipoUnidadMasa",tipoUnidadMasa);
-        model.addAttribute("solicitud",solicitud);
+        model.addAttribute("frutas", frutas);
+        model.addAttribute("tipoUnidadMasa", tipoUnidadMasa);
+        model.addAttribute("solicitud", solicitud);
 
         return "añadirSolicitudClienteInterno";
     }
 
     /**
      * Metodo que permite la creacion de solicitudes para el cliente interno
-     * @param solicitud Clase {@code com.duoc.maipogrande.modelos.Solicitud} proveniente de la vista ClienteInterno
-     * @param bindingResult Valida si existen errores en la clase {@code com.duoc.maipogrande.modelos.Solicitud}
-     * @param session Proporciona una manera de identificar un usuario o solicitud y alamacena la informacion
-     * @param nombresProductos Anotacion que indica que parametro se solicito, en este caso, nombreProductos el cual proporciona el nombre del producto
+     *
+     * @param solicitud               Clase {@code com.duoc.maipogrande.modelos.Solicitud} proveniente de la vista ClienteInterno
+     * @param bindingResult           Valida si existen errores en la clase {@code com.duoc.maipogrande.modelos.Solicitud}
+     * @param session                 Proporciona una manera de identificar un usuario o solicitud y alamacena la informacion
+     * @param nombresProductos        Anotacion que indica que parametro se solicito, en este caso, nombreProductos el cual proporciona el nombre del producto
      * @param cantidadProductosString Anotacion que indica que parametro se solicito, en este caso, cantidadProductos el cual proporciona la cantidad de productos
-     * @param unidadMasas Anotacion que indica que parametro se solicito, en este caso, unidadMasas el cual proporciona el tipo de medidad
+     * @param unidadMasas             Anotacion que indica que parametro se solicito, en este caso, unidadMasas el cual proporciona el tipo de medidad
      * @return Permite la redirecion correspondiente a la vista, para luego ejecutar el metodo correspondiente
      */
     @Secured("ROLE_CLIENTE_INTERNO")
     @PostMapping(value = "/clienteInterno/crearSolicitud")
     public String peticionPostAñadirSolicitudInterno(@Valid @ModelAttribute("solicitud") Solicitud solicitud,
-                                              BindingResult bindingResult,
-                                              HttpSession session,
-                                              @RequestParam(name = "nombreproducto[]",required = false)String[] nombresProductos,
-                                              @RequestParam(name = "cantidadproducto[]",required = false)String[] cantidadProductosString,
-                                              @RequestParam(name = "unidadMasa[]", required = false)String[] unidadMasas)
-    {
-        if(bindingResult.hasErrors())
-        {
+                                                     BindingResult bindingResult,
+                                                     HttpSession session,
+                                                     @RequestParam(name = "nombreproducto[]", required = false) String[] nombresProductos,
+                                                     @RequestParam(name = "cantidadproducto[]", required = false) String[] cantidadProductosString,
+                                                     @RequestParam(name = "unidadMasa[]", required = false) String[] unidadMasas) {
+        if (bindingResult.hasErrors()) {
             return "redirect:/clienteInterno/crearSolicitud";
         }
         Integer[] cantidadProductos;
@@ -139,26 +138,23 @@ public class ClientesControlador {
             cantidadProductos = Stream.of(cantidadProductosString)
                     .map(Integer::parseInt)
                     .toArray(Integer[]::new);
-            for (int i = 0; i < unidadMasas.length ; i++) {
-                if(unidadMasas[i].trim().isEmpty() || nombresProductos[i].trim().isEmpty())
-                {
+            for (int i = 0; i < unidadMasas.length; i++) {
+                if (unidadMasas[i].trim().isEmpty() || nombresProductos[i].trim().isEmpty()) {
                     return "redirect:/clienteInterno/crearSolicitud";
                 }
             }
-        }
-        catch (NumberFormatException e)
-        {
+        } catch (NumberFormatException e) {
             return "redirect:/clienteInterno/crearSolicitud";
         }
         List<ProductoSolicitado> productoSolicitados = new ArrayList<>();
-        IntStream.range(0,nombresProductos.length)
+        IntStream.range(0, nombresProductos.length)
                 .forEach(i -> {
-                    productoSolicitados.add(new ProductoSolicitado(nombresProductos[i],unidadMasas[i], cantidadProductos[i]));
+                    productoSolicitados.add(new ProductoSolicitado(nombresProductos[i], unidadMasas[i], cantidadProductos[i]));
                 });
         solicitud.setEstadoSol('E');
         solicitud.setPaisDestinoSol("CL");
         solicitud.setCliente(new Cliente());
-        solicitud.getCliente().setIdCli(((Cliente)session.getAttribute("clienteInterno")).getIdCli());
+        solicitud.getCliente().setIdCli(((Cliente) session.getAttribute("clienteInterno")).getIdCli());
         clienteServicio.crearSolicitud(solicitud);
         clienteServicio.crearProductosSolicitados(productoSolicitados);
         return "redirect:/clienteInterno";
@@ -166,35 +162,37 @@ public class ClientesControlador {
 
     @Secured("ROLE_CLIENTE_INTERNO")
     @GetMapping(value = "/clienteInterno/solicitudes")
-    public String solicitudesClienteInterno(Model model, Principal principal)
-    {
+    public String solicitudesClienteInterno(Model model, Principal principal) {
         List<Solicitud> solicitudes = clienteServicio.traerSolicitudesPorIdCli(Long.parseLong(principal.getName()));
-        model.addAttribute("solicitudes",solicitudes);
+        model.addAttribute("solicitudes", solicitudes);
         return "solicitudesClientes";
     }
+
     @Secured("ROLE_CLIENTE_INTERNO")
     @GetMapping(value = "/clienteInterno/detalleVenta/{id}")
-    public String detalleVentaClienteInterno(Model model, Principal principal, @PathVariable String id)
-    {
+    public String detalleVentaClienteInterno(Model model, Principal principal, @PathVariable String id) {
         Long idNumerico;
         try {
             idNumerico = Long.parseLong(id);
-        }catch (NumberFormatException e)
-        {
+        } catch (NumberFormatException e) {
             return "redirect:/";
         }
         Venta venta = clienteServicio.traerVentaCliente(idNumerico, Long.parseLong(principal.getName()));
-        if(venta == null)
-        {
+        if (venta == null) {
             return "redirect:/";
         }
-        if(venta.getEstadoVenta().equals('P'))
-        {
+        if (venta.getEstadoVenta().equals('P')) {
             venta.ordernarTop3SubastaProductos();
+            Integer[] totales = venta.getOfertaProductos().
+                    stream()
+                    .map(ofertaProducto -> ofertaProducto.getPrecioOferta() * ofertaProducto.getStockOferta())
+                    .toArray(Integer[]::new);
+            model.addAttribute("totales", totales);
         }
-        model.addAttribute("venta",venta);
+        model.addAttribute("venta", venta);
         return "detalleVentaCliente";
     }
+
     @Secured("ROLE_CLIENTE_EXTERNO")
     @RequestMapping(value = "/clienteExterno", method = RequestMethod.GET)
     public String paginaPrincipalClienteExterno() {
@@ -202,36 +200,35 @@ public class ClientesControlador {
     }
 
     /**
-     *
      * @param model interface que permite enviar elementos a la vista en tipo {@code java.util.Map}.
      * @return Permite la redirecion correspondiente a la vista, para luego ejecutar el metodo correspondiente
      */
     @Secured("ROLE_CLIENTE_EXTERNO")
     @GetMapping(value = "/clienteExterno/crearSolicitud")
-    public String paginaAñadirSolcitud(Model model)
-    {
+    public String paginaAñadirSolcitud(Model model) {
         Solicitud solicitud = new Solicitud();
-        Map<String,String> paises = solicitud.obtenerPaises();
-        Map<String,String> tipoUnidadMasa = new HashMap<String,String>(){{
-                put("KG", "Kilogramos");
-                put("T", "Toneladas");
-            }};
+        Map<String, String> paises = solicitud.obtenerPaises();
+        Map<String, String> tipoUnidadMasa = new HashMap<String, String>() {{
+            put("KG", "Kilogramos");
+            put("T", "Toneladas");
+        }};
         Frutas[] frutas = Stream.of(Frutas.values()).sorted(Comparator.comparing(Frutas::name)).toArray(Frutas[]::new);
-        model.addAttribute("frutas",frutas);
-        model.addAttribute("paises",paises);
-        model.addAttribute("tipoUnidadMasa",tipoUnidadMasa);
-        model.addAttribute("solicitud",solicitud);
+        model.addAttribute("frutas", frutas);
+        model.addAttribute("paises", paises);
+        model.addAttribute("tipoUnidadMasa", tipoUnidadMasa);
+        model.addAttribute("solicitud", solicitud);
         return "añadirSolicitudClienteExterno";
     }
 
     /**
      * Metodo que permite la creacion de solicitudes para el cliente interno
-     * @param solicitud Clase {@code com.duoc.maipogrande.modelos.Solicitud} proveniente de la vista ClienteInterno
-     * @param bindingResult Valida si existen errores en la clase {@code com.duoc.maipogrande.modelos.Solicitud}
-     * @param session Proporciona una manera de identificar un usuario o solicitud y alamacena la informacion
-     * @param nombresProductos Anotacion que indica que parametro se solicito, en este caso, nombreProductos el cual proporciona el nombre del producto
+     *
+     * @param solicitud               Clase {@code com.duoc.maipogrande.modelos.Solicitud} proveniente de la vista ClienteInterno
+     * @param bindingResult           Valida si existen errores en la clase {@code com.duoc.maipogrande.modelos.Solicitud}
+     * @param session                 Proporciona una manera de identificar un usuario o solicitud y alamacena la informacion
+     * @param nombresProductos        Anotacion que indica que parametro se solicito, en este caso, nombreProductos el cual proporciona el nombre del producto
      * @param cantidadProductosString Anotacion que indica que parametro se solicito, en este caso, cantidadProductos el cual proporciona la cantidad de productos
-     * @param unidadMasas Anotacion que indica que parametro se solicito, en este caso, unidadMasas el cual proporciona el tipo de medidad
+     * @param unidadMasas             Anotacion que indica que parametro se solicito, en este caso, unidadMasas el cual proporciona el tipo de medidad
      * @return Permite la redirecion correspondiente a la vista, para luego ejecutar el metodo correspondiente
      */
     @Secured("ROLE_CLIENTE_EXTERNO")
@@ -239,12 +236,10 @@ public class ClientesControlador {
     public String peticionPostAñadirSolicitud(@Valid @ModelAttribute("solicitud") Solicitud solicitud,
                                               BindingResult bindingResult,
                                               HttpSession session,
-                                              @RequestParam(name = "nombreproducto[]",required = false)String[] nombresProductos,
-                                              @RequestParam(name = "cantidadproducto[]",required = false)String[] cantidadProductosString,
-                                              @RequestParam(name = "unidadMasa[]", required = false)String[] unidadMasas)
-    {
-        if(bindingResult.hasErrors())
-        {
+                                              @RequestParam(name = "nombreproducto[]", required = false) String[] nombresProductos,
+                                              @RequestParam(name = "cantidadproducto[]", required = false) String[] cantidadProductosString,
+                                              @RequestParam(name = "unidadMasa[]", required = false) String[] unidadMasas) {
+        if (bindingResult.hasErrors()) {
             return "redirect:/clienteExterno/crearSolicitud";
         }
         Integer[] cantidadProductos;
@@ -252,60 +247,65 @@ public class ClientesControlador {
             cantidadProductos = Stream.of(cantidadProductosString)
                     .map(Integer::parseInt)
                     .toArray(Integer[]::new);
-            for (int i = 0; i < unidadMasas.length ; i++) {
-                if(unidadMasas[i].trim().isEmpty() || nombresProductos[i].trim().isEmpty())
-                {
+            for (int i = 0; i < unidadMasas.length; i++) {
+                if (unidadMasas[i].trim().isEmpty() || nombresProductos[i].trim().isEmpty()) {
                     return "redirect:/clienteExterno/crearSolicitud";
                 }
             }
-        }
-        catch (NumberFormatException e)
-        {
+        } catch (NumberFormatException e) {
             return "redirect:/clienteExterno/crearSolicitud";
         }
         List<ProductoSolicitado> productoSolicitados = new ArrayList<>();
-        IntStream.range(0,nombresProductos.length)
+        IntStream.range(0, nombresProductos.length)
                 .forEach(i -> {
-                    productoSolicitados.add(new ProductoSolicitado(nombresProductos[i],unidadMasas[i], cantidadProductos[i]));
+                    productoSolicitados.add(new ProductoSolicitado(nombresProductos[i], unidadMasas[i], cantidadProductos[i]));
                 });
-                solicitud.setEstadoSol('E');
-                solicitud.setCliente(new Cliente());
-                solicitud.getCliente().setIdCli(((Cliente)session.getAttribute("clienteExterno")).getIdCli());
-                clienteServicio.crearSolicitud(solicitud);
-                clienteServicio.crearProductosSolicitados(productoSolicitados);
+        solicitud.setEstadoSol('E');
+        solicitud.setCliente(new Cliente());
+        solicitud.getCliente().setIdCli(((Cliente) session.getAttribute("clienteExterno")).getIdCli());
+        clienteServicio.crearSolicitud(solicitud);
+        clienteServicio.crearProductosSolicitados(productoSolicitados);
         return "redirect:/clienteExterno";
     }
 
     @Secured("ROLE_CLIENTE_EXTERNO")
     @GetMapping(value = "/clienteExterno/solicitudes")
-    public String solicitudesClienteExterno(Model model, Principal principal)
-    {
+    public String solicitudesClienteExterno(Model model, Principal principal) {
         List<Solicitud> solicitudes = clienteServicio.traerSolicitudesPorIdCli(Long.parseLong(principal.getName()));
-        model.addAttribute("solicitudes",solicitudes);
+        model.addAttribute("solicitudes", solicitudes);
         return "solicitudesClientes";
     }
 
     @Secured("ROLE_CLIENTE_EXTERNO")
     @GetMapping(value = "/clienteExterno/detalleVenta/{id}")
-    public String detalleVentaClienteExterno(Model model, Principal principal, @PathVariable String id)
-    {
+    public String detalleVentaClienteExterno(Model model, Principal principal, @PathVariable String id) {
         Long idNumerico;
         try {
             idNumerico = Long.parseLong(id);
-        }catch (NumberFormatException e)
-        {
+        } catch (NumberFormatException e) {
             return "redirect:/";
         }
         Venta venta = clienteServicio.traerVentaCliente(idNumerico, Long.parseLong(principal.getName()));
-        if(venta == null)
-        {
+        if (venta == null) {
             return "redirect:/";
         }
-        if(venta.getEstadoVenta().equals('P'))
-        {
+        if (venta.getEstadoVenta().equals('P')) {
             venta.ordernarTop3SubastaProductos();
+            Integer[] totales = venta.getOfertaProductos().
+                    stream()
+                    .map(ofertaProducto -> ofertaProducto.getPrecioOferta() * ofertaProducto.getStockOferta())
+                    .toArray(Integer[]::new);
+            model.addAttribute("totales", totales);
         }
-        model.addAttribute("venta",venta);
+        Long[] idsProductores = venta.getOfertaProductos().stream().map(ofertaProducto -> ofertaProducto.getProducto().getProductor().getIdProd())
+                .distinct()
+                .toArray(Long[]::new);
+        Map<Long, Boolean> idRecorridas = new HashMap<Long, Boolean>()
+        {{
+            Arrays.stream(idsProductores).forEach(id -> put(id,false));
+        }};
+        model.addAttribute("idRecorridas", idRecorridas);
+        model.addAttribute("venta", venta);
         return "detalleVentaCliente";
     }
 }

@@ -341,3 +341,7 @@ ul.list-social li.social-google-plus a:hover {
     background-color: #fff;
     border-color: rgba(0,0,0,.125);
 }
+
+.lead{
+	font-size: medium;
+}

@@ -10,8 +10,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
-    <script src="/js/utilidades/mantenedorProducto.js"></script>
     <jsp:include page="layout/includes.jsp"></jsp:include>
+    <script src="/js/utilidades/mantenedorProducto.js"></script>
     <title>Agregar Producto</title>
 </head>
 <body>

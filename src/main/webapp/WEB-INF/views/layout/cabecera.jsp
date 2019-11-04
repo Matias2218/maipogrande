@@ -15,7 +15,7 @@
 
 
 	<nav
-		class="navbar navbar-expand-lg navbar-light bg-lg sticky-top navbar-verde">
+		class="navbar navbar-expand-lg navbar-light bg-lg fixed-top navbar-verde mb-5" >
 	<a href="/" class="navbar-brand">
 	<img src="/img/logo-maipo.png" height="50"
 	class="d-inline-block align-top" alt="">
@@ -38,5 +38,6 @@
 			</div>
 		</div>
 	</nav>
+	<div style="height: 76px;"></div>
 </body>
 </html>
