@@ -201,6 +201,32 @@ import static java.util.Collections.reverseOrder;
                         ),
                 }
         ),
+        @NamedStoredProcedureQuery(
+                name = "rechazarVenta",
+                procedureName = "rechazarVenta",
+                parameters = {
+                        @StoredProcedureParameter(
+                                mode = ParameterMode.IN,
+                                name = "idVenta",
+                                type = Long.class
+                        ),
+                        @StoredProcedureParameter(
+                                mode = ParameterMode.IN,
+                                name = "pdfRuta",
+                                type = String.class
+                        ),
+                        @StoredProcedureParameter(
+                                mode = ParameterMode.IN,
+                                name = "descripcionRep",
+                                type = String.class
+                        ),
+                        @StoredProcedureParameter(
+                                mode = ParameterMode.IN,
+                                name = "tipoRep",
+                                type = Character.class
+                        )
+                }
+        ),
 })
 public class Venta {
     // Variable que almacena el id de la venta, esto se le asigna a cada uno para su correspondiente identificacion
@@ -329,7 +355,7 @@ public class Venta {
                          (this.ofertaTransportistas.get(j+1).getTransportista().getTamaño().equalsIgnoreCase("Mediano") ? 2 :
                                  (this.ofertaTransportistas.get(j+1).getTransportista().getTamaño().equalsIgnoreCase("Pequeño")) ? 1 : 0));
                 if (this.ofertaTransportistas.get(j).getPrecioOfertaOfert() >= this.ofertaTransportistas.get(j + 1).getPrecioOfertaOfert() &&
-                        this.ofertaTransportistas.get(j).getTransportista().getRefrigeracion() > this.ofertaTransportistas.get(j + 1).getTransportista().getRefrigeracion() &&
+                        this.ofertaTransportistas.get(j).getTransportista().getRefrigeracion() >= this.ofertaTransportistas.get(j + 1).getTransportista().getRefrigeracion() &&
                          tamaño >= tamaño2) {
                     OfertaTransportista temp = this.ofertaTransportistas.get(j);
                     this.ofertaTransportistas.set(j, this.ofertaTransportistas.get(j + 1));

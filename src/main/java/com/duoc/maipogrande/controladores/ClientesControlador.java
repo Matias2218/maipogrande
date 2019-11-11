@@ -1,11 +1,9 @@
 package com.duoc.maipogrande.controladores;
 
-import com.duoc.maipogrande.modelos.Cliente;
-import com.duoc.maipogrande.modelos.ProductoSolicitado;
-import com.duoc.maipogrande.modelos.Solicitud;
-import com.duoc.maipogrande.modelos.Venta;
+import com.duoc.maipogrande.modelos.*;
 import com.duoc.maipogrande.modelos.utilidades.Frutas;
 import com.duoc.maipogrande.servicios.ClienteServicio;
+import com.duoc.maipogrande.servicios.PdfServicio;
 import com.duoc.maipogrande.servicios.ProductorServicio;
 import com.duoc.maipogrande.servicios.TransportistaServicio;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +34,8 @@ public class ClientesControlador {
     ProductorServicio productorServicio;
     @Autowired
     TransportistaServicio transportistaServicio;
+    @Autowired
+    PdfServicio pdfServicio;
 
     /**
      * Metodo que permite el redireccionamiento de pagina y que ademas logra realizar el papel de control de inicio de sesiones
@@ -58,17 +58,25 @@ public class ClientesControlador {
         String mensaje;
         if (principal != null) {
             String rol;
+            List<?> ventasActivas;
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             rol = authentication.getAuthorities().stream().map(o -> ((GrantedAuthority) o).getAuthority()).collect(Collectors.joining());
-
             switch (rol) {
                 case "ROLE_CLIENTE_EXTERNO":
+                    ventasActivas = clienteServicio.traerVentasActivasPorIdCli(Long.parseLong(principal.getName()));
+                    session.setAttribute("ventasActivas", ventasActivas);
                     return "redirect:clienteExterno";
                 case "ROLE_CLIENTE_INTERNO":
+                    ventasActivas = clienteServicio.traerVentasActivasPorIdCli(Long.parseLong(principal.getName()));
+                    session.setAttribute("ventasActivas", ventasActivas);
                     return "redirect:clienteInterno";
                 case "ROLE_PRODUCTOR":
+                    ventasActivas = productorServicio.ventasActivasProductor(Long.parseLong(principal.getName()));
+                    session.setAttribute("ventasActivas", ventasActivas);
                     return "redirect:productor";
                 case "ROLE_TRANSPORTISTA":
+                    ventasActivas = transportistaServicio.ventasActivasTran(Long.parseLong(principal.getName()));
+                    session.setAttribute("ventasActivas", ventasActivas);
                     return "redirect:transportista";
             }
         }
@@ -278,7 +286,7 @@ public class ClientesControlador {
 
     @Secured("ROLE_CLIENTE_EXTERNO")
     @GetMapping(value = "/clienteExterno/detalleVenta/{id}")
-    public String detalleVentaClienteExterno(Model model, Principal principal, @PathVariable String id) {
+    public String detalleVentaClienteExterno(Model model, Principal principal, @PathVariable String id,HttpSession session) {
         Long idNumerico;
         try {
             idNumerico = Long.parseLong(id);
@@ -297,6 +305,15 @@ public class ClientesControlador {
                     .toArray(Integer[]::new);
             model.addAttribute("totales", totales);
         }
+        else if(venta.getEstadoVenta().equals('T'))
+        {
+            venta.ordernarTop3Transportistas();
+            Integer pesoTotal = venta.getSolicitud().getProductoSolicitados()
+                    .stream()
+                    .map(productoSolicitado -> (productoSolicitado.getUnidadProdS().equals('T') ? productoSolicitado.getCantidadProdS() * 1000 : productoSolicitado.getCantidadProdS()))
+                    .reduce(0,(subtotal,element) -> subtotal + element);
+            model.addAttribute("pesoTotal",pesoTotal);
+        }
         Long[] idsProductores = venta.getOfertaProductos().stream().map(ofertaProducto -> ofertaProducto.getProducto().getProductor().getIdProd())
                 .distinct()
                 .toArray(Long[]::new);
@@ -304,8 +321,36 @@ public class ClientesControlador {
         {{
             Arrays.stream(idsProductores).forEach(id -> put(id,false));
         }};
+        Integer totalProductos = venta.getOfertaProductos()
+                .stream()
+                .map(ofertaProducto -> ofertaProducto.getPrecioOferta() * ((ofertaProducto.getProductoSolicitado().getUnidadProdS().equals("KG"))? ofertaProducto.getProductoSolicitado().getCantidadProdS(): ofertaProducto.getProductoSolicitado().getCantidadProdS() * 1000))
+                .reduce(0, (subtotal, element) -> subtotal + element);
+        model.addAttribute("pais",venta.getSolicitud().obtenerPaisPorEstandarISO());
         model.addAttribute("idRecorridas", idRecorridas);
-        model.addAttribute("venta", venta);
+        model.addAttribute("totalProductos", totalProductos);
+        session.setAttribute("venta", venta);
         return "detalleVentaCliente";
+    }
+    @Secured({"ROLE_CLIENTE_INTERNO","ROLE_CLIENTE_EXTERNO"})
+    @PostMapping(value = "cliente/rechazarVenta")
+    public String rechazarVenta(HttpSession session,
+                                @RequestParam("txtRechazo") String txtRechazo)
+    {
+        Venta venta = (Venta)session.getAttribute("venta");
+        String nombrePdf = pdfServicio.generarPdfRechazo(venta,txtRechazo);
+        if(nombrePdf != null) {
+            Reporte reporte = new Reporte(nombrePdf, "Rechazo de venta", 'R', venta.getIdVenta());
+            clienteServicio.rechazarVentaPorid(reporte);
+        }
+        session.removeAttribute("venta");
+        return "redirect:/";
+    }
+    @Secured({"ROLE_CLIENTE_INTERNO","ROLE_CLIENTE_EXTERNO"})
+    @PostMapping(value = "cliente/aceptarVenta")
+    public String aceptarVenta(HttpSession session,
+                                @RequestParam("txtAceptar") String txtAceptar)
+    {
+        Venta venta = (Venta)session.getAttribute("venta");
+        return "redirect:/";
     }
 }

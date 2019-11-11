@@ -16,7 +16,7 @@ public class Reporte {
     // Variable que se utiliza para almacenar el asunto del reporte
     @NotNull
     @Column(length = 150, nullable = false)
-    private String asuntoRep;
+    private String pdfRuta;
     // Variable que se utiliza para almacenar la descripcion del reporte
     @NotNull
     @Column(length = 500, nullable = false)
@@ -33,6 +33,14 @@ public class Reporte {
     public Reporte() {
     }
 
+    public Reporte(@NotNull String pdfRuta, @NotNull String descripcionRep, @NotNull Character tipoRep, Long idVenta) {
+        this.pdfRuta = pdfRuta;
+        this.descripcionRep = descripcionRep;
+        this.tipoRep = tipoRep;
+        this.venta = new Venta();
+        this.venta.setIdVenta(idVenta);
+    }
+
     public Long getIdRep() {
         return idRep;
     }
@@ -41,12 +49,12 @@ public class Reporte {
         this.idRep = idRep;
     }
 
-    public String getAsuntoRep() {
-        return asuntoRep;
+    public String getPdfRuta() {
+        return pdfRuta;
     }
 
-    public void setAsuntoRep(String asuntoRep) {
-        this.asuntoRep = asuntoRep;
+    public void setPdfRuta(String pdfRuta) {
+        this.pdfRuta = pdfRuta;
     }
 
     public String getDescripcionRep() {

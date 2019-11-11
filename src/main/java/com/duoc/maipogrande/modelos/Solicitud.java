@@ -110,6 +110,7 @@ public class Solicitud {
     private Cliente cliente;
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "solicitud")
     private List<ProductoSolicitado> productoSolicitados;
+
     // Inicio de los metodos accesadores y mutadores
     public Solicitud() {
     }
@@ -177,6 +178,7 @@ public class Solicitud {
     public void setCliente(Cliente cliente) {
         this.cliente = cliente;
     }
+
     public List<ProductoSolicitado> getProductoSolicitados() {
         return productoSolicitados;
     }
@@ -185,18 +187,26 @@ public class Solicitud {
         this.productoSolicitados = productoSolicitados;
     }
 
-    public Map<String, String> obtenerPaises()
-    {
-        Map<String,String> paises = new TreeMap<>();
-        Map<String,String> paisesOrdenados;
-        Locale locale = new Locale("es","ES");
+    public Map<String, String> obtenerPaises() {
+        Map<String, String> paises = new TreeMap<>();
+        Map<String, String> paisesOrdenados;
+        Locale locale = new Locale("es", "ES");
         String[] locales = Locale.getISOCountries();
         for (String codigoPais : locales) {
-            Locale objeto = new Locale("",codigoPais);
-            paises.put(objeto.getCountry(),objeto.getDisplayCountry(locale));
+            Locale objeto = new Locale("", codigoPais);
+            paises.put(objeto.getCountry(), objeto.getDisplayCountry(locale));
         }
         paisesOrdenados = paises.entrySet().stream().sorted((Map.Entry.comparingByValue()))
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (s, s2) -> s, LinkedHashMap::new));
         return paisesOrdenados;
+    }
+
+    public String obtenerPaisPorEstandarISO() {
+        return obtenerPaises()
+                .entrySet()
+                .stream()
+                .filter(x -> x.getKey().equals(this.paisDestinoSol))
+                .map(x -> x.getValue())
+                .collect(Collectors.joining());
     }
 }
