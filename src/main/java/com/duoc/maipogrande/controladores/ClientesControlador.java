@@ -37,6 +37,8 @@ public class ClientesControlador {
     @Autowired
     PdfServicio pdfServicio;
 
+
+
     /**
      * Metodo que permite el redireccionamiento de pagina y que ademas logra realizar el papel de control de inicio de sesiones
      *
@@ -353,4 +355,6 @@ public class ClientesControlador {
         Venta venta = (Venta)session.getAttribute("venta");
         return "redirect:/";
     }
+
+
 }

@@ -9,7 +9,6 @@ import com.amazonaws.services.s3.model.PutObjectRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -31,7 +30,6 @@ public class AmazonS3Service {
                 .withCredentials(awsCredentialsProvider)
                 .withRegion(awsRegion.getName()).build();
     }
-    @Async
     public boolean subirArchivoS3Bucket(String nombrePdf)
     {
         File file = null;
