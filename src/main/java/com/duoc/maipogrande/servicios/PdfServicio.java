@@ -197,7 +197,7 @@ public class PdfServicio {
             //Transportistas
             paragraph = new Paragraph();
             paragraph.setSpacingBefore(4);
-            chunk = new Chunk("                Transportista: ", smallTitleFont);
+            chunk = new Chunk("                TRANSPORTISTA: ", smallTitleFont);
             phrase = new Phrase();
             phrase.add(chunk);
             paragraph.add(chunk);
