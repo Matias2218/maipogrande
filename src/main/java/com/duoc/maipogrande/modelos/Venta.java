@@ -3,6 +3,7 @@ package com.duoc.maipogrande.modelos;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -225,6 +226,42 @@ import static java.util.Collections.reverseOrder;
                                 name = "tipoRep",
                                 type = Character.class
                         )
+                }
+        ),
+        @NamedStoredProcedureQuery(
+                name = "aceptarVenta",
+                procedureName = "aceptarVenta",
+                parameters = {
+                        @StoredProcedureParameter(
+                                mode = ParameterMode.IN,
+                                name = "idVenta",
+                                type = Long.class
+                        ),
+                        @StoredProcedureParameter(
+                                mode = ParameterMode.IN,
+                                name = "fechaEmisionBol",
+                                type = LocalDate.class
+                        ),
+                        @StoredProcedureParameter(
+                                mode = ParameterMode.IN,
+                                name = "precioTotal",
+                                type = Integer.class
+                        ),
+                        @StoredProcedureParameter(
+                                mode = ParameterMode.IN,
+                                name = "descripcionRep",
+                                type = String.class
+                        ),
+                        @StoredProcedureParameter(
+                                mode = ParameterMode.IN,
+                                name = "pdfRuta",
+                                type = String.class
+                        ),
+                        @StoredProcedureParameter(
+                                mode = ParameterMode.IN,
+                                name = "tipoRep",
+                                type = Character.class
+                        ),
                 }
         ),
 })

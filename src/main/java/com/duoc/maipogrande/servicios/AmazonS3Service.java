@@ -24,24 +24,26 @@ public class AmazonS3Service {
     private Logger logger = LoggerFactory.getLogger(AmazonS3Service.class);
 
     @Autowired
-    public AmazonS3Service(Region awsRegion, AWSCredentialsProvider awsCredentialsProvider)
-    {
+    public AmazonS3Service(Region awsRegion, AWSCredentialsProvider awsCredentialsProvider) {
         this.amazonS3 = AmazonS3ClientBuilder.standard()
                 .withCredentials(awsCredentialsProvider)
                 .withRegion(awsRegion.getName()).build();
     }
-    public boolean subirArchivoS3Bucket(String nombrePdf)
-    {
+
+    public boolean subirArchivoS3Bucket(String nombrePdf) {
         File file = null;
         try {
             file = new File(nombrePdf);
-            this.amazonS3.putObject(new PutObjectRequest(this.awsS3AudioBucket, RUTACARPETARECHAZADO.concat(file.getName()), file));
+            if (nombrePdf.contains("pdfAceptado")) {
+                this.amazonS3.putObject(new PutObjectRequest(this.awsS3AudioBucket, RUTACARPETAACEPTADO.concat(file.getName()), file));
+            } else {
+                this.amazonS3.putObject(new PutObjectRequest(this.awsS3AudioBucket, RUTACARPETARECHAZADO.concat(file.getName()), file));
+            }
             return true;
-        }
-        catch (AmazonS3Exception ex)
-        {
-            logger.error(String.format("Error: %s, ocurrido al subir %s",ex.getMessage(),file.getName()));
+        } catch (AmazonS3Exception ex) {
+            logger.error(String.format("Error: %s, ocurrido al subir %s", ex.getMessage(), file.getName()));
             return false;
         }
     }
 }
+

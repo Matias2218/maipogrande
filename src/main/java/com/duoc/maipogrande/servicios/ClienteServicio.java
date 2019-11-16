@@ -134,4 +134,23 @@ public class ClienteServicio {
         }
     }
 
+    public boolean aceptarVentaPorId(Reporte reporte, Boleta boleta)
+    {
+        try
+        {
+            StoredProcedureQuery query = entityManager.createNamedStoredProcedureQuery("aceptarVenta");
+            query.setParameter("idVenta", reporte.getVenta().getIdVenta());
+            query.setParameter("fechaEmisionBol", boleta.getFechaEmisionBol());
+            query.setParameter("precioTotal", boleta.getPrecioTotal());
+            query.setParameter("descripcionRep", reporte.getDescripcionRep());
+            query.setParameter("pdfRuta", reporte.getPdfRuta());
+            query.setParameter("tipoRep", reporte.getTipoRep());
+            query.execute();
+            return true;
+        }catch (Throwable e)
+        {
+            return false;
+        }
+    }
+
 }

@@ -20,6 +20,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.security.Principal;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -36,7 +37,6 @@ public class ClientesControlador {
     TransportistaServicio transportistaServicio;
     @Autowired
     PdfServicio pdfServicio;
-
 
 
     /**
@@ -288,7 +288,7 @@ public class ClientesControlador {
 
     @Secured("ROLE_CLIENTE_EXTERNO")
     @GetMapping(value = "/clienteExterno/detalleVenta/{id}")
-    public String detalleVentaClienteExterno(Model model, Principal principal, @PathVariable String id,HttpSession session) {
+    public String detalleVentaClienteExterno(Model model, Principal principal, @PathVariable String id, HttpSession session) {
         Long idNumerico;
         try {
             idNumerico = Long.parseLong(id);
@@ -306,55 +306,65 @@ public class ClientesControlador {
                     .map(ofertaProducto -> ofertaProducto.getPrecioOferta() * ofertaProducto.getStockOferta())
                     .toArray(Integer[]::new);
             model.addAttribute("totales", totales);
-        }
-        else if(venta.getEstadoVenta().equals('T'))
-        {
+        } else if (venta.getEstadoVenta().equals('T')) {
             venta.ordernarTop3Transportistas();
             Integer pesoTotal = venta.getSolicitud().getProductoSolicitados()
                     .stream()
                     .map(productoSolicitado -> (productoSolicitado.getUnidadProdS().equals('T') ? productoSolicitado.getCantidadProdS() * 1000 : productoSolicitado.getCantidadProdS()))
-                    .reduce(0,(subtotal,element) -> subtotal + element);
-            model.addAttribute("pesoTotal",pesoTotal);
+                    .reduce(0, (subtotal, element) -> subtotal + element);
+            model.addAttribute("pesoTotal", pesoTotal);
         }
         Long[] idsProductores = venta.getOfertaProductos().stream().map(ofertaProducto -> ofertaProducto.getProducto().getProductor().getIdProd())
                 .distinct()
                 .toArray(Long[]::new);
-        Map<Long, Boolean> idRecorridas = new HashMap<Long, Boolean>()
-        {{
-            Arrays.stream(idsProductores).forEach(id -> put(id,false));
+        Map<Long, Boolean> idRecorridas = new HashMap<Long, Boolean>() {{
+            Arrays.stream(idsProductores).forEach(id -> put(id, false));
         }};
         Integer totalProductos = venta.getOfertaProductos()
                 .stream()
-                .map(ofertaProducto -> ofertaProducto.getPrecioOferta() * ((ofertaProducto.getProductoSolicitado().getUnidadProdS().equals("KG"))? ofertaProducto.getProductoSolicitado().getCantidadProdS(): ofertaProducto.getProductoSolicitado().getCantidadProdS() * 1000))
+                .map(ofertaProducto -> ofertaProducto.getPrecioOferta() * ((ofertaProducto.getProductoSolicitado().getUnidadProdS().equals("KG")) ? ofertaProducto.getProductoSolicitado().getCantidadProdS() : ofertaProducto.getProductoSolicitado().getCantidadProdS() * 1000))
                 .reduce(0, (subtotal, element) -> subtotal + element);
-        model.addAttribute("pais",venta.getSolicitud().obtenerPaisPorEstandarISO());
+        model.addAttribute("pais", venta.getSolicitud().obtenerPaisPorEstandarISO());
         model.addAttribute("idRecorridas", idRecorridas);
         model.addAttribute("totalProductos", totalProductos);
         session.setAttribute("venta", venta);
         return "detalleVentaCliente";
     }
-    @Secured({"ROLE_CLIENTE_INTERNO","ROLE_CLIENTE_EXTERNO"})
+
+    @Secured({"ROLE_CLIENTE_INTERNO", "ROLE_CLIENTE_EXTERNO"})
     @PostMapping(value = "cliente/rechazarVenta")
     public String rechazarVenta(HttpSession session,
-                                @RequestParam("txtRechazo") String txtRechazo)
-    {
-        Venta venta = (Venta)session.getAttribute("venta");
-        String nombrePdf = pdfServicio.generarPdfRechazo(venta,txtRechazo);
-        if(nombrePdf != null) {
+                                @RequestParam("txtRechazo") String txtRechazo) {
+        Venta venta = (Venta) session.getAttribute("venta");
+        String nombrePdf = pdfServicio.generarPdfRechazo(venta, txtRechazo);
+        if (nombrePdf != null) {
             Reporte reporte = new Reporte(nombrePdf, "Rechazo de venta", 'R', venta.getIdVenta());
             clienteServicio.rechazarVentaPorid(reporte);
         }
         session.removeAttribute("venta");
         return "redirect:/";
     }
-    @Secured({"ROLE_CLIENTE_INTERNO","ROLE_CLIENTE_EXTERNO"})
+
+    @Secured({"ROLE_CLIENTE_INTERNO", "ROLE_CLIENTE_EXTERNO"})
     @PostMapping(value = "cliente/aceptarVenta")
     public String aceptarVenta(HttpSession session,
-                                @RequestParam("txtAceptar") String txtAceptar)
-    {
-        Venta venta = (Venta)session.getAttribute("venta");
-        return "redirect:/";
+                               @RequestParam("txtAceptar") String txtAceptar) {
+        Venta venta = (Venta) session.getAttribute("venta");
+        String nombrePdf = pdfServicio.generarPdfAceptar(venta);
+        if (nombrePdf != null) {
+            Reporte reporte = new Reporte(nombrePdf, txtAceptar, 'A', venta.getIdVenta());
+            Integer sumaTotal = venta.getOfertaProductos().stream()
+                    .map(ofertaProducto -> (ofertaProducto.getProductoSolicitado().getUnidadProdS().equals("T")) ? (ofertaProducto.getProductoSolicitado().getCantidadProdS() * 1000) * ofertaProducto.getPrecioOferta() : ofertaProducto.getProductoSolicitado().getCantidadProdS() * ofertaProducto.getPrecioOferta())
+                    .reduce((integer, integer2) -> integer + integer2).orElse(null);
+            sumaTotal += venta.getOfertaTransportistas().get(0).getPrecioOfertaOfert();
+            Boleta boleta = new Boleta(LocalDateTime.now(), sumaTotal, venta.getIdVenta());
+            clienteServicio.aceptarVentaPorId(reporte, boleta);
+        }
+        session.removeAttribute("venta");
+        return"redirect:/";
     }
+
+
 
 
 }
