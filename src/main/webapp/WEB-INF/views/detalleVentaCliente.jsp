@@ -662,6 +662,7 @@
                                                     <div class="modal fade" id="modalaceptar" tabindex="-1"
                                                          role="dialog" aria-labelledby="exampleModalCenterTitle"
                                                          aria-hidden="true">
+                                                        <form method="post" action="/cliente/aceptarVenta">
                                                         <div class="modal-dialog modal-dialog-centered" role="document">
                                                             <div class="modal-content">
                                                                 <div class="modal-header">
@@ -677,7 +678,8 @@
                                                                             <label for="txtAceptar"
                                                                                    class="col-form-label">Comentario</label>
                                                                             <textarea class="form-control"
-                                                                                      id="txtAceptar"></textarea>
+                                                                                      id="txtAceptar"
+                                                                            name="txtAceptar"></textarea>
                                                                         </div>
                                                                     </form>
                                                                 </div>
@@ -685,12 +687,13 @@
                                                                     <button type="button" class="btn btn-secondary"
                                                                             data-dismiss="modal">Cerrar
                                                                     </button>
-                                                                    <button type="button" class="btn btn-primary">
+                                                                    <button type="submit" class="btn btn-primary">
                                                                         Aceptar productos
                                                                     </button>
                                                                 </div>
                                                             </div>
                                                         </div>
+                                                        </form>
                                                     </div>
 
                                                     <!-- MODAL RECHAZAR -->

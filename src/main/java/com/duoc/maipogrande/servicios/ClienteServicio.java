@@ -140,7 +140,6 @@ public class ClienteServicio {
         {
             StoredProcedureQuery query = entityManager.createNamedStoredProcedureQuery("aceptarVenta");
             query.setParameter("idVenta", reporte.getVenta().getIdVenta());
-            query.setParameter("fechaEmisionBol", boleta.getFechaEmisionBol());
             query.setParameter("precioTotal", boleta.getPrecioTotal());
             query.setParameter("descripcionRep", reporte.getDescripcionRep());
             query.setParameter("pdfRuta", reporte.getPdfRuta());

@@ -32,6 +32,7 @@ public class Boleta {
     public Boleta(LocalDateTime fechaEmisionBol, Integer precioTotal, Long idVenta) {
         this.fechaEmisionBol = fechaEmisionBol;
         this.precioTotal = precioTotal;
+        this.venta = new Venta();
         this.venta.setIdVenta(idVenta);
     }
 

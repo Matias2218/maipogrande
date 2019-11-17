@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
@@ -31,6 +32,7 @@ public class PdfServicio {
     private Document document;
     private Phrase phrase;
     private Integer precioTotalProovedores = 0;
+    private DecimalFormat format = new DecimalFormat("###,###.##");
     @Autowired
     AmazonS3Service amazonS3Service;
 
@@ -165,18 +167,21 @@ public class PdfServicio {
                     table.addCell(cell);
                     cell = new PdfPCell(new Phrase(String.format("%d %s",ofertaProducto.getProductoSolicitado().getCantidadProdS(),ofertaProducto.getProductoSolicitado().getUnidadProdS()),font));
                     table.addCell(cell);
-                    cell = new PdfPCell(new Phrase(String.format("%s %d","$",ofertaProducto.getPrecioOferta()),font));
+                    cell = new PdfPCell(new Phrase(String.format("%s %s","$",format.format(ofertaProducto.getPrecioOferta())),font));
+                    cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
                     table.addCell(cell);
                     Integer precioTotal = (ofertaProducto.getProductoSolicitado().getUnidadProdS().equals("T")) ? (ofertaProducto.getProductoSolicitado().getCantidadProdS() * 1000) * ofertaProducto.getPrecioOferta() : ofertaProducto.getProductoSolicitado().getCantidadProdS() * ofertaProducto.getPrecioOferta();
                     precioTotalProovedores += precioTotal;
-                    cell = new PdfPCell(new Phrase(String.format("%s %d","$",precioTotal),font));
+                    cell = new PdfPCell(new Phrase(String.format("%s %s","$",format.format(precioTotal)),font));
+                    cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
                     table.addCell(cell);
                 });
             });
             try {
                 document.add(table);
                 table = new PdfPTable(1);
-                cell = new PdfPCell(new Phrase("Total precio productos: $".concat(precioTotalProovedores.toString()),font));
+                cell = new PdfPCell(new Phrase("Total precio productos: $".concat(format.format(precioTotalProovedores)),font));
+                cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
                 table.addCell(cell);
                 document.add(table);
             } catch (DocumentException e) {
@@ -219,11 +224,13 @@ public class PdfServicio {
             table.addCell(cell);
             cell = new PdfPCell(new Phrase(String.format("%s, %s",venta.getSolicitud().getDireccionDestinoSol(),venta.getSolicitud().obtenerPaisPorEstandarISO()),font));
             table.addCell(cell);
-            cell = new PdfPCell(new Phrase(String.format("$%d",venta.getOfertaTransportistas().get(0).getPrecioOfertaOfert()),font));
+            cell = new PdfPCell(new Phrase(String.format("$%s",format.format(venta.getOfertaTransportistas().get(0).getPrecioOfertaOfert())),font));
+            cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
             table.addCell(cell);
             document.add(table);
             table = new PdfPTable(1);
-            cell = new PdfPCell(new Phrase(String.format("Total transportista: $%d",venta.getOfertaTransportistas().get(0).getPrecioOfertaOfert()), font));
+            cell = new PdfPCell(new Phrase(String.format("Total transportista: $%s",format.format(venta.getOfertaTransportistas().get(0).getPrecioOfertaOfert())), font));
+            cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
             table.addCell(cell);
             document.add(table);
             table = new PdfPTable(2);
@@ -231,7 +238,7 @@ public class PdfServicio {
             cell.setHorizontalAlignment(Element.ALIGN_LEFT);
             cell.setBorderColor(BaseColor.BLACK);
             table.addCell(cell);
-            cell = new PdfPCell(new Phrase("$"+ (venta.getOfertaTransportistas().get(0).getPrecioOfertaOfert() + precioTotalProovedores), chapterFont));
+            cell = new PdfPCell(new Phrase("$"+ format.format((venta.getOfertaTransportistas().get(0).getPrecioOfertaOfert() + precioTotalProovedores)), chapterFont));
             cell.setBorderColor(BaseColor.BLACK);
             cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
             table.addCell(cell);
@@ -409,10 +416,10 @@ public class PdfServicio {
                     table.addCell(cell);
                     cell = new PdfPCell(new Phrase(String.format("%d %s",ofertaProducto.getProductoSolicitado().getCantidadProdS(),ofertaProducto.getProductoSolicitado().getUnidadProdS()),font));
                     table.addCell(cell);
-                    cell = new PdfPCell(new Phrase(String.format("%s %d","$",ofertaProducto.getPrecioOferta()),font));
+                    cell = new PdfPCell(new Phrase(String.format("%s %s","$",format.format(ofertaProducto.getPrecioOferta())),font));
                     table.addCell(cell);
                     Integer precioTotal = (ofertaProducto.getProductoSolicitado().getUnidadProdS().equals("T")) ? (ofertaProducto.getProductoSolicitado().getCantidadProdS() * 1000) * ofertaProducto.getPrecioOferta() : ofertaProducto.getProductoSolicitado().getCantidadProdS() * ofertaProducto.getPrecioOferta();
-                    cell = new PdfPCell(new Phrase(String.format("%s %d","$",precioTotal),font));
+                    cell = new PdfPCell(new Phrase(String.format("%s %s","$",format.format(precioTotal)),font));
                     table.addCell(cell);
                 });
             });
@@ -458,7 +465,7 @@ public class PdfServicio {
             table.addCell(cell);
             cell = new PdfPCell(new Phrase(String.format("%s, %s",venta.getSolicitud().getDireccionDestinoSol(),venta.getSolicitud().obtenerPaisPorEstandarISO()),font));
             table.addCell(cell);
-            cell = new PdfPCell(new Phrase(String.format("$%d",venta.getOfertaTransportistas().get(0).getPrecioOfertaOfert()),font));
+            cell = new PdfPCell(new Phrase(String.format("$%s",format.format(venta.getOfertaTransportistas().get(0).getPrecioOfertaOfert())),font));
             table.addCell(cell);
             document.add(table);
             document.close();

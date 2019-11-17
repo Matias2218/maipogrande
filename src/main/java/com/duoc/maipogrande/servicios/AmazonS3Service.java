@@ -19,7 +19,7 @@ public class AmazonS3Service {
     @Autowired
     private String awsS3AudioBucket;
     private final String RUTACARPETARECHAZADO = "reportes/rechazado/";
-    private final String RUTACARPETAACEPTADO = "reportes/aceptada/";
+    private final String RUTACARPETAACEPTADO = "reportes/aceptado/";
     private AmazonS3 amazonS3;
     private Logger logger = LoggerFactory.getLogger(AmazonS3Service.class);
 
