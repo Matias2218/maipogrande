@@ -10,11 +10,12 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <html>
 <head>
-    <jsp:include page="layout/cabecera.jsp"/>
+    <jsp:include page="layout/includes.jsp"></jsp:include>
     <script src="/js/utilidades/mantenedorProducto.js"></script>
     <title>Editar Producto</title>
 </head>
 <body>
+<jsp:include page="layout/cabecera.jsp"/>
 <div class="page-wrapper chiller-theme toggled">
     <jsp:include page="layout/sidebar.jsp"></jsp:include>
     <main class="page-content">
@@ -35,7 +36,7 @@
                                     <div class="invalid-feedback">Nombre obligatorio</div>
                                 </div>
                                 <div class="form-group col-md-6">
-                                    <form:label path="precioProdu">Precio</form:label>
+                                    <form:label path="precioProdu">Precio por Kg</form:label>
                                     <form:input path="precioProdu" required="true"
                                                 onkeypress="return event.charCode >= 48 && event.charCode <= 57"
                                                 cssClass="form-control" id="txtPrecio"></form:input>
@@ -108,7 +109,7 @@
 
                             <div class="form-group text-center">
                                 <figure class="figure">
-                                    <img id="imagenSalida" class="img-fluid img-thumbnail h-10 w-10" name="imagenSalida"
+                                    <img id="imagenSalida" class="img-fluid img-thumbnail" style="max-height:300px;"  name="imagenSalida"
                                          src="${imagen}" alt="">
                                     <figcaption class="figure-caption">Vista previa</figcaption>
                                 </figure>

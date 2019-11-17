@@ -10,11 +10,12 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
-    <jsp:include page="layout/cabecera.jsp"/>
+    <jsp:include page="layout/includes.jsp"></jsp:include>
     <script src="/js/utilidades/mantenedorProducto.js"></script>
     <title>Agregar Producto</title>
 </head>
 <body>
+<jsp:include page="layout/cabecera.jsp"/>
 <div class="page-wrapper chiller-theme toggled">
     <jsp:include page="layout/sidebar.jsp"></jsp:include>
     <!-- AGREGAR -->
@@ -38,7 +39,7 @@
                                     <div class="invalid-feedback">Nombre obligatorio</div>
                                 </div>
                                 <div class="form-group col-md-6">
-                                    <form:label path="precioProdu">Precio</form:label>
+                                    <form:label path="precioProdu">Precio por Kg</form:label>
                                     <form:input path="precioProdu" required="true"
                                                 onkeypress="return event.charCode >= 48 && event.charCode <= 57"
                                                 cssClass="form-control" id="txtPrecio"></form:input>
@@ -48,7 +49,10 @@
 
                             <div class="form-row">
                                 <div class="form-group col-md-6">
+                                
                                     <form:label path="stockProdu">Stock</form:label>
+                                    
+                                    
                                     <div class="input-group">
                                         <form:input path="stockProdu" required="true"
                                                     onkeypress="return event.charCode >= 48 && event.charCode <= 57"
@@ -60,7 +64,10 @@
                                             </form:select>
                                         </div>
                                     </div>
+                                    
+                                    
                                     <div class="invalid-feedback">Stock obligatorio</div>
+                                    
                                 </div>
                                 <div class="form-group col-md-3">
                                     <div class="form-check-label">
@@ -108,7 +115,7 @@
                             </div>
                             <div class="form-group text-center">
                                 <figure class="figure">
-                                    <img id="imagenSalida" class="img-fluid" name="imagenSalida"
+                                    <img id="imagenSalida" class="img-fluid" style="max-height:300px;"  name="imagenSalida"
                                          src="">
                                     <figcaption class="figure-caption">Vista previa</figcaption>
                                 </figure>

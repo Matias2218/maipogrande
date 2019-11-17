@@ -84,7 +84,10 @@
         </ul>
         </div></li>
 
-        <li class="sidebar"><a href="#"> <i
+        <li class="sidebar"><a 
+        <c:if test="${tipo eq 'E'.charAt(0)}">href="/clienteExterno/ventasHistoricas"</c:if>
+        <c:if test="${tipo eq 'I'.charAt(0)}">href="/clienteInterno/ventasHistoricas"</c:if>
+        > <i
         class="far fa-list-alt"></i> <span>Ventas historicas</span>
         </a></li>
         <li class="header-menu"><span>Extra</span></li>

@@ -8,32 +8,32 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <html>
 <head>
-    <jsp:include page="layout/cabecera.jsp"/>
+    <jsp:include page="layout/includes.jsp"></jsp:include>
     <script src="/js/utilidades/mantenedorProducto.js"></script>
     <script src="/js/utilidades/index.js"></script>
     <title>Productos</title>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            setInterval(function () {
+                setTimeout(function () {
+                    $("#alert").slideUp(1500);
+                });
+            },4000);
+        });
+    </script>
 </head>
 <body>
+<jsp:include page="layout/cabecera.jsp"/>
 <div class="page-wrapper chiller-theme toggled">
     <jsp:include page="layout/sidebar.jsp"></jsp:include>
     <main class="page-content">
-        <div class="container-fluid mt-4">
-            <div class="row  ml-4 mr-4">
-                <div class="col-lg">
-                    <c:if test="${alerta != null}">
-                        <div class="toast" id="myToast" data-autohide="true" data-delay="5000"
-                             style="position: relative;">
-                            <div class="toast-header" style="background-color: orange; color: white;">
-                                <h5><strong class="mr-auto">${alerta}</strong></h5>
-                                <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" style="width: 50px">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                        </div>
-                        <br>
-                    </c:if>
+        <div class="container-fluid w-80 mt-2 pl-0 pr-0">
+            <div class="row  ml-5 mr-5">
+                <div class="col-lg pl-0 pr-0 mr-3 ml-3">
+
                     <h3 class="letras text-center mb-4">Productos</h3>
                     <form action="/productos" method="get">
 
@@ -49,6 +49,17 @@
                                 </button>
                             </div>
                         </div>
+                        <c:if test="${alerta != null}">
+                        <div
+                                class="alert alert-warning alert-dismissible fade show text-right mb-0 mt-2 alerta-naranja"
+                                id="alert" role="alert" data-autohide="true" data-delay="5000">
+                            <strong>${alerta}</strong>
+                            <button type="button" class="close py-2" data-dismiss="alert"
+                                    aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        </c:if>
                         <c:choose>
                         <c:when test="${fn:length(productos) < 1 }">
                         <div class="alert alert-warning mt-2" role="alert">
@@ -57,29 +68,28 @@
                         </c:when>
                         <c:otherwise>
                         <div class="table-responsive mt-2">
-                            <table class="table table-hover">
+                            <table class="table table-hover table-borderless thead-light border border-success rounded-lg mb-0">
                                 <thead>
-                                <tr>
+                                <tr class="border-bottom border-secondary">
                                     <th scope="col"></th>
                                     <th scope="col">Nombre</th>
                                     <th scope="col">Fecha ingreso</th>
                                     <th scope="col">Stock</th>
                                     <th scope="col">Precio</th>
                                     <th scope="col">Tipo de venta</th>
-                                    <th scope="col">Editar</th>
-                                    <th scope="col">Eliminar</th>
+                                    <th scope="col" class="text-center">Acciones</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 <c:forEach begin="0" end="${fn:length(productos)-1}" var="i">
-                                    <tr>
-                                        <td><img style="width: 100px; height: 100px;" src="${imagenes.get(i)}" alt="">
+                                    <tr class="">
+                                        <td class="align-middle"><img style="height: 100px; min-width: 120px;" src="${imagenes.get(i)}" class="img-thumbnail rounded" alt="">
                                         </td>
-                                        <td>${productos.get(i).nombreProdu}</td>
-                                        <td>${fechas.get(i)}</td>
-                                        <td>${productos.get(i).stockProdu}${productos.get(i).unidadMasaProdu}</td>
-                                        <td>${productos.get(i).precioProdu}</td>
-                                        <td>
+                                        <td class="align-middle">${productos.get(i).nombreProdu}</td>
+                                        <td class="align-middle">${fechas.get(i)}</td>
+                                        <td class="align-middle">${productos.get(i).stockProdu}${productos.get(i).unidadMasaProdu}</td>
+                                        <td class="align-middle">$<fmt:formatNumber type="number" value="${productos.get(i).precioProdu}"></fmt:formatNumber> x Kg</td>
+                                        <td class="align-middle">
                                             <c:choose>
                                                 <c:when test="${productos.get(i).tipoComercializacionProdu eq 'I'.charAt(0)}">
                                                     Venta Interna
@@ -89,46 +99,46 @@
                                                 </c:otherwise>
                                             </c:choose>
                                         </td>
-                                        <td>
-                                            <button type="button" class="btn btn-link pt-0 pl-1"
+                                        <td class="align-middle text-center">
+                                            <button type="button" class="btn btn-link text-success pt-0 pl-1"
                                                     onclick="location.href='/productos/${productos.get(i).idProdu}';">
-                                                Editar
+                                                <i class="fas fa-pencil-alt"></i>
                                             </button>
-                                        </td>
-                                        <td>
                                             <button type="button" name="btnEliminar"
                                                     value="${productos.get(i).idProdu}.${productos.get(i).nombreProdu}"
-                                                    class="btn btn-link pt-0 pl-1" data-toggle="modal"
+                                                    class="btn btn-link text-success pt-0 pl-1" data-toggle="modal"
                                                     data-target="#exampleModal">
-                                                Eliminar
+                                                <i class="fas fa-trash-alt"></i>
                                             </button>
                                         </td>
                                     </tr>
                                 </c:forEach>
                                 </tbody>
                             </table>
+                            <p class="text-right text-muted"><i class="fas fa-pencil-alt"></i>: Editar producto - <i class="fas fa-trash-alt"></i>: Eliminar producto</p>
                         </div>
                         </c:otherwise>
+                        
                         </c:choose>
                         <nav aria-label="Page navigation example">
-                            <ul class="pagination">
+                            <ul class="pagination justify-content-center">
                                 <c:if test="${paginaActual != 1}">
-                                    <li class="page-item"><button type="submit" name="pagina" value="${paginaActual-1}" class="page-link">&laquo;</button></li>
+                                    <li class="page-item"><button type="submit" name="pagina" value="${paginaActual-1}" class="page-link paginador-item">&laquo;</button></li>
                                 </c:if>
                                 <c:forEach begin="${paginador.desde-1}" end="${paginador.hasta-1}" var="i">
                                     <c:choose>
                                         <c:when test="${paginaActual-1 eq i}">
                                             <li class="page-item active">
-                                                <a class="page-link" href="#">${i+1}<span class="sr-only">(current)</span></a>
+                                                <a class="page-link paginador-current" href="#">${i+1}<span class="sr-only">(current)</span></a>
                                             </li>
                                         </c:when>
                                         <c:otherwise>
-                                            <li class="page-item"><button type="submit" name="pagina" value="${i+1}" class="page-link">${i+1}</button></li>
+                                            <li class="page-item"><button type="submit" name="pagina" value="${i+1}" class="page-link paginador-item">${i+1}</button></li>
                                         </c:otherwise>
                                     </c:choose>
                                 </c:forEach>
                                 <c:if test="${paginaActual  < paginador.totalPaginas}">
-                                    <li class="page-item"><button type="submit" name="pagina" value="${paginaActual+1}" class="page-link">&raquo;</button></li>
+                                    <li class="page-item"><button type="submit" name="pagina" value="${paginaActual+1}" class="page-link paginador-item">&raquo;</button></li>
                                 </c:if>
                             </ul>
                         </nav>
@@ -149,7 +159,7 @@
                                 </div>
                                 <div class="modal-body">
                                     ¿Esta seguro que desea eliminar el producto <label id="lblNombre"></label>?
-                                </div>
+                                 </div>
                                 <div class="modal-footer">
                                     <h1 id="test"></h1>
                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar

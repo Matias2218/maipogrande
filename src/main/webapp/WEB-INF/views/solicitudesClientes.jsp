@@ -27,7 +27,7 @@
 									<div class="container">
 										<div class="row">
 											<div class="col-lg-12 text-center">
-												<h3 class="letras text-center jumbotron-heading font-weight-bold">Solicitudes en espera</h3>
+												<h3 class="letras text-center">Solicitudes en espera</h3>
 											</div>
 										</div>
 									</div>

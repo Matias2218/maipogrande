@@ -364,7 +364,17 @@ public class ClientesControlador {
         return"redirect:/";
     }
 
-
-
+  
+    @Secured( "ROLE_CLIENTE_EXTERNO")
+    @RequestMapping(value = "/clienteExterno/ventasHistoricas", method = RequestMethod.GET)
+    public String ventasHistoricasClienteExterno() {
+        return "ventasHistoricasClienteExterno";
+    }
+    
+    @Secured("ROLE_CLIENTE_INTERNO")
+    @RequestMapping(value = "/clienteInterno/ventasHistoricas", method = RequestMethod.GET)
+    public String ventasHistoricasClienteInterno() {
+        return "ventasHistoricasClienteInterno";
+    }
 
 }
