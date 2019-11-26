@@ -63,7 +63,7 @@
 							class="far fa-list-alt"></i> <span>Transportes historicos</span>
 					</a></li>
 					<li class="header-menu"><span>Extra</span></li>
-					<li class="sidebar"><a href="#"> <i
+					<li class="sidebar"><a href="/transportista/contrato"> <i
 							class="fa fa-book"></i> <span>Estado de contrato</span> <span
 							class="badge badge-pill badge-danger">¡Alerta!</span>
 					</a></li>

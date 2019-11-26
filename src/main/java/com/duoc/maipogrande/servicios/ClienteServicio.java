@@ -133,7 +133,7 @@ public class ClienteServicio {
             return false;
         }
     }
-
+    @Transactional(noRollbackFor = RuntimeException.class)
     public boolean aceptarVentaPorId(Reporte reporte, Boleta boleta)
     {
         try
@@ -149,6 +149,20 @@ public class ClienteServicio {
         }catch (Throwable e)
         {
             return false;
+        }
+    }
+    @Transactional(readOnly = true)
+    public List<Venta> traerVentasHistoricasPorId(Long idCli)
+    {
+        try {
+            StoredProcedureQuery query = entityManager.createNamedStoredProcedureQuery("traerVentasHistoricasPorId");
+            query.setParameter("idCli", idCli);
+            query.execute();
+            return query.getResultList();
+        }
+        catch (Throwable e)
+        {
+            return null;
         }
     }
 

@@ -1,8 +1,6 @@
 package com.duoc.maipogrande.controladores;
 
-import com.duoc.maipogrande.modelos.OfertaTransportista;
-import com.duoc.maipogrande.modelos.Transportista;
-import com.duoc.maipogrande.modelos.Venta;
+import com.duoc.maipogrande.modelos.*;
 import com.duoc.maipogrande.paginador.Pagina;
 import com.duoc.maipogrande.servicios.TransportistaServicio;
 import org.slf4j.Logger;
@@ -125,5 +123,13 @@ public class TransportistaControlador {
         model.addAttribute(venta);
         return "detalleVentaTransportista";
     }
-
+    @Secured("ROLE_TRANSPORTISTA")
+    @RequestMapping(value = "transportista/contrato", method = RequestMethod.GET)
+    public String mostrarContrato(Model model,
+                                  HttpSession httpSession)
+    {
+        Contrato contrato = ((Transportista)httpSession.getAttribute("transportista")).getContrato();
+        model.addAttribute("contrato",contrato);
+        return "transportistaContrato";
+    }
 }

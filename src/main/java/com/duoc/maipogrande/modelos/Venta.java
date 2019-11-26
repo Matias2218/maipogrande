@@ -228,6 +228,23 @@ import static java.util.Collections.reverseOrder;
                 }
         ),
         @NamedStoredProcedureQuery(
+                name = "traerVentasHistoricasPorId",
+                procedureName = "traerVentasHistoricasPorId",
+                resultClasses = {Venta.class},
+                parameters = {
+                        @StoredProcedureParameter(
+                                mode = ParameterMode.IN,
+                                name = "idCli",
+                                type = Long.class
+                        ),
+                        @StoredProcedureParameter(
+                                mode = ParameterMode.REF_CURSOR,
+                                name = "q",
+                                type = void.class
+                        ),
+                }
+        ),
+        @NamedStoredProcedureQuery(
                 name = "aceptarVenta",
                 procedureName = "aceptarVenta",
                 parameters = {
@@ -288,11 +305,21 @@ public class Venta {
     private List<OfertaProducto> ofertaProductos;
     @OneToMany(mappedBy = "venta")
     private List<OfertaTransportista> ofertaTransportistas;
+    @OneToMany(mappedBy = "venta")
+    private List<Reporte> reportes;
 
     // Inicio de los metodos accesadores y mutadores
     public Venta() {
     }
 
+
+    public List<Reporte> getReportes() {
+        return reportes;
+    }
+
+    public void setReportes(List<Reporte> reportes) {
+        this.reportes = reportes;
+    }
 
     public List<OfertaTransportista> getOfertaTransportistas() {
         return ofertaTransportistas;

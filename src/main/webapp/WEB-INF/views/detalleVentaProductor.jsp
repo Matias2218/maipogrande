@@ -5,6 +5,12 @@
 <head>
 <title>Detalle venta</title>
 <jsp:include page="layout/includes.jsp"></jsp:include>
+	<script src="/js/utilidades/detalleVentas.js"></script>
+	<script type="text/javascript">
+		$(document).ready(() => {
+			checkearEstado("${venta.estadoVenta}");
+		});
+	</script>
 </head>
 <body>
 <jsp:include page="layout/cabecera.jsp" />
@@ -30,7 +36,7 @@
 
 						<div class="list-group list-group-horizontal" id="list-tab"
 							role="tablist">
-							<a class="list-group-item list-group-item-action active"
+							<a class="list-group-item list-group-item-action"
 								id="list-home-list" data-toggle="list" href="#list-home"
 								role="tab" aria-controls="home">
 								<div class="media">
@@ -83,7 +89,7 @@
 						</div>
 
 						<div class="tab-content mt-3" id="nav-tabContent">
-							<div class="tab-pane fade show active card" id="list-home"
+							<div class="tab-pane fade show card" id="list-home"
 								role="tabpanel" aria-labelledby="list-home-list">
 								<section class="page-section-one" >
 									<c:if test="${venta.estadoVenta eq 'P'.charAt(0)}">

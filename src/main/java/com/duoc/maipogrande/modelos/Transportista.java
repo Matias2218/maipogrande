@@ -43,7 +43,7 @@ import java.time.LocalDateTime;
                                 type = void.class
                         ),
                 }
-        )
+        ),
 }
 )
 public class Transportista {

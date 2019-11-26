@@ -90,11 +90,6 @@
         > <i
         class="far fa-list-alt"></i> <span>Ventas historicas</span>
         </a></li>
-        <li class="header-menu"><span>Extra</span></li>
-        <li class="sidebar"><a href="#"> <i
-        class="fa fa-book"></i> <span>Estado de contrato</span> <span
-        class="badge badge-pill badge-danger">¡Alerta!</span>
-        </a></li>
         <li style="height: 100px;"></li>
         </ul>
         </div>

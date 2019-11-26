@@ -67,7 +67,7 @@
 							class="far fa-list-alt"></i> <span>Ventas historicas</span>
 					</a></li>
 					<li class="header-menu"><span>Extra</span></li>
-					<li class="sidebar"><a href="#"> <i
+					<li class="sidebar"><a href="/productor/contrato"> <i
 							class="fa fa-book"></i> <span>Estado de contrato</span> <span
 							class="badge badge-pill badge-danger">¡Alerta!</span>
 					</a></li>

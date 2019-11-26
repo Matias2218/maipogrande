@@ -38,6 +38,8 @@ public class ClientesControlador {
     @Autowired
     PdfServicio pdfServicio;
 
+    String[] rutas = {"https://apipdf.s3.us-east-2.amazonaws.com/reportes/aceptado/","https://apipdf.s3.us-east-2.amazonaws.com/reportes/rechazado/"};
+
 
     /**
      * Metodo que permite el redireccionamiento de pagina y que ademas logra realizar el papel de control de inicio de sesiones
@@ -365,16 +367,26 @@ public class ClientesControlador {
     }
 
   
-    @Secured( "ROLE_CLIENTE_EXTERNO")
+    @Secured("ROLE_CLIENTE_EXTERNO")
     @RequestMapping(value = "/clienteExterno/ventasHistoricas", method = RequestMethod.GET)
-    public String ventasHistoricasClienteExterno() {
-        return "ventasHistoricasClienteExterno";
+    public String ventasHistoricasClienteExterno(Principal principal,
+                                                 Model model) {
+        List<Venta> ventas = clienteServicio.traerVentasHistoricasPorId(Long.valueOf(principal.getName()));
+        if(ventas.isEmpty())
+        {
+            return "redirect:/";
+        }
+        model.addAttribute("ventas", ventas);
+        model.addAttribute("rutas", rutas);
+        return "ventasHistoricasCliente";
     }
     
     @Secured("ROLE_CLIENTE_INTERNO")
     @RequestMapping(value = "/clienteInterno/ventasHistoricas", method = RequestMethod.GET)
     public String ventasHistoricasClienteInterno() {
-        return "ventasHistoricasClienteInterno";
+        return "ventasHistoricasCliente";
     }
+
+
 
 }

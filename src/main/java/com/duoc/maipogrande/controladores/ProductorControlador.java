@@ -1,9 +1,6 @@
 package com.duoc.maipogrande.controladores;
 
-import com.duoc.maipogrande.modelos.OfertaProducto;
-import com.duoc.maipogrande.modelos.Producto;
-import com.duoc.maipogrande.modelos.Productor;
-import com.duoc.maipogrande.modelos.Venta;
+import com.duoc.maipogrande.modelos.*;
 import com.duoc.maipogrande.paginador.Pagina;
 import com.duoc.maipogrande.servicios.ProductoServicio;
 import com.duoc.maipogrande.servicios.ProductorServicio;
@@ -418,5 +415,13 @@ public class ProductorControlador {
 	    model.addAttribute(venta);
         return "detalleVentaProductor";
     }
-
+    @Secured("ROLE_PRODUCTOR")
+    @RequestMapping(value = "productor/contrato", method = RequestMethod.GET)
+    public String mostrarContrato(Model model,
+                                  HttpSession httpSession)
+    {
+        Contrato contrato = ((Productor)httpSession.getAttribute("productor")).getContrato();
+        model.addAttribute("contrato",contrato);
+        return "productorContrato";
+    }
 }
