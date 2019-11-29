@@ -227,6 +227,22 @@ import java.time.LocalDateTime;
                 }
         ),
         @NamedStoredProcedureQuery(
+                name = "actualizarStockProducto",
+                procedureName = "actualizarStockProducto",
+                parameters = {
+                        @StoredProcedureParameter(
+                                mode = ParameterMode.IN,
+                                name = "idProdu",
+                                type = Integer.class
+                        ),
+                        @StoredProcedureParameter(
+                                mode = ParameterMode.IN,
+                                name = "stockProdu",
+                                type = Integer.class
+                        ),
+                }
+        ),
+        @NamedStoredProcedureQuery(
                 name = "buscarProductosPorNombre",
                 procedureName = "BUSCARPRODUCTOSPORNOMBRE",
                 resultClasses = {Producto.class},

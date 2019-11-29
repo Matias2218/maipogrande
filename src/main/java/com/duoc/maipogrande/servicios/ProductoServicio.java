@@ -143,6 +143,21 @@ public class ProductoServicio {
             return false;
         }
     }
+    @Transactional(noRollbackFor = RuntimeException.class)
+    public boolean actualizarStockProducto(Integer idProdu, Integer stockProdu)
+    {
+        try {
+            StoredProcedureQuery query  = entityManager.createNamedStoredProcedureQuery("actualizarStockProducto");
+            query.setParameter("idProdu", idProdu);
+            query.setParameter("stockProdu", stockProdu);
+            query.execute();
+            return true;
+        }
+        catch (Exception e)
+        {
+            return false;
+        }
+    }
     @Transactional(readOnly = true, noRollbackFor = RuntimeException.class)
     public List<Producto> productosDisponibles(Long idProductoSolicitado,Long idProd,Character tipoVenta) {
         try {
@@ -158,4 +173,5 @@ public class ProductoServicio {
             return null;
         }
     }
+
 }

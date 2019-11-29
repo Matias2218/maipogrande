@@ -61,6 +61,7 @@ public class JpaUsuarioLoginServicio implements UserDetailsService {
             session.setAttribute("ventasActivas", ventasActivas);
             session.setAttribute("transportista", transportista);
             session.setAttribute("nombre", transportista.getNombreTran());
+            session.setAttribute("apellido", transportista.getApellidosTran());
             return new User(transportista.getIdTran().toString(), transportista.getContraseñaTran(), true, true, true, true, authorities);
         }
 

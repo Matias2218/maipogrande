@@ -63,7 +63,7 @@
 							</ul>
 						</div></li>
 
-					<li class="sidebar"><a href="#"> <i
+					<li class="sidebar"><a href="/productor/ventasHistoricas"> <i
 							class="far fa-list-alt"></i> <span>Ventas historicas</span>
 					</a></li>
 					<li class="header-menu"><span>Extra</span></li>

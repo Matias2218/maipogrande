@@ -161,8 +161,13 @@ public class ProductorServicio {
                 .filter(ofertaProducto -> ofertaProducto.getProducto().getProductor().getIdProd() == idProd)
                 .collect(Collectors.toList());
         List<OfertaProducto> ofertaProductosFiltrados = new ArrayList<>();
-        int j = 0;
-        for (int i = 0; i < ofertaProductos.size(); i++) {
+        for (int i = 0; i < idProds.length; i++)
+        {
+            if (ofertaProductos.get(i).getProductoSolicitado().getIdProdS() == idProds[i]) {
+                ofertaProductosFiltrados.add(ofertaProductos.get(i));
+            }
+        }
+    /*    for (int i = 0; i < ofertaProductos.size(); i++) {
             if (ofertaProductos.get(i).getProductoSolicitado().getIdProdS() == idProds[j]) {
                 ofertaProductosFiltrados.add(ofertaProductos.get(i));
                 j++;
@@ -171,9 +176,23 @@ public class ProductorServicio {
                 }
                 continue;
             }
-        }
+        }*/
         venta.setOfertaProductos(ofertaProductosFiltrados);
         return venta;
+    }
+    @Transactional(readOnly = true)
+    public List<Venta> traerVentasHistoricasPorId(Long idProd)
+    {
+        try {
+            StoredProcedureQuery query = entityManager.createNamedStoredProcedureQuery("traerVentasHistoricasProductor");
+            query.setParameter("idProd", idProd);
+            query.execute();
+            return query.getResultList();
+        }
+        catch (Throwable e)
+        {
+            return null;
+        }
     }
 
 }

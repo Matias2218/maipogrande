@@ -10,7 +10,18 @@
 <body>
 <jsp:include page="layout/cabecera.jsp"/>
 <div class="page-wrapper chiller-theme toggled">
-    <jsp:include page="layout/sidebarCliente.jsp"/>
+    <c:choose>
+        <c:when test="${productor != null}">
+            <jsp:include page="layout/sidebar.jsp"/>
+        </c:when>
+        <c:when test="${clienteExterno != null || clienteInterno != null}">
+            <jsp:include page="layout/sidebarCliente.jsp"/>
+        </c:when>
+        <c:otherwise>
+            <jsp:include page="layout/sidebarTransportista.jsp"/>
+        </c:otherwise>
+    </c:choose>
+
     <main class="page-content">
         <div class="container-fluid w-80 mt-2 pl-0 pr-0">
             <div class="row  ml-5 mr-5">

@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -159,76 +160,298 @@
 								</section>
 							</div>
 							<c:if test="${venta.estadoVenta != 'P'.charAt(0)}">
-							<div class="tab-pane fade card" id="list-profile" role="tabpanel"
-								aria-labelledby="list-profile-list">
+								<div class="tab-pane fade card" id="list-profile" role="tabpanel"
+									 aria-labelledby="list-profile-list">
 
-								<div class="alert alert-warning mb-0" role="alert">
-									<div class="container">
-										El transporte se encuentra <strong>en espera</strong> de ser confirmado.
-									</div>
-								</div>
-
-								<section class="page-section-one">
-									<div class="container">
-										<div class="row">
-											<div class="col-lg-12 py-3">
-												<h5 class="letras text-left jumbotron-heading mb-0">ELECCION
-													DE TRANSPORTISTA</h5>
-												<h3 class="section-subheading text-muted mb-0">Los productos</h3>
+									<!-- ALERTAS -->
+									<c:choose>
+										<c:when test="${venta.estadoVenta == 'T'.charAt(0)}">
+											<div class="alert alert-warning mb-0" role="alert">
+												<div class="container">
+													El transporte se encuentra <strong>en espera</strong> de ser confirmado.
+												</div>
 											</div>
-										</div>
-                                        <div class="row text-center">
-                                            <div class="col">
-                                                <button type="button" class="btn btn-secondary" style="min-width: 250px;" disabled>ORIGEN</button>
-                                            </div>
-                                            <div class="col">
-                                                <button type="button" class="btn btn-secondary" style="min-width: 250px;" disabled>DESTINO</button>
-                                            </div>
-                                        </div>
-                                        <div class="row text-center mb-3">
-                                            <div class="col">
+										</c:when>
+										<c:when test="${venta.estadoVenta == 'E'.charAt(0)}">
+											<div class="alert alert-success mb-0" role="alert">
+												<div class="container">
+													El transporte ha sido confirmado, sus productos estan en <strong>proceso
+													de
+													envío</strong>
+												</div>
+											</div>
+										</c:when>
+									</c:choose>
+									<!-- FIN ALERTAS -->
 
-                                                <p class="mb-0 text-uppercase font-weight-bold">Chile</p>
-                                            </div>
-                                            <div class="col">
-                                                <p class="mb-0">${venta.solicitud.direccionDestinoSol},${venta.solicitud.paisDestinoSol}</p>
-                                                <p class="mb-0 text-uppercase font-weight-bold">Argentina</p>
-                                            </div>
-                                        </div>
-									</div>
-								</section>
-                            </div>
+
+									<section class="page-section-one">
+										<div class="container">
+
+											<!-- TITULOS -->
+											<div class="row">
+												<div class="col-lg-12 py-3">
+													<h5 class="letras text-left jumbotron-heading mb-0">ELECCIÓN
+														DE TRANSPORTISTA</h5>
+													<c:if test="${venta.estadoVenta eq 'T'.charAt(0)}">
+														<h3 class="section-subheading text-muted mb-0">Transporte en proceso
+															de subasta, aquí podrá visualizar las mejores subastas hechas
+															para su venta</h3>
+													</c:if>
+													<c:if test="${venta.estadoVenta != 'T'.charAt(0)}">
+														<h3 class="section-subheading text-muted mb-0">La información del
+															encargado de realizar el transporte de sus productos se
+															encuentra mas abajo, al igual que el total del Transporte</h3>
+													</c:if>
+												</div>
+											</div>
+											<!-- FIN TITULOS -->
+
+											<!-- DESTINO Y ORIGEN -->
+											<div class="row text-center">
+												<div class="col">
+													<button type="button" class="btn btn-secondary"
+															style="min-width: 250px;" disabled>ORIGEN
+													</button>
+													<p class="mb-0 text-uppercase font-weight-bold">Chile</p>
+												</div>
+												<div class="col p-0">
+													<div class="line-container py-2">
+														<span class="line arrow-left"></span>
+														<label>
+															<h3 class="m-0"><i class="fas fa-shipping-fast"></i></h3>
+														</label>
+														<span class="line arrow-right"></span>
+													</div>
+												</div>
+												<div class="col">
+													<button type="button" class="btn btn-secondary"
+															style="min-width: 250px;" disabled>DESTINO
+													</button>
+													<p class="mb-0">${venta.solicitud.direccionDestinoSol}</p>
+													<p class="mb-0 text-uppercase font-weight-bold">${pais}</p>
+												</div>
+											</div>
+											<!-- FIN DESTINO Y ORIGEN -->
+
+
+											<c:choose>
+												<c:when test="${venta.estadoVenta != 'T'.charAt(0)}">
+													<c:forEach items="${venta.ofertaTransportistas}" var="ot">
+														<h6 class="mb-0 letras">
+															<mark>INFORMACIÓN TRANSPORTISTA</mark>
+														</h6>
+														<table class="table table-sm table-borderless">
+															<tbody>
+															<tr>
+																<td class="lead p-0"><strong>Nombre del
+																	transportista</strong>
+																</td>
+																<td class="lead p-0">${ot.transportista.nombreTran} ${ot.transportista.apellidosTran}</td>
+															</tr>
+															<tr>
+																<td class="lead p-0"><strong>Rut</strong></td>
+																<td class="lead p-0">${ot.transportista.rutTran}</td>
+															</tr>
+															<tr>
+																<td class="lead p-0"><strong>Correo</strong></td>
+																<td class="lead p-0">${ot.transportista.emailTran}</td>
+															</tr>
+															<tr>
+																<td class="lead p-0"><strong>Patente</strong></td>
+																<td class="lead p-0">${ot.transportista.patente}</td>
+															</tr>
+															</tbody>
+														</table>
+													</c:forEach>
+													<div class="card mb-3 border-secondary">
+														<div class="card-body">
+															<table class="table table-sm table-borderless mb-0">
+																<tr>
+																	<td class="text-left font-weight-bold"><h5 class="mb-0">
+																		TOTAL
+																		POR TRANSPORTE</h5></td>
+																	<td class="text-right font-weight-bold"><h5
+																			class="mb-0">
+																		$<fmt:formatNumber type="number"
+																						   value="${venta.ofertaTransportistas.get(0).precioOfertaOfert}"></fmt:formatNumber></h5>
+																	</td>
+																</tr>
+															</table>
+														</div>
+													</div>
+												</c:when>
+												<c:otherwise>
+													<hr>
+													<h6 class="letras">MEJORES SUBASTAS</h6>
+													<div class="card mb-4">
+													<div class="card-header text-uppercase">
+														<table class="table table-sm table-borderless mb-0">
+															<tr>
+																<td class="text-left font-weight-bold">Transportes
+																	por ${pesoTotal} KG
+																</td>
+																<td class="text-right text-warning py-0"><h3
+																		class="mb-0">
+																	<i class="fas fa-trophy"></i>
+																</h3></td>
+															</tr>
+														</table>
+													</div>
+													<div class="card-body text-center">
+													<table class="table table-sm table-borderless"
+													style="max-width: 550px; margin: auto;">
+
+													<tbody>
+													<c:if test="${venta.ofertaTransportistas.size() == 0}">
+														<tr>
+															<td>No hay subastas aun para el producto</td>
+														</tr>
+													</c:if>
+
+													<c:if test="${venta.ofertaTransportistas.size() > 0}">
+														<thead>
+														<tr>
+															<th scope="col"></th>
+															<th scope="col">Transportista</th>
+															<th scope="col" class="text-right">Precio Total</th>
+														</tr>
+														</thead>
+														<c:forEach items="${venta.ofertaTransportistas}" var="ot"
+																   varStatus="i">
+															<tr>
+																<th scope="row" class="text-center">${i.count}</th>
+																<td>${ot.transportista.nombreTran} ${ot.transportista.apellidosTran}</td>
+																<td class="text-right">$<fmt:formatNumber
+																		type="number"
+																		value="${ot.precioOfertaOfert}"></fmt:formatNumber></td>
+															</tr>
+														</c:forEach>
+														</tbody>
+														</table>
+														</div>
+														</div>
+													</c:if>
+												</c:otherwise>
+											</c:choose>
+										</div>
+									</section>
+								</div>
 							</c:if>
 
-							<div class="tab-pane fade card" id="list-messages"
-								role="tabpanel" aria-labelledby="list-messages-list">
-								<section class="page-section-one" >
-									<div class="container">
-										<div class="row">
-											<div class="col-lg-12 py-3">
-												<h5 class="letras text-left jumbotron-heading mb-0">ELECCION
-													DE PRODUCTOS</h5>
-												<h3 class="section-subheading text-muted">Los productos</h3>
-											</div>
-										</div>
-									</div>
-								</section>
-							</div>
+							<c:if test="${venta.estadoVenta == 'E'.charAt(0)}">
+								<!-- CONTENIDO TAB 3 -->
+								<div class="tab-pane fade card" id="list-messages"
+									 role="tabpanel" aria-labelledby="list-messages-list">
+									<section class="page-section-one">
+										<div class="container">
 
-							<div class="tab-pane fade card" id="list-settings"
-								role="tabpanel" aria-labelledby="list-settings-list">
-								<section class="page-section-one" >
-									<div class="container">
-										<div class="row">
-											<div class="col-lg-12 py-3">
-												<h5 class="letras text-left jumbotron-heading mb-0">ELECCION
-													DE PRODUCTOS</h5>
-												<h3 class="section-subheading text-muted">Los productos</h3>
+											<!-- TITULOS -->
+											<div class="row">
+												<div class="col-lg-12 pt-3">
+													<h5 class="letras text-left jumbotron-heading mb-0">ENVÍO DE
+														PRODUCTOS</h5>
+													<c:if test="${venta.estadoVenta eq 'E'.charAt(0)}">
+														<h3 class="section-subheading text-muted mb-0">Sus productos estan
+															siendo enviados, aquí puede visualizar el detalle de la
+															compra</h3>
+													</c:if>
+													<c:if test="${venta.estadoVenta != 'E'.charAt(0)}">
+														<h3 class="section-subheading text-muted mb-0">Los productos han
+															llegado a destino</h3>
+													</c:if>
+												</div>
 											</div>
+											<!-- FIN TITULOS -->
+
+											<hr>
+
+											<!-- ENVIANDO -->
+											<div class="row">
+												<div class="col-lg-12 pb-3">
+													<h6 class="mb-2 letras">PRODUCTOS:</h6>
+													<table class="table table-bordered table-sm">
+														<thead>
+														<tr>
+															<th>Producto</th>
+															<th>Cantidad</th>
+															<th class="text-right">Precio x Kg</th>
+															<th class="text-right">Precio Total</th>
+														</tr>
+														</thead>
+														<tbody>
+														<c:forEach items="${venta.ofertaProductos}" var="op">
+															<tr>
+																<td>${op.producto.nombreProdu}</td>
+																<td>${op.productoSolicitado.cantidadProdS} ${op.productoSolicitado.unidadProdS}</td>
+																<td class="text-right">${op.precioOferta}</td>
+																<td class="text-right"> $<fmt:formatNumber type="number"
+																										   value="${op.precioOferta * ((op.productoSolicitado.unidadProdS == 'KG')? op.productoSolicitado.cantidadProdS : op.productoSolicitado.cantidadProdS * 1000)}"></fmt:formatNumber></td>
+															</tr>
+														</c:forEach>
+														</tbody>
+
+													</table>
+													<div class="card mb-3 border-secondary">
+														<div class="card-body p-2">
+															<table class="table table-sm table-borderless mb-0">
+																<tr>
+																	<td class="text-left font-weight-bold"><h6 class="mb-0">
+																		TOTAL
+																		POR PRODUCTOS</h6></td>
+																	<td class="text-right font-weight-bold">
+																		<h6 class="mb-0">
+																			$<fmt:formatNumber type="number"
+																							   value="${totalProductos}"></fmt:formatNumber>
+																		</h6>
+																	</td>
+																</tr>
+															</table>
+														</div>
+													</div>
+													<h6 class="mb-2 letras">TRANSPORTE:</h6>
+													<div class="card mb-3 border-secondary">
+														<div class="card-body p-2">
+															<table class="table table-sm table-borderless mb-0">
+																<tr>
+																	<td class="text-left font-weight-bold"><h6 class="mb-0">
+																		TOTAL
+																		POR TRANSPORTE</h6></td>
+																	<td class="text-right font-weight-bold">
+																		<h6 class="mb-0">
+																			$<fmt:formatNumber type="number"
+																							   value="${venta.ofertaTransportistas.get(0).precioOfertaOfert}"></fmt:formatNumber>
+																		</h6>
+																	</td>
+																</tr>
+															</table>
+														</div>
+													</div>
+
+													<div class="card mb-3 border-success bg-verdeclaro">
+														<div class="card-body">
+															<table class="table table-sm table-borderless mb-0">
+																<tr>
+																	<td class="text-left font-weight-bold"><h5 class="mb-0">
+																		TOTAL DE LA COMPRA</h5></td>
+																	<td class="text-right font-weight-bold">
+																		<h5 class="mb-0">
+																			$<fmt:formatNumber type="number"
+																							   value="${venta.ofertaTransportistas.get(0).precioOfertaOfert + totalProductos}"></fmt:formatNumber>
+																		</h5>
+																	</td>
+																</tr>
+															</table>
+														</div>
+													</div>
+												</div>
+											</div>
+											<!-- FIN ENVIANDO -->
 										</div>
-									</div>
-								</section>
-							</div>
+									</section>
+								</div>
+							</c:if>
+
 						</div>
 					</div>
 

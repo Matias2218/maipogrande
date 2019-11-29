@@ -2,10 +2,7 @@ package com.duoc.maipogrande.controladores;
 
 import com.duoc.maipogrande.modelos.*;
 import com.duoc.maipogrande.modelos.utilidades.Frutas;
-import com.duoc.maipogrande.servicios.ClienteServicio;
-import com.duoc.maipogrande.servicios.PdfServicio;
-import com.duoc.maipogrande.servicios.ProductorServicio;
-import com.duoc.maipogrande.servicios.TransportistaServicio;
+import com.duoc.maipogrande.servicios.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
@@ -35,6 +32,8 @@ public class ClientesControlador {
     ProductorServicio productorServicio;
     @Autowired
     TransportistaServicio transportistaServicio;
+    @Autowired
+    ProductoServicio productoServicio;
     @Autowired
     PdfServicio pdfServicio;
 
@@ -182,27 +181,8 @@ public class ClientesControlador {
 
     @Secured("ROLE_CLIENTE_INTERNO")
     @GetMapping(value = "/clienteInterno/detalleVenta/{id}")
-    public String detalleVentaClienteInterno(Model model, Principal principal, @PathVariable String id) {
-        Long idNumerico;
-        try {
-            idNumerico = Long.parseLong(id);
-        } catch (NumberFormatException e) {
-            return "redirect:/";
-        }
-        Venta venta = clienteServicio.traerVentaCliente(idNumerico, Long.parseLong(principal.getName()));
-        if (venta == null) {
-            return "redirect:/";
-        }
-        if (venta.getEstadoVenta().equals('P')) {
-            venta.ordernarTop3SubastaProductos();
-            Integer[] totales = venta.getOfertaProductos().
-                    stream()
-                    .map(ofertaProducto -> ofertaProducto.getPrecioOferta() * ofertaProducto.getStockOferta())
-                    .toArray(Integer[]::new);
-            model.addAttribute("totales", totales);
-        }
-        model.addAttribute("venta", venta);
-        return "detalleVentaCliente";
+    public String detalleVentaClienteInterno(Model model, Principal principal,HttpSession session, @PathVariable String id) {
+        return detalleVentaClienteExterno(model,principal,id,session);
     }
 
     @Secured("ROLE_CLIENTE_EXTERNO")
@@ -352,6 +332,30 @@ public class ClientesControlador {
     public String aceptarVenta(HttpSession session,
                                @RequestParam("txtAceptar") String txtAceptar) {
         Venta venta = (Venta) session.getAttribute("venta");
+        venta.getOfertaProductos().forEach(ofertaProducto -> {
+            if (ofertaProducto.getProducto().getUnidadMasaProdu().equals(ofertaProducto.getProductoSolicitado().getUnidadProdS()))
+            {
+                Integer nuevoStockProdu = ofertaProducto.getProducto().getStockProdu() - ofertaProducto.getProductoSolicitado().getCantidadProdS();
+                ofertaProducto.getProducto().setStockProdu(nuevoStockProdu);
+                productoServicio.actualizarStockProducto(ofertaProducto.getProducto().getIdProdu().intValue(), nuevoStockProdu);
+            }
+            else
+            {
+                if(ofertaProducto.getProducto().getUnidadMasaProdu().equals("T") && ofertaProducto.getProductoSolicitado().getUnidadProdS().equals("KG"))
+                {
+                    Integer nuevoStockProdu = ofertaProducto.getProducto().getStockProdu() - (ofertaProducto.getProductoSolicitado().getCantidadProdS() / 1000);
+                    ofertaProducto.getProducto().setStockProdu(nuevoStockProdu);
+                    productoServicio.actualizarStockProducto(ofertaProducto.getProducto().getIdProdu().intValue(), nuevoStockProdu);
+                }
+                else
+                {
+                    Integer nuevoStockProdu = ofertaProducto.getProducto().getStockProdu() - (ofertaProducto.getProductoSolicitado().getCantidadProdS() * 1000);
+                    ofertaProducto.getProducto().setStockProdu(nuevoStockProdu);
+                    productoServicio.actualizarStockProducto(ofertaProducto.getProducto().getIdProdu().intValue(), nuevoStockProdu);
+                }
+
+            }
+        });
         String nombrePdf = pdfServicio.generarPdfAceptar(venta);
         if (nombrePdf != null) {
             Reporte reporte = new Reporte(nombrePdf, txtAceptar, 'A', venta.getIdVenta());
@@ -361,6 +365,7 @@ public class ClientesControlador {
             sumaTotal += venta.getOfertaTransportistas().get(0).getPrecioOfertaOfert();
             Boleta boleta = new Boleta(LocalDateTime.now(), sumaTotal, venta.getIdVenta());
             clienteServicio.aceptarVentaPorId(reporte, boleta);
+
         }
         session.removeAttribute("venta");
         return"redirect:/";
@@ -378,15 +383,20 @@ public class ClientesControlador {
         }
         model.addAttribute("ventas", ventas);
         model.addAttribute("rutas", rutas);
-        return "ventasHistoricasCliente";
+        return "ventasHistoricas";
     }
     
     @Secured("ROLE_CLIENTE_INTERNO")
     @RequestMapping(value = "/clienteInterno/ventasHistoricas", method = RequestMethod.GET)
-    public String ventasHistoricasClienteInterno() {
-        return "ventasHistoricasCliente";
+    public String ventasHistoricasClienteInterno(Model model, Principal principal) {
+        List<Venta> ventas = clienteServicio.traerVentasHistoricasPorId(Long.valueOf(principal.getName()));
+        if(ventas.isEmpty())
+        {
+            return "redirect:/";
+        }
+        model.addAttribute("ventas", ventas);
+        model.addAttribute("rutas", rutas);
+        return "ventasHistoricas";
     }
-
-
 
 }

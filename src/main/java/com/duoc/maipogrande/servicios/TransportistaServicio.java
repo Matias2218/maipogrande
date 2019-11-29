@@ -125,4 +125,19 @@ public class TransportistaServicio {
             return null;
         }
     }
+    @Transactional(readOnly = true)
+    public List<Venta> traerVentasHistoricasPorId(Long idTran)
+    {
+        try {
+            StoredProcedureQuery query = entityManager.createNamedStoredProcedureQuery("traerVentasHistoricasTrans");
+            query.setParameter("idTran", idTran);
+            query.execute();
+            return query.getResultList();
+        }
+        catch (Throwable e)
+        {
+            return null;
+        }
+    }
+
 }

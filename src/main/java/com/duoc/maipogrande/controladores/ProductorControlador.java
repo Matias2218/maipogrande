@@ -21,6 +21,7 @@ import javax.sql.rowset.serial.SerialBlob;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.net.URLEncoder;
+import java.security.Principal;
 import java.sql.Blob;
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -36,6 +37,9 @@ public class ProductorControlador {
     ProductoServicio productoServicio;
     @Autowired
     ProductorServicio productorServicio;
+
+
+    String[] rutas = {"https://apipdf.s3.us-east-2.amazonaws.com/reportes/aceptado/","https://apipdf.s3.us-east-2.amazonaws.com/reportes/rechazado/"};
 
 
     private static final List<String> EXTENSIONES = Arrays.asList("image/png", "image/jpeg", "image/jpg");
@@ -412,7 +416,31 @@ public class ProductorControlador {
         }
 	    idProd = ((Productor)session.getAttribute("productor")).getIdProd();
 	    Venta venta = productorServicio.buscarVentaDetalleProdu(idVenta,idProd);
-	    model.addAttribute(venta);
+        if (venta == null) {
+            return "redirect:/";
+        }
+        if (venta.getEstadoVenta().equals('T')) {
+            venta.ordernarTop3Transportistas();
+            Integer pesoTotal = venta.getSolicitud().getProductoSolicitados()
+                    .stream()
+                    .map(productoSolicitado -> (productoSolicitado.getUnidadProdS().equals('T') ? productoSolicitado.getCantidadProdS() * 1000 : productoSolicitado.getCantidadProdS()))
+                    .reduce(0, (subtotal, element) -> subtotal + element);
+            model.addAttribute("pesoTotal", pesoTotal);
+        }
+        Long[] idsProductores = venta.getOfertaProductos().stream().map(ofertaProducto -> ofertaProducto.getProducto().getProductor().getIdProd())
+                .distinct()
+                .toArray(Long[]::new);
+        Map<Long, Boolean> idRecorridas = new HashMap<Long, Boolean>() {{
+            Arrays.stream(idsProductores).forEach(id -> put(id, false));
+        }};
+        Integer totalProductos = venta.getOfertaProductos()
+                .stream()
+                .map(ofertaProducto -> ofertaProducto.getPrecioOferta() * ((ofertaProducto.getProductoSolicitado().getUnidadProdS().equals("KG")) ? ofertaProducto.getProductoSolicitado().getCantidadProdS() : ofertaProducto.getProductoSolicitado().getCantidadProdS() * 1000))
+                .reduce(0, (subtotal, element) -> subtotal + element);
+        model.addAttribute("totalProductos", totalProductos);
+        model.addAttribute("idRecorridas", idRecorridas);
+        model.addAttribute("pais", venta.getSolicitud().obtenerPaisPorEstandarISO());
+	    model.addAttribute("venta", venta);
         return "detalleVentaProductor";
     }
     @Secured("ROLE_PRODUCTOR")
@@ -423,5 +451,18 @@ public class ProductorControlador {
         Contrato contrato = ((Productor)httpSession.getAttribute("productor")).getContrato();
         model.addAttribute("contrato",contrato);
         return "productorContrato";
+    }
+    @Secured("ROLE_PRODUCTOR")
+    @RequestMapping(value = "/productor/ventasHistoricas", method = RequestMethod.GET)
+    public String ventasHistoricasClienteExterno(Principal principal,
+                                                 Model model) {
+        List<Venta> ventas = productorServicio.traerVentasHistoricasPorId(Long.valueOf(principal.getName()));
+        if(ventas.isEmpty())
+        {
+            return "redirect:/";
+        }
+        model.addAttribute("ventas", ventas);
+        model.addAttribute("rutas", rutas);
+        return "ventasHistoricas";
     }
 }

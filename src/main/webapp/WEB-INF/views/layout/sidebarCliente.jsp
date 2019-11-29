@@ -79,7 +79,12 @@
         <div class="sidebar-submenu">
         <ul>
         <c:forEach items="${ventasActivas}" var="v">
-            <li><a href="/clienteExterno/detalleVenta/${v.idVenta}">Venta N°${v.idVenta}</a></li>
+                <c:if test="${tipo eq 'E'.charAt(0)}">
+                        <li><a href="/clienteExterno/detalleVenta/${v.idVenta}">Venta N°${v.idVenta}</a></li>
+                </c:if>
+                <c:if test="${tipo eq 'I'.charAt(0)}">
+                        <li><a href="/clienteInterno/detalleVenta/${v.idVenta}">Venta N°${v.idVenta}</a></li>
+                </c:if>
         </c:forEach>
         </ul>
         </div></li>

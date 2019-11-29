@@ -59,7 +59,7 @@
 							</ul>
 						</div></li>
 
-					<li class="sidebar"><a href="#"> <i
+					<li class="sidebar"><a href="/transportista/ventasHistoricas"> <i
 							class="far fa-list-alt"></i> <span>Transportes historicos</span>
 					</a></li>
 					<li class="header-menu"><span>Extra</span></li>

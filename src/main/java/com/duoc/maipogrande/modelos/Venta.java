@@ -245,6 +245,40 @@ import static java.util.Collections.reverseOrder;
                 }
         ),
         @NamedStoredProcedureQuery(
+                name = "traerVentasHistoricasProductor",
+                procedureName = "traerVentasHistoricasProductor",
+                resultClasses = {Venta.class},
+                parameters = {
+                        @StoredProcedureParameter(
+                                mode = ParameterMode.IN,
+                                name = "idProd",
+                                type = Long.class
+                        ),
+                        @StoredProcedureParameter(
+                                mode = ParameterMode.REF_CURSOR,
+                                name = "q",
+                                type = void.class
+                        ),
+                }
+        ),
+        @NamedStoredProcedureQuery(
+                name = "traerVentasHistoricasTrans",
+                procedureName = "traerVentasHistoricasTrans",
+                resultClasses = {Venta.class},
+                parameters = {
+                        @StoredProcedureParameter(
+                                mode = ParameterMode.IN,
+                                name = "idTran",
+                                type = Long.class
+                        ),
+                        @StoredProcedureParameter(
+                                mode = ParameterMode.REF_CURSOR,
+                                name = "q",
+                                type = void.class
+                        ),
+                }
+        ),
+        @NamedStoredProcedureQuery(
                 name = "aceptarVenta",
                 procedureName = "aceptarVenta",
                 parameters = {
