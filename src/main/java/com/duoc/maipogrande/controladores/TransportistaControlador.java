@@ -1,9 +1,6 @@
 package com.duoc.maipogrande.controladores;
 
-import com.duoc.maipogrande.modelos.Contrato;
-import com.duoc.maipogrande.modelos.OfertaTransportista;
-import com.duoc.maipogrande.modelos.Transportista;
-import com.duoc.maipogrande.modelos.Venta;
+import com.duoc.maipogrande.modelos.*;
 import com.duoc.maipogrande.paginador.Pagina;
 import com.duoc.maipogrande.servicios.TransportistaServicio;
 import org.slf4j.Logger;
@@ -17,6 +14,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
 import java.security.Principal;
+import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -166,7 +164,9 @@ public class TransportistaControlador {
                                   HttpSession httpSession)
     {
         Contrato contrato = ((Transportista)httpSession.getAttribute("transportista")).getContrato();
+        long diasRestantes = ChronoUnit.DAYS.between(contrato.getFechaInicioContra(),contrato.getFechaTerminoContra());
         model.addAttribute("contrato",contrato);
+        model.addAttribute("diasRestantes",diasRestantes);
         return "transportistaContrato";
     }
 

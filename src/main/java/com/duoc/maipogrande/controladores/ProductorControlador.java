@@ -25,6 +25,7 @@ import java.security.Principal;
 import java.sql.Blob;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -449,7 +450,9 @@ public class ProductorControlador {
                                   HttpSession httpSession)
     {
         Contrato contrato = ((Productor)httpSession.getAttribute("productor")).getContrato();
+        long diasRestantes = ChronoUnit.DAYS.between(contrato.getFechaInicioContra(),contrato.getFechaTerminoContra());
         model.addAttribute("contrato",contrato);
+        model.addAttribute("diasRestantes",diasRestantes);
         return "productorContrato";
     }
     @Secured("ROLE_PRODUCTOR")

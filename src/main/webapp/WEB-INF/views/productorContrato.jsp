@@ -22,12 +22,12 @@
 						<h3 class="letras text-center mb-4">Contrato</h3>
 						<div class="alert alert-warning border border-warning"
 							role="alert">
-							Su contrato se encuentra a <strong>4 meses</strong> de caducar
+							Su contrato se encuentra a <strong>${diasRestantes} dias</strong> de caducar
 						</div>
 						<table class="table table-sm table-borderless mb-4">
 							<tr>
-								<td class="text-left">Fecha de inicio del contrato: <strong>00/00/0000</strong></td>
-								<td class="text-right">Fecha de caducación: <strong>00/00/0000</strong></td>
+								<td class="text-left">Fecha de inicio del contrato: <strong>${contrato.fechaInicioContra}</strong></td>
+								<td class="text-right">Fecha de caducación: <strong>${contrato.fechaTerminoContra}</strong></td>
 							</tr>
 						</table>
 						<object
