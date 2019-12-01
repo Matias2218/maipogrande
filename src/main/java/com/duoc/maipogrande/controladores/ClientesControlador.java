@@ -2,6 +2,7 @@ package com.duoc.maipogrande.controladores;
 
 import com.duoc.maipogrande.modelos.*;
 import com.duoc.maipogrande.modelos.utilidades.Frutas;
+import com.duoc.maipogrande.paginador.Pagina;
 import com.duoc.maipogrande.servicios.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
@@ -17,7 +18,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.security.Principal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -51,12 +54,13 @@ public class ClientesControlador {
      * @param attributes Manda informacion a la vista, cuando esta es redirigida mediante una ruta que va hacia un metodo
      * @return Permite la redirecion correspondiente a la vista, segun el flujo del algoritmo
      */
-    @RequestMapping(value = "/", method = RequestMethod.GET)
+    @RequestMapping(value = {"/","clienteInterno","clienteExterno","transportista","productor"}, method = RequestMethod.GET)
     public String index(Model model,
                         Principal principal,
                         HttpSession session,
                         @RequestParam(value = "logout", required = false) String logout,
                         @RequestParam(value = "error", required = false) String error,
+                        @RequestParam(name = "pagina", required = false, defaultValue = "0") String p,
                         RedirectAttributes attributes) {
         String mensaje;
         if (principal != null) {
@@ -69,19 +73,84 @@ public class ClientesControlador {
                     ventasActivas = clienteServicio.traerVentasActivasPorIdCli(Long.parseLong(principal.getName()));
                     attributes.addFlashAttribute("alerta",model.asMap().get("alerta"));
                     session.setAttribute("ventasActivas", ventasActivas);
-                    return "redirect:clienteExterno";
+                    return "clienteExterno";
                 case "ROLE_CLIENTE_INTERNO":
                     ventasActivas = clienteServicio.traerVentasActivasPorIdCli(Long.parseLong(principal.getName()));
                     session.setAttribute("ventasActivas", ventasActivas);
-                    return "redirect:clienteInterno";
+                    return "clienteInterno";
                 case "ROLE_PRODUCTOR":
+                    Integer pagina = 0;
+                    Integer paginaActual = 0;
+                    if (p != null) {
+                        try {
+                            pagina = Integer.parseInt(p);
+                            pagina--;
+                            if(pagina < 0)
+                            {
+                                pagina= 0;
+                            }
+                            paginaActual = pagina;
+                            pagina =  pagina * 4;
+                        } catch (NumberFormatException e) {
+                            System.out.println(e.getMessage());
+                        }
+                    }
+                    List<Venta> ventas = productorServicio.ventasParaSubasta(pagina);
+                    ventasActivas = productorServicio.ventasActivasProductor(((Productor)session.getAttribute("productor")).getIdProd());
+                    int totalPaginas = productorServicio.contarVentasSubasta();
+                    Pagina paginador = new Pagina((short) totalPaginas,(short)(paginaActual+1));
+                    model.addAttribute("ventas",ventas);
+                    session.setAttribute("ventasActivas",ventasActivas);
+                    model.addAttribute("paginador",paginador);
+                    model.addAttribute("paginaActual",(paginaActual==0)?1: paginaActual+1);
+                    Contrato contrato = ((Productor)session.getAttribute("productor")).getContrato();
+                    long diasRestantes = ChronoUnit.DAYS.between(LocalDate.now(),contrato.getFechaTerminoContra());
+                    String estado = "";
+                    if (diasRestantes <= 31 && diasRestantes >=1) {
+                        estado="Alerta";
+                    }else if(diasRestantes<=0){
+                        estado="Expirado";
+                    }else {
+                        estado ="Al día";
+                    }
+                    session.setAttribute("estadoContrato", estado);
                     ventasActivas = productorServicio.ventasActivasProductor(Long.parseLong(principal.getName()));
                     session.setAttribute("ventasActivas", ventasActivas);
-                    return "redirect:productor";
+                    return "productor";
                 case "ROLE_TRANSPORTISTA":
+                    pagina = 0;
+                    paginaActual = 0;
+                    if (p != null) {
+                        try {
+                            pagina = Integer.parseInt(p);
+                            pagina--;
+                            if (pagina < 0) {
+                                pagina = 0;
+                            }
+                            paginaActual = pagina;
+                            pagina = pagina * 4;
+                        } catch (NumberFormatException e) {
+                            System.out.println(e.getMessage());
+                        }
+                    }
+                    ventas = transportistaServicio.ventasParaSubastaTrans(pagina.shortValue());
+                    totalPaginas = transportistaServicio.contarVentasSubasta();
+                    paginador = new Pagina((short) totalPaginas, (short) (paginaActual + 1));
+                    model.addAttribute("ventas", ventas);
+                    model.addAttribute("paginador", paginador);
+                    contrato = ((Transportista)session.getAttribute("transportista")).getContrato();
+                     diasRestantes = ChronoUnit.DAYS.between(LocalDate.now(),contrato.getFechaTerminoContra());
+                    if (diasRestantes <= 31 && diasRestantes >=1) {
+                        estado="Alerta";
+                    }else if(diasRestantes<=0){
+                        estado="Expirado";
+                    }else {
+                        estado ="Al día";
+                    }
+                    session.setAttribute("estadoContrato", estado);
                     ventasActivas = transportistaServicio.ventasActivasTran(Long.parseLong(principal.getName()));
                     session.setAttribute("ventasActivas", ventasActivas);
-                    return "redirect:transportista";
+                    return "transportista";
             }
         }
         if (logout != null) {
@@ -95,11 +164,7 @@ public class ClientesControlador {
         return "index";
     }
 
-    @Secured("ROLE_CLIENTE_INTERNO")
-    @RequestMapping(value = "/clienteInterno", method = RequestMethod.GET)
-    public String paginaPrincipalClienteInterno() {
-        return "clienteInterno";
-    }
+
 
     /**
      * Metodo que permite el redireccionamiento segun el flujo del metodo, ademas logra cargar las unidades de medida para su respectivo uso
@@ -186,11 +251,6 @@ public class ClientesControlador {
         return detalleVentaClienteExterno(model,principal,id,session);
     }
 
-    @Secured("ROLE_CLIENTE_EXTERNO")
-    @RequestMapping(value = "/clienteExterno", method = RequestMethod.GET)
-    public String paginaPrincipalClienteExterno() {
-        return "clienteExterno";
-    }
 
     /**
      * @param model interface que permite enviar elementos a la vista en tipo {@code java.util.Map}.
@@ -286,7 +346,6 @@ public class ClientesControlador {
             venta.ordernarTop3SubastaProductos();
             Integer[] totales = venta.getOfertaProductos().
                     stream()
-                    
                     .map(ofertaProducto -> ofertaProducto.getPrecioOferta() * ((ofertaProducto.getProductoSolicitado().getUnidadProdS().equals("T"))? ofertaProducto.getProductoSolicitado().getCantidadProdS()*1000: ofertaProducto.getProductoSolicitado().getCantidadProdS()))
                     .toArray(Integer[]::new);
             model.addAttribute("totales", totales);

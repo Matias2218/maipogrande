@@ -1,7 +1,9 @@
 package com.duoc.maipogrande.controladores;
 
-import com.duoc.maipogrande.modelos.*;
-import com.duoc.maipogrande.paginador.Pagina;
+import com.duoc.maipogrande.modelos.Contrato;
+import com.duoc.maipogrande.modelos.OfertaTransportista;
+import com.duoc.maipogrande.modelos.Transportista;
+import com.duoc.maipogrande.modelos.Venta;
 import com.duoc.maipogrande.servicios.TransportistaServicio;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,46 +33,6 @@ public class TransportistaControlador {
     String[] rutas = {"https://apipdf.s3.us-east-2.amazonaws.com/reportes/aceptado/","https://apipdf.s3.us-east-2.amazonaws.com/reportes/rechazado/"};
 
 
-    @Secured("ROLE_TRANSPORTISTA")
-    @RequestMapping(value = "/transportista", method = RequestMethod.GET)
-    public String paginaPrincipalTransportista(Model model,
-                                               @RequestParam(name = "pagina", required = false, defaultValue = "0") String p,
-                                               HttpSession session) {
-        Integer pagina = 0;
-        Integer paginaActual = 0;
-        if (p != null) {
-            try {
-                pagina = Integer.parseInt(p);
-                pagina--;
-                if (pagina < 0) {
-                    pagina = 0;
-                }
-                paginaActual = pagina;
-                pagina = pagina * 4;
-            } catch (NumberFormatException e) {
-                System.out.println(e.getMessage());
-            }
-        }
-        List<Venta> ventas = transportistaServicio.ventasParaSubastaTrans(pagina.shortValue());
-        int totalPaginas = transportistaServicio.contarVentasSubasta();
-        Pagina paginador = new Pagina((short) totalPaginas, (short) (paginaActual + 1));
-        model.addAttribute("ventas", ventas);
-        model.addAttribute("paginador", paginador);
-        
-        Contrato contrato = ((Transportista)session.getAttribute("transportista")).getContrato();
-        long diasRestantes = ChronoUnit.DAYS.between(LocalDate.now(),contrato.getFechaTerminoContra());
-        String estado = "";
-        if (diasRestantes <= 31 && diasRestantes >=1) {
-        	estado="Alerta";
-        }else if(diasRestantes<=0){
-        	estado="Expirado";
-        }else {
-        	estado ="Al día";
-        }
-        session.setAttribute("estadoContrato", estado);
-        
-        return "transportista";
-    }
 
     @Secured("ROLE_TRANSPORTISTA")
     @RequestMapping(value = "/subastaTransportista/{id}", method = RequestMethod.GET)

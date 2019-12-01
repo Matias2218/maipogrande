@@ -46,56 +46,6 @@ public class ProductorControlador {
     private static final List<String> EXTENSIONES = Arrays.asList("image/png", "image/jpeg", "image/jpg");
     private static final Long MAXIMO_PESO_IMAGEN = 83886080L;
 
-    /**
-     * Metodo que permite la redireccion a la pagina principal del productor
-     * @param model interface que permite enviar elementos a la vista en tipo {@code java.util.Map}.
-     * @param p Anotacion que indica que parametro se solicito, en este caso, el valor de pagina
-     * @param session Proporciona una manera de identificar un usuario o solicitud y alamacena la informacion
-     * @return Permite la redirecion correspondiente a la vista, segun el flujo del algoritmo
-     */
-    @Secured("ROLE_PRODUCTOR")
-    @GetMapping(value = "/productor")
-    public String paginaPrincipalProductor(Model model,
-                                           @RequestParam(name = "pagina", required = false, defaultValue = "0")String p,
-                                           HttpSession session) {
-        Integer pagina = 0;
-        Integer paginaActual = 0;
-        if (p != null) {
-            try {
-                pagina = Integer.parseInt(p);
-                pagina--;
-                if(pagina < 0)
-                {
-                    pagina= 0;
-                }
-                paginaActual = pagina;
-                pagina =  pagina * 4;
-            } catch (NumberFormatException e) {
-                System.out.println(e.getMessage());
-            }
-        }
-        List<Venta> ventas = productorServicio.ventasParaSubasta(pagina);
-        List<Venta> ventasActivas = productorServicio.ventasActivasProductor(((Productor)session.getAttribute("productor")).getIdProd());
-        int totalPaginas = productorServicio.contarVentasSubasta();
-        Pagina paginador = new Pagina((short) totalPaginas,(short)(paginaActual+1));
-        model.addAttribute("ventas",ventas);
-        session.setAttribute("ventasActivas",ventasActivas);
-        model.addAttribute("paginador",paginador);
-        model.addAttribute("paginaActual",(paginaActual==0)?1: paginaActual+1);
-        
-        Contrato contrato = ((Productor)session.getAttribute("productor")).getContrato();
-        long diasRestantes = ChronoUnit.DAYS.between(LocalDate.now(),contrato.getFechaTerminoContra());
-        String estado = "";
-        if (diasRestantes <= 31 && diasRestantes >=1) {
-        	estado="Alerta";
-        }else if(diasRestantes<=0){
-        	estado="Expirado";
-        }else {
-        	estado ="Al día";
-        }
-        session.setAttribute("estadoContrato", estado);
-        return "productor";
-    }
 
     /**
      * Metodo que permite la redireccion a la pagina editar del producto
