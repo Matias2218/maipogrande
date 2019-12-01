@@ -93,7 +93,7 @@ public class ProductorControlador {
         }else {
         	estado ="Al día";
         }
-        model.addAttribute("estadoContrato", estado);
+        session.setAttribute("estadoContrato", estado);
         return "productor";
     }
 

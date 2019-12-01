@@ -28,8 +28,6 @@
 									<h3
 											class="letras text-center jumbotron-heading font-weight-bold">Venta
 										N°${venta.idVenta}</h3>
-									<h3 class="section-subheading text-muted">Estado:
-										Aprobado</h3>
 								</div>
 							</div>
 						</div>
@@ -155,7 +153,20 @@
 										</div>
 									</c:forEach>
 									<!-- PRODUCTOS -->
-
+                                    <div class="card mb-3 border-secondary">
+                                        <div class="card-body">
+                                            <table class="table table-sm table-borderless mb-0">
+                                                <tr>
+                                                    <td class="text-left font-weight-bold"><h5 class="mb-0">TOTAL
+                                                        POR LOS PRODUCTOS</h5></td>
+                                                    <td class="text-right font-weight-bold"><h5 class="mb-0">
+                                                        $<fmt:formatNumber type="number"
+                                                                           value="${totalProductos}"></fmt:formatNumber></h5>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </div>
 								</div>
 							</section>
 						</div>
@@ -254,7 +265,7 @@
 														</tr>
 														<tr>
 															<td class="lead p-0"><strong>Patente</strong></td>
-															<td class="lead p-0">${ofertaTran.transportista.patente}</td>
+															<td class="lead p-0">${ofertaTran.transportista.patente.toUpperCase()}</td>
 														</tr>
 														</tbody>
 													</table>

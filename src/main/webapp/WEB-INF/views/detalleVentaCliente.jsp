@@ -33,8 +33,6 @@
                                     <h3
                                             class="letras text-center jumbotron-heading font-weight-bold">Venta
                                         N°${venta.idVenta}</h3>
-                                    <h3 class="section-subheading text-muted">Estado:
-                                        Aprobado</h3>
                                 </div>
                             </div>
                         </div>
@@ -436,7 +434,7 @@
                                                         </tr>
                                                         <tr>
                                                             <td class="lead p-0"><strong>Patente</strong></td>
-                                                            <td class="lead p-0">${ot.transportista.patente}</td>
+                                                            <td class="lead p-0">${ot.transportista.patente.toUpperCase()}</td>
                                                         </tr>
                                                         </tbody>
                                                     </table>

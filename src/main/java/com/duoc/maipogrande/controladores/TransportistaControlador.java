@@ -67,7 +67,7 @@ public class TransportistaControlador {
         }else {
         	estado ="Al día";
         }
-        model.addAttribute("estadoContrato", estado);
+        session.setAttribute("estadoContrato", estado);
         
         return "transportista";
     }

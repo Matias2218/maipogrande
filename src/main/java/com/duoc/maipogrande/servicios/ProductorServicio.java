@@ -152,6 +152,7 @@ public class ProductorServicio {
                 .stream()
                 .map(ofertaProducto -> ofertaProducto.getProductoSolicitado().getIdProdS())
                 .distinct()
+                .sorted()
                 .toArray(Long[]::new);
         List<OfertaProducto> ofertaProductos = venta.getOfertaProductos()
                 .stream()
@@ -163,11 +164,16 @@ public class ProductorServicio {
         List<OfertaProducto> ofertaProductosFiltrados = new ArrayList<>();
         for (int i = 0; i < idProds.length; i++)
         {
-            if (ofertaProductos.get(i).getProductoSolicitado().getIdProdS() == idProds[i]) {
-                ofertaProductosFiltrados.add(ofertaProductos.get(i));
+            for (int j = 0; j < ofertaProductos.size() ; j++) {
+                if (ofertaProductos.get(j).getProductoSolicitado().getIdProdS().equals(idProds[i])) {
+                    ofertaProductosFiltrados.add(ofertaProductos.get(j));
+                    break;
+                }
             }
+
         }
-    /*    for (int i = 0; i < ofertaProductos.size(); i++) {
+      /*  int j = 0;
+        for (int i = 0; i < ofertaProductos.size(); i++) {
             if (ofertaProductos.get(i).getProductoSolicitado().getIdProdS() == idProds[j]) {
                 ofertaProductosFiltrados.add(ofertaProductos.get(i));
                 j++;
