@@ -286,7 +286,8 @@ public class ClientesControlador {
             venta.ordernarTop3SubastaProductos();
             Integer[] totales = venta.getOfertaProductos().
                     stream()
-                    .map(ofertaProducto -> ofertaProducto.getPrecioOferta() * ofertaProducto.getStockOferta())
+                    
+                    .map(ofertaProducto -> ofertaProducto.getPrecioOferta() * ((ofertaProducto.getProductoSolicitado().getUnidadProdS().equals("T"))? ofertaProducto.getProductoSolicitado().getCantidadProdS()*1000: ofertaProducto.getProductoSolicitado().getCantidadProdS()))
                     .toArray(Integer[]::new);
             model.addAttribute("totales", totales);
         } else if (venta.getEstadoVenta().equals('T')) {
