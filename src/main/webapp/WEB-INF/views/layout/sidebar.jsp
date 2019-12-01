@@ -45,31 +45,35 @@
 			<div class="sidebar-menu">
 				<ul>
 					<li class="header-menu"><span>General</span></li>
-					<li class="sidebar"><a href="#"> <i
-							class="far fa-id-card"></i> <span>Mi perfil</span>
+					<li class="sidebar"><a href="/"> <i class="far fa-id-card"></i>
+							<span>Ventas Disponibles</span>
 					</a></li>
 					<li class="sidebar"><a href="/productos"> <i
 							class="far fa-lemon"></i> <span>Mis Productos</span>
 					</a></li>
-					<li class="sidebar-dropdown"><a href="javascript:void(0)"> <i
-							class="fa fa-shopping-cart"></i> <span>Ventas en proceso</span> <span
-							class="badge badge-pill badge-success">${ventasActivas.size()}</span>
+					<li class="sidebar-dropdown"><a href="javascript:void(0)">
+							<i class="fa fa-shopping-cart"></i> <span>Ventas en
+								proceso</span> <span class="badge badge-pill badge-success">${ventasActivas.size()}</span>
 					</a>
 						<div class="sidebar-submenu">
 							<ul>
 								<c:forEach items="${ventasActivas}" var="v">
-									<li><a href="/detalleVentaProductor/${v.idVenta}">Venta Nº${v.idVenta}</a></li>
+									<li><a href="/detalleVentaProductor/${v.idVenta}">Venta
+											Nº${v.idVenta}</a></li>
 								</c:forEach>
 							</ul>
 						</div></li>
 
-					<li class="sidebar"><a href="/productor/ventasHistoricas"> <i
-							class="far fa-list-alt"></i> <span>Ventas historicas</span>
+					<li class="sidebar"><a href="/productor/ventasHistoricas">
+							<i class="far fa-list-alt"></i> <span>Ventas historicas</span>
 					</a></li>
 					<li class="header-menu"><span>Extra</span></li>
 					<li class="sidebar"><a href="/productor/contrato"> <i
 							class="fa fa-book"></i> <span>Estado de contrato</span> <span
-							class="badge badge-pill badge-danger">¡Alerta!</span>
+							<c:if test="${estadoContrato eq 'Alerta'}">class="badge badge-pill badge-warning"</c:if>
+							<c:if test="${estadoContrato eq 'Al día'}">class="badge badge-pill badge-success"</c:if>
+							<c:if test="${estadoContrato eq 'Expirado'}">class="badge badge-pill badge-danger"</c:if>
+							>${estadoContrato}</span>
 					</a></li>
 					<li style="height: 100px;"></li>
 				</ul>

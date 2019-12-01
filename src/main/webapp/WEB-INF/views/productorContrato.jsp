@@ -5,6 +5,7 @@
   Time: 17:31
   To change this template use File | Settings | File Templates.
 --%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java"%>
 <html>
 <head>
@@ -20,10 +21,20 @@
 				<div class="row  ml-5 mr-5">
 					<div class="col-lg pl-0 pr-0 mr-3 ml-3 text-center">
 						<h3 class="letras text-center mb-4">Contrato</h3>
-						<div class="alert alert-warning border border-warning"
-							role="alert">
-							Su contrato se encuentra a <strong>${diasRestantes} dias</strong> de caducar
-						</div>
+						
+						<c:if test="${diasRestantes eq 0}">
+							<div class="alert alert-danger border border-danger" role="alert">
+								Su contrato se encuentra <strong>caducado</strong>
+							</div>
+						</c:if>
+						
+						<c:if test="${diasRestantes ge 1}">
+							<div class="alert alert-warning border border-warning" role="alert">
+								Su contrato se encuentra a <strong>${diasRestantes}
+									días</strong> de caducar
+							</div>
+						</c:if>
+						
 						<table class="table table-sm table-borderless mb-4">
 							<tr>
 								<td class="text-left">Fecha de inicio del contrato: <strong>${contrato.fechaInicioContra}</strong></td>

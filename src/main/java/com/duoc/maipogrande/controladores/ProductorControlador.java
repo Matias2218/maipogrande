@@ -82,6 +82,18 @@ public class ProductorControlador {
         session.setAttribute("ventasActivas",ventasActivas);
         model.addAttribute("paginador",paginador);
         model.addAttribute("paginaActual",(paginaActual==0)?1: paginaActual+1);
+        
+        Contrato contrato = ((Productor)session.getAttribute("productor")).getContrato();
+        long diasRestantes = ChronoUnit.DAYS.between(LocalDate.now(),contrato.getFechaTerminoContra());
+        String estado = "";
+        if (diasRestantes <= 31 && diasRestantes >=1) {
+        	estado="Alerta";
+        }else if(diasRestantes<=0){
+        	estado="Expirado";
+        }else {
+        	estado ="Al día";
+        }
+        model.addAttribute("estadoContrato", estado);
         return "productor";
     }
 
@@ -444,17 +456,25 @@ public class ProductorControlador {
 	    model.addAttribute("venta", venta);
         return "detalleVentaProductor";
     }
+    
     @Secured("ROLE_PRODUCTOR")
     @RequestMapping(value = "productor/contrato", method = RequestMethod.GET)
     public String mostrarContrato(Model model,
                                   HttpSession httpSession)
     {
         Contrato contrato = ((Productor)httpSession.getAttribute("productor")).getContrato();
-        long diasRestantes = ChronoUnit.DAYS.between(contrato.getFechaInicioContra(),contrato.getFechaTerminoContra());
+        long restoDias = ChronoUnit.DAYS.between(LocalDate.now(),contrato.getFechaTerminoContra());
+        long diasRestantes= 0;
+        if(restoDias < 0) {
+        	diasRestantes = 0;
+        } else {
+        	diasRestantes = restoDias;
+        }
         model.addAttribute("contrato",contrato);
         model.addAttribute("diasRestantes",diasRestantes);
         return "productorContrato";
     }
+    
     @Secured("ROLE_PRODUCTOR")
     @RequestMapping(value = "/productor/ventasHistoricas", method = RequestMethod.GET)
     public String ventasHistoricasClienteExterno(Principal principal,

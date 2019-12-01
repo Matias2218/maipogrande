@@ -43,8 +43,8 @@
 			<div class="sidebar-menu">
 				<ul>
 					<li class="header-menu"><span>General</span></li>
-					<li class="sidebar"><a href="#"> <i
-							class="far fa-id-card"></i> <span>Mi perfil</span>
+					<li class="sidebar"><a href="/"> <i
+							class="far fa-id-card"></i> <span>Envios Disponibles</span>
 					</a></li>
 					
 					<li class="sidebar-dropdown"><a href="#"> <i
@@ -65,7 +65,10 @@
 					<li class="header-menu"><span>Extra</span></li>
 					<li class="sidebar"><a href="/transportista/contrato"> <i
 							class="fa fa-book"></i> <span>Estado de contrato</span> <span
-							class="badge badge-pill badge-danger">¡Alerta!</span>
+							<c:if test="${estadoContrato eq 'Alerta'}">class="badge badge-pill badge-warning"</c:if>
+							<c:if test="${estadoContrato eq 'Al día'}">class="badge badge-pill badge-success"</c:if>
+							<c:if test="${estadoContrato eq 'Expirado'}">class="badge badge-pill badge-danger"</c:if>
+							>${estadoContrato}</span>
 					</a></li>
 					<li style="height: 100px;"></li>
 				</ul>

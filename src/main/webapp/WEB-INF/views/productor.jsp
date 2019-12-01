@@ -63,7 +63,7 @@
 
 								<c:choose>
 									<c:when test="${ventas.size() < 1}">
-										<div class="alert alert-warning">No se encuentran ventas</div>
+										<div class="alert alert-warning border border-warning">No se encuentran ventas</div>
 									</c:when>
 									<c:otherwise>
 										<c:forEach items="${ventas}" var="v">

@@ -53,8 +53,8 @@
         <div class="sidebar-menu">
         <ul>
         <li class="header-menu"><span>General</span></li>
-        <li class="sidebar"><a href="#"> <i
-        class="far fa-id-card"></i> <span>Mi perfil</span>
+        <li class="sidebar"><a href="/"> <i
+        class="far fa-id-card"></i> <span>Página Principal</span>
         </a></li>
 
         <li class="sidebar-dropdown"><a href="#">

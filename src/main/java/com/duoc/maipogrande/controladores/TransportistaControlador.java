@@ -14,6 +14,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
 import java.security.Principal;
+import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -55,6 +56,19 @@ public class TransportistaControlador {
         Pagina paginador = new Pagina((short) totalPaginas, (short) (paginaActual + 1));
         model.addAttribute("ventas", ventas);
         model.addAttribute("paginador", paginador);
+        
+        Contrato contrato = ((Transportista)session.getAttribute("transportista")).getContrato();
+        long diasRestantes = ChronoUnit.DAYS.between(LocalDate.now(),contrato.getFechaTerminoContra());
+        String estado = "";
+        if (diasRestantes <= 31 && diasRestantes >=1) {
+        	estado="Alerta";
+        }else if(diasRestantes<=0){
+        	estado="Expirado";
+        }else {
+        	estado ="Al día";
+        }
+        model.addAttribute("estadoContrato", estado);
+        
         return "transportista";
     }
 
@@ -164,7 +178,13 @@ public class TransportistaControlador {
                                   HttpSession httpSession)
     {
         Contrato contrato = ((Transportista)httpSession.getAttribute("transportista")).getContrato();
-        long diasRestantes = ChronoUnit.DAYS.between(contrato.getFechaInicioContra(),contrato.getFechaTerminoContra());
+        long restoDias = ChronoUnit.DAYS.between(LocalDate.now(),contrato.getFechaTerminoContra());
+        long diasRestantes= 0;
+        if(restoDias < 0) {
+        	diasRestantes = 0;
+        } else {
+        	diasRestantes = restoDias;
+        }
         model.addAttribute("contrato",contrato);
         model.addAttribute("diasRestantes",diasRestantes);
         return "transportistaContrato";
