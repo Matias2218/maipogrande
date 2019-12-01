@@ -130,48 +130,101 @@
 										</div>
 
 										<!-- PRODUCTOS -->
-										<c:forEach items="${venta.ofertaProductos}" var="o">
-											<div class="card mb-3">
-												<div class="card-header text-uppercase">
-													<table class="table table-sm table-borderless mb-0">
-														<tr>
-															<td class="text-left font-weight-bold">${o.productoSolicitado.nombreProdS}</td>
-															<td class="text-right font-weight-bold">${o.productoSolicitado.cantidadProdS}
-																${o.productoSolicitado.unidadProdS}</td>
-														</tr>
-													</table>
-												</div>
-												<div class="card-body">
-													<div class="row">
-														<input type="hidden" name="idProds[]" value="22">
-														<div class="col">
-															<div class="form-group mb-0">
-																<label>Producto ofrecido</label> <input
-																	class="form-control" disabled
-																	value="${o.producto.nombreProdu}"
-																	style="background-color: white;">
-															</div>
-														</div>
-														<div class="col">
-															<div class="form-group mb-0">
-																<label>Precio</label>
-																<div class="input-group">
-																	<div class="input-group-prepend">
-																		<span class="input-group-text" id="inputGroupPrepend"><i
-																			class="fa fa-dollar-sign"></i></span>
-																	</div>
-																	<input type="text" class="form-control"
-																		id="validationCustomUsername" placeholder="Precio"
-																		aria-describedby="inputGroupPrepend" disabled
-																		style="background-color: white;"
-																		value="${o.precioOferta} X ${o.unidadMasaOferta}">
-																</div>
-															</div>
-														</div>
-													</div>
-												</div>
-											</div>
-										</c:forEach>
+                                        <hr>
+                                        <c:forEach items="${venta.ofertaProductos}" var="op">
+                                            <c:forEach var="id" items="${idRecorridas}">
+                                                <c:if test="${(op.producto.productor.idProd == id.key) && (id.value == false)}">
+                                                    <c:set var="x" value="${id.setValue(true)}"></c:set>
+                                                    <h6 class="mb-0 letras">
+                                                        <mark>INFORMACIÓN PROVEEDOR</mark>
+                                                    </h6>
+                                                    <table class="table table-sm table-borderless">
+                                                        <tbody>
+                                                        <tr>
+                                                            <td class="lead p-0"><strong>Nombre del
+                                                                proveedor</strong>
+                                                            </td>
+                                                            <td class="lead p-0">${op.producto.productor.nombreProd} ${op.producto.productor.apellidoProd}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="lead p-0"><strong>Rut</strong></td>
+                                                            <td class="lead p-0">${op.producto.productor.rutProd}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="lead p-0"><strong>Correo</strong></td>
+                                                            <td class="lead p-0">${op.producto.productor.emailProd}</td>
+                                                        </tr>
+                                                        </tbody>
+                                                    </table>
+                                                    <h6 class="mb-2 letras">PRODUCTOS:</h6>
+                                                    <c:forEach items="${venta.ofertaProductos}" var="op2">
+                                                        <c:if test="${op.producto.productor.idProd == op2.producto.productor.idProd}">
+                                                            <div class="card mb-3">
+                                                                <div class="card-header text-uppercase">
+                                                                    <table class="table table-sm table-borderless mb-0">
+                                                                        <tr>
+                                                                            <td class="text-left font-weight-bold">${op2.productoSolicitado.nombreProdS}</td>
+                                                                            <td class="text-right font-weight-bold">${op2.productoSolicitado.cantidadProdS} ${op2.productoSolicitado.unidadProdS}</td>
+                                                                        </tr>
+                                                                    </table>
+                                                                </div>
+                                                                <div class="card-body">
+                                                                    <div class="row">
+                                                                        <input type="hidden" name="idProds[]"
+                                                                               value="22">
+                                                                        <div class="col">
+                                                                            <div class="form-group mb-0">
+                                                                                <label>Producto ofrecido</label>
+                                                                                <input class="form-control"
+                                                                                       disabled
+                                                                                       value="${op2.producto.nombreProdu}"
+                                                                                       style="background-color:white;">
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col">
+                                                                            <div class="form-group mb-0">
+                                                                                <label>Precio X Kg</label>
+                                                                                <div class="input-group">
+                                                                                    <div class="input-group-prepend">
+																	<span class="input-group-text"><i
+                                                                            class="fa fa-dollar-sign"></i></span>
+                                                                                    </div>
+                                                                                    <input type="text"
+                                                                                           class="form-control"
+                                                                                           placeholder="Precio"
+                                                                                           aria-describedby="inputGroupPrepend"
+                                                                                           disabled
+                                                                                           style="background-color:white;"
+                                                                                           value="<fmt:formatNumber
+                                                                                    type="number"
+                                                                                    value="${op2.precioOferta}"></fmt:formatNumber>">
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="card-footer">
+                                                                    <table class="table table-sm table-borderless mb-0">
+                                                                        <tr>
+                                                                            <td class="text-left font-weight-bold">
+                                                                                Total
+                                                                                del
+                                                                                producto
+                                                                            </td>
+                                                                            <td class="text-right font-weight-bold">
+                                                                                $<fmt:formatNumber
+                                                                                    type="number"
+                                                                                    value="${op2.precioOferta * ((op2.productoSolicitado.unidadProdS == 'KG')? op2.productoSolicitado.cantidadProdS : op2.productoSolicitado.cantidadProdS * 1000)}"></fmt:formatNumber></td>
+                                                                        </tr>
+                                                                    </table>
+                                                                </div>
+                                                            </div>
+                                                        </c:if>
+                                                    </c:forEach>
+                                                    <hr>
+                                                </c:if>
+                                            </c:forEach>
+                                        </c:forEach>
 										<!-- PRODUCTOS -->
 										<div class="card mb-3 border-secondary">
 											<div class="card-body">
