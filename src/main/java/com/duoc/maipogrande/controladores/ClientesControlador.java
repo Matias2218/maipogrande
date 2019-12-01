@@ -67,6 +67,7 @@ public class ClientesControlador {
             switch (rol) {
                 case "ROLE_CLIENTE_EXTERNO":
                     ventasActivas = clienteServicio.traerVentasActivasPorIdCli(Long.parseLong(principal.getName()));
+                    attributes.addFlashAttribute("alerta",model.asMap().get("alerta"));
                     session.setAttribute("ventasActivas", ventasActivas);
                     return "redirect:clienteExterno";
                 case "ROLE_CLIENTE_INTERNO":
@@ -310,13 +311,15 @@ public class ClientesControlador {
         model.addAttribute("idRecorridas", idRecorridas);
         model.addAttribute("totalProductos", totalProductos);
         session.setAttribute("venta", venta);
+
         return "detalleVentaCliente";
     }
 
     @Secured({"ROLE_CLIENTE_INTERNO", "ROLE_CLIENTE_EXTERNO"})
     @PostMapping(value = "cliente/rechazarVenta")
     public String rechazarVenta(HttpSession session,
-                                @RequestParam("txtRechazo") String txtRechazo) {
+                                @RequestParam("txtRechazo") String txtRechazo,
+                                RedirectAttributes redirectAttributes) {
         Venta venta = (Venta) session.getAttribute("venta");
         String nombrePdf = pdfServicio.generarPdfRechazo(venta, txtRechazo);
         if (nombrePdf != null) {
@@ -324,13 +327,16 @@ public class ClientesControlador {
             clienteServicio.rechazarVentaPorid(reporte);
         }
         session.removeAttribute("venta");
+        String mensaje = "Venta Rechazada";
+        redirectAttributes.addFlashAttribute("alerta", mensaje);
         return "redirect:/";
     }
 
     @Secured({"ROLE_CLIENTE_INTERNO", "ROLE_CLIENTE_EXTERNO"})
     @PostMapping(value = "cliente/aceptarVenta")
     public String aceptarVenta(HttpSession session,
-                               @RequestParam("txtAceptar") String txtAceptar) {
+                               @RequestParam("txtAceptar") String txtAceptar,
+                               RedirectAttributes redirectAttributes) {
         Venta venta = (Venta) session.getAttribute("venta");
         venta.getOfertaProductos().forEach(ofertaProducto -> {
             if (ofertaProducto.getProducto().getUnidadMasaProdu().equals(ofertaProducto.getProductoSolicitado().getUnidadProdS()))
@@ -367,6 +373,7 @@ public class ClientesControlador {
             clienteServicio.aceptarVentaPorId(reporte, boleta);
 
         }
+        redirectAttributes.addAttribute("alerta", "Venta Aceptada");
         session.removeAttribute("venta");
         return"redirect:/";
     }
