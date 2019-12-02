@@ -74,7 +74,7 @@
         </div></li>
         <li class="sidebar-dropdown"><a href="#"> <i
         class="fa fa-shopping-cart"></i> <span>Ventas en proceso</span> <span
-        class="badge badge-pill badge-success"></span>
+        class="badge badge-pill badge-success">${ventasActivas.size()}</span>
         </a>
         <div class="sidebar-submenu">
         <ul>
